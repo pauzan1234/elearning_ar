@@ -27,6 +27,7 @@ use App\Http\Controllers\Lecturer\AkademikController as LecturerAkademikControll
 use App\Http\Controllers\Student\AkademikController as StudentAkademikController;
 use App\Models\PengajaranMahasiswa;
 use App\Http\Controllers\Lecturer\PengajuanController;
+use App\Http\Controllers\MateriArController;
 
 /*
 |--------------------------------------------------------------------------
@@ -256,6 +257,17 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
         Route::get('/nilai-menu/{pengajaranDosen}', [LecturerAkademikController::class, 'nilaiStudents'])->name('nilai.students');
         Route::get('/nilai-menu/{pengajaranDosen}/mahasiswa/{student}', [LecturerAkademikController::class, 'nilaiStudent'])->name('nilai.student');
     });
+    // Materi AR
+    Route::get('/materi-ar/{pengajaranDosen}/create', [MateriArController::class, 'create'])
+        ->name('materi-ar.create');
+    Route::post('/materi-ar/{pengajaranDosen}', [MateriArController::class, 'store'])
+        ->name('materi-ar.store');
+    Route::get('/materi-ar/{materiAr}/edit', [MateriArController::class, 'edit'])
+        ->name('materi-ar.edit');
+    Route::put('/materi-ar/{materiAr}', [MateriArController::class, 'update'])
+        ->name('materi-ar.update');
+    Route::delete('/materi-ar/{materiAr}', [MateriArController::class, 'destroy'])
+        ->name('materi-ar.destroy');
 });
 
 /*
@@ -356,5 +368,9 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->group(function (
         Route::get('/nilai/kelas/{kelas}', [StudentAkademikController::class, 'nilaiKelas'])->name('nilai.kelas');
     });
 });
-
+// taruh di luar grup lecturer, cukup middleware auth biasa
+Route::middleware(['auth'])->group(function () {
+    Route::get('/materi-ar/{materiAr}/view', [MateriArController::class, 'show'])
+        ->name('materi-ar.show');
+});
 require __DIR__ . '/auth.php';

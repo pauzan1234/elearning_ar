@@ -18,12 +18,12 @@
       theme: {
         extend: {
           colors: {
-            ink: '#0F2A4D',
-            paper: '#F5F8FC',
-            amber: '#60A5FA',
-            teal: '#2563EB',
-            coral: '#1D4ED8',
-            line: '#DCE6F5',
+            ink: '#1E1B4B', // deep indigo — dulu navy
+            paper: '#F5F3FF', // lavender putih — dulu biru muda
+            amber: '#34D399', // emerald — aksen icon
+            teal: '#7C3AED', // violet — aksen utama/link
+            coral: '#5B21B6', // violet gelap — tombol CTA
+            line: '#E4DBFB', // border lavender
           },
           fontFamily: {
             display: ['Fraunces', 'serif'],
@@ -40,13 +40,14 @@
     }
 
     .dot-grid {
-      background-image: radial-gradient(#C7D8F0 1px, transparent 1px);
+      background-image: radial-gradient(#C4B5FD 1px, transparent 1px);
       background-size: 22px 22px;
     }
 
     .highlight-mark {
       position: relative;
       white-space: nowrap;
+      background: #A78BFA;
     }
 
     .highlight-mark::after {
@@ -66,8 +67,8 @@
     }
 
     ::selection {
-      background: #93C5FD;
-      color: #0F2A4D;
+      background: #C4B5FD;
+      color: #1E1B4B;
     }
   </style>
 </head>
@@ -122,18 +123,37 @@
   </header>
 
   <!-- ============ HERO ============ -->
-  <section class="relative overflow-hidden dot-grid">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-20 pb-24 lg:pt-28 lg:pb-32 grid lg:grid-cols-2 gap-16 items-center">
+  <section class="relative overflow-hidden bg-paper">
+    <!-- soft glow blobs instead of dot-grid -->
+    <div class="pointer-events-none absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-teal/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute top-1/2 -left-40 w-[400px] h-[400px] rounded-full bg-amber/20 blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-20 pb-24 lg:pt-28 lg:pb-32 grid lg:grid-cols-2 gap-16 items-center relative">
 
       <div>
-        <span class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-teal bg-teal/10 border border-teal/20 rounded-full px-3 py-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-teal"></span>
+        <span class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-ink bg-white border border-line rounded-full px-3 py-1.5 shadow-sm">
+          <span class="relative flex w-2 h-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-60"></span>
+            <span class="relative inline-flex rounded-full w-2 h-2 bg-teal"></span>
+          </span>
           Semester Ganjil 2026/2027 — Perkuliahan Aktif
         </span>
 
         <h1 class="font-display text-[2.75rem] sm:text-5xl lg:text-[3.4rem] leading-[1.08] font-semibold tracking-tight mt-6">
           Satu tempat untuk<br class="hidden sm:block">
-          <span class="highlight-mark">semua perkuliahanmu</span> di <em class="italic font-medium">UNWIR.</em>
+          semua perkuliahanmu di
+          <span class="relative inline-block">
+            <span class="relative z-10">UNWIR.</span>
+            <svg class="absolute left-0 -bottom-1 w-full h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
+              <path d="M2 9 C 50 2, 150 2, 198 9" stroke="url(#grad)" stroke-width="5" fill="none" stroke-linecap="round" />
+              <defs>
+                <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#7C3AED" />
+                  <stop offset="100%" stop-color="#34D399" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
         </h1>
 
         <p class="text-lg text-ink/65 leading-relaxed mt-6 max-w-md">
@@ -141,15 +161,13 @@
         </p>
 
         <div class="flex flex-wrap items-center gap-4 mt-9">
-          <a href="{{ route('login') }}" class="inline-flex items-center gap-2 bg-coral text-paper font-medium px-6 py-3.5 rounded-full hover:bg-coral/90 transition-colors shadow-[0_6px_0_0_#12326b] active:translate-y-1 active:shadow-none">
+          <a href="{{ route('login') }}" class="inline-flex items-center gap-2 bg-ink text-paper font-medium px-6 py-3.5 rounded-full hover:bg-ink/90 transition-colors">
             Masuk dengan Akun SIMAKO
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
           </a>
-          <a href="#cara-kerja" class="inline-flex items-center gap-2 font-medium text-ink/80 hover:text-ink px-2 py-3.5 transition-colors">
-            <span class="w-9 h-9 rounded-full border border-ink/20 flex items-center justify-center">
-              <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
-                <path d="M11 7L0.5 13.06V0.94L11 7Z" fill="currentColor" />
-              </svg>
-            </span>
+          <a href="#cara-kerja" class="inline-flex items-center gap-2 font-medium text-ink/80 hover:text-ink px-2 py-3.5 transition-colors underline decoration-ink/20 underline-offset-4 hover:decoration-ink/60">
             Lihat cara pakainya
           </a>
         </div>
@@ -170,49 +188,55 @@
         </div>
       </div>
 
-      <!-- hero visual: stacked course cards like index cards on a desk -->
-      <div class="relative h-[440px] hidden lg:block">
+      <!-- hero visual: mock dashboard window instead of stacked cards -->
+      <div class="relative hidden lg:block">
+        <div class="bg-white border border-line rounded-2xl shadow-2xl overflow-hidden">
 
-        @foreach ($matakuliah as $index => $mk)
-
-        <div class="
-            absolute
-            {{ $index == 0 ? 'right-6 top-2 rotate-[4deg]' : 'left-2 top-32 -rotate-[3deg]' }}
-            w-80 bg-white border border-line rounded-2xl shadow-xl p-5
-        ">
-
-          <div class="flex items-center justify-between">
-
-            {{-- Nama Program Studi --}}
-            <span class="
-                    font-mono text-[11px] uppercase tracking-wider
-                    {{ $index == 0 ? 'text-teal bg-teal/10' : 'text-coral bg-coral/10' }}
-                    px-2 py-1 rounded
-                ">
-              {{ $mk->prodi->nama_prodi ?? 'Program Studi' }}
-            </span>
-
-            {{-- Kode Mata Kuliah --}}
-            <span class="font-mono text-[11px] text-ink/40">
-              {{ $mk->kode_mk }}
-            </span>
-
+          <!-- window chrome -->
+          <div class="flex items-center gap-1.5 px-4 py-3 border-b border-line bg-paper">
+            <span class="w-2.5 h-2.5 rounded-full bg-ink/15"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-ink/15"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-ink/15"></span>
+            <span class="ml-3 font-mono text-[11px] text-ink/40">elearning.unwir.ac.id/dashboard</span>
           </div>
 
-          {{-- Nama Mata Kuliah --}}
-          <h3 class="font-display text-lg font-medium mt-3">
-            {{ $mk->nama_mk }}
-          </h3>
+          <div class="p-6">
+            <p class="font-mono text-[11px] uppercase tracking-wider text-ink/40">Mata kuliah aktif kamu</p>
 
-          {{-- SKS --}}
-          <p class="text-xs text-ink/50 mt-4">
-            {{ $mk->sks }} SKS
-          </p>
+            <div class="space-y-3 mt-4">
+              @foreach ($matakuliah as $index => $mk)
+              <div class="flex items-center gap-4 p-4 rounded-xl border border-line {{ $index == 0 ? 'bg-teal/5' : 'hover:bg-paper' }} transition-colors">
 
+                <span class="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center font-display font-semibold text-sm
+                  {{ $index == 0 ? 'bg-teal text-white' : 'bg-amber/20 text-ink' }}">
+                  {{ substr($mk->nama_mk, 0, 1) }}
+                </span>
+
+                <div class="min-w-0 flex-1">
+                  <p class="font-medium text-sm truncate">{{ $mk->nama_mk }}</p>
+                  <p class="text-xs text-ink/45 mt-0.5">{{ $mk->prodi->nama_prodi ?? 'Program Studi' }} · {{ $mk->sks }} SKS</p>
+                </div>
+
+                <span class="font-mono text-[11px] text-ink/40 shrink-0">{{ $mk->kode_mk }}</span>
+              </div>
+              @endforeach
+            </div>
+
+            <div class="flex items-center justify-between mt-5 pt-5 border-t border-line">
+              <span class="text-xs text-ink/40 font-mono">Diperbarui hari ini</span>
+              <span class="inline-flex items-center gap-1 text-xs font-medium text-teal">
+                <span class="w-1.5 h-1.5 rounded-full bg-teal"></span>
+                Tersinkron dengan SIMAKO
+              </span>
+            </div>
+          </div>
         </div>
 
-        @endforeach
-
+        <!-- floating badge -->
+        <div class="absolute -bottom-6 -left-6 bg-ink text-paper rounded-2xl px-5 py-4 shadow-xl rotate-[-3deg]">
+          <p class="font-display text-2xl font-semibold">{{ number_format($jumlahMahasiswa, 0, ',', '.') }}+</p>
+          <p class="text-xs text-paper/50">mahasiswa aktif</p>
+        </div>
       </div>
 
     </div>

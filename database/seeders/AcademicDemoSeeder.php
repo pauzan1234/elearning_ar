@@ -306,11 +306,13 @@ class AcademicDemoSeeder extends Seeder
             ]
         );
 
-        foreach ([
-            [1, 'Pengenalan Pemrograman Web', 'hadir'],
-            [2, 'HTML dan CSS', 'hadir'],
-            [3, 'Dasar Laravel', 'izin'],
-        ] as [$pertemuan, $judul, $status]) {
+        foreach (
+            [
+                [1, 'Pengenalan Pemrograman Web', 'hadir'],
+                [2, 'HTML dan CSS', 'hadir'],
+                [3, 'Dasar Laravel', 'izin'],
+            ] as [$pertemuan, $judul, $status]
+        ) {
             $dibuka = now()->subDays(10 - $pertemuan)->setTime(8, 0);
             $sesi = SesiAbsensi::updateOrCreate(
                 [
@@ -340,6 +342,5 @@ class AcademicDemoSeeder extends Seeder
                 ]
             );
         }
-
     }
 }

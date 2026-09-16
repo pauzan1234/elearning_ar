@@ -105,21 +105,41 @@ Mata Kuliah oleh
 
 
                 {{-- Tambah Materi --}}
-                <a href="{{ route('materi.create', $pengajaranDosen->id) }}"
-                    class="inline-flex items-center justify-center gap-2 rounded-lg
-                                   bg-ink px-4 py-2.5 text-sm font-semibold text-white
-                                   transition hover:bg-primaryDark">
+                <div class="flex items-center gap-2">
 
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {{-- Tambah Materi --}}
+                    <a href="{{ route('materi.create', $pengajaranDosen->id) }}"
+                        class="inline-flex items-center justify-center gap-2 rounded-lg
+                       bg-ink px-4 py-2.5 text-sm font-semibold text-white
+                       transition hover:bg-primaryDark">
 
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 4v16m8-8H4" />
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 
-                    </svg>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4v16m8-8H4" />
 
-                    Tambah Materi
+                        </svg>
 
-                </a>
+                        Tambah Materi
+
+                    </a>
+
+                    {{-- Tambah Materi AR --}}
+                    <a href="{{ route('materi-ar.create', $pengajaranDosen->id) }}"
+                        class="inline-flex items-center justify-center gap-2 rounded-lg
+                       border border-teal/30 bg-teal/10 px-4 py-2.5 text-sm font-semibold text-teal
+                       transition hover:bg-teal/20">
+
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 7l8-4 8 4M4 7l8 4m-8-4v10l8 4m0-10l8-4m-8 4v10m8-10v10l-8 4" />
+                        </svg>
+
+                        Tambah Materi AR
+
+                    </a>
+
+                </div>
 
             </div>
 
@@ -769,7 +789,33 @@ Mata Kuliah oleh
 
                 </a>
 
+                {{-- Tambah Materi AR --}}
+                <a href="{{ route('materi-ar.create', $pengajaranDosen->id) }}"
+                    class="flex w-full items-center gap-3 rounded-xl border border-teal/20 bg-teal/5
+                   p-3 text-left transition hover:bg-teal/10">
 
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg
+                       bg-teal/15 text-teal">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 7l8-4 8 4M4 7l8 4m-8-4v10l8 4m0-10l8-4m-8 4v10m8-10v10l-8 4" />
+                        </svg>
+                    </div>
+
+                    <div>
+
+                        <p class="text-sm font-semibold text-ink">
+                            Tambah Materi AR
+                        </p>
+
+                        <p class="text-xs text-ink/50">
+                            Upload model 3D bangun ruang
+                        </p>
+
+                    </div>
+
+                </a>
                 {{-- Tambah Tugas --}}
                 <a href="{{ route('tugas.create', $pengajaranDosen->id) }}"
                     class="flex w-full items-center gap-3 rounded-xl border border-line

@@ -23,12 +23,12 @@
             theme: {
                 extend: {
                     colors: {
-                        ink: '#0F2A4D',
-                        paper: '#F5F8FC',
-                        amber: '#60A5FA',
-                        teal: '#2563EB',
-                        coral: '#1D4ED8',
-                        line: '#DCE6F5',
+                        ink: '#1E1B4B', // deep indigo (dulu navy)
+                        paper: '#F5F3FF', // lavender putih (dulu biru muda)
+                        amber: '#34D399', // emerald — aksen icon
+                        teal: '#7C3AED', // violet — aksen utama/link
+                        coral: '#5B21B6', // violet gelap — badge notif, CTA
+                        line: '#E4DBFB', // border lavender
                     },
                     fontFamily: {
                         display: ['Fraunces', 'serif'],
@@ -41,7 +41,7 @@
     </script>
     <style>
         body {
-            background-color: #F5F8FC;
+            background-color: #F5F3FF;
         }
 
         ::-webkit-scrollbar {
@@ -50,7 +50,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #B9CDEE;
+            background: #C4B5FD;
             border-radius: 999px;
         }
 
