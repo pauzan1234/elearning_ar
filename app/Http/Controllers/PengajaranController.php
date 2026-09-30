@@ -371,6 +371,7 @@ class PengajaranController extends Controller
 
         // urutkan materi terbaru di atas (opsional, sesuaikan selera)
         $materiList = $pengajaranDosen->materi()
+            ->with(['files', 'materiAr'])   // <-- tambah materiAr
             ->with('files')
             ->orderBy('urutan')
             ->orderByDesc('created_at')

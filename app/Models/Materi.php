@@ -25,4 +25,8 @@ class Materi extends Model
         return $this->hasMany(MateriFile::class, 'materi_id')
             ->orderBy('urutan');
     }
+    public function materiAr()
+    {
+        return $this->hasMany(MateriAr::class, 'materi_id');
+    }
 }

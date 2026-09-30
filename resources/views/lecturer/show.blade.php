@@ -140,7 +140,6 @@ Mata Kuliah oleh
                     </a>
 
                 </div>
-
             </div>
 
 
@@ -162,6 +161,7 @@ Mata Kuliah oleh
                 };
                 })
                 ->unique()
+                ->when($materi->materiAr->isNotEmpty(), fn ($c) => $c->push('AR'))
                 ->implode(', ');
                 @endphp
 
@@ -221,7 +221,20 @@ Mata Kuliah oleh
 
                         </button>
 
-
+                        {{-- Tombol Materi AR (buka di tab baru) --}}
+                        @foreach ($materi->materiAr as $ar)
+                        <a href="{{ route('materi-ar.show', $ar->id) }}"
+                            target="_blank" rel="noopener"
+                            title="{{ $ar->judul }}"
+                            class="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-line
+               px-3 py-1.5 text-xs font-semibold text-ink transition hover:bg-paper">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                            </svg>
+                            Lihat AR
+                        </a>
+                        @endforeach
                         {{-- Menu --}}
                         <div class="relative shrink-0" x-data="{ menuOpen: false }">
 
@@ -297,6 +310,21 @@ Mata Kuliah oleh
                                 class="h-[480px] w-full rounded-xl border border-line"
                                 loading="lazy"></iframe>
                         </div>
+                        @foreach ($materi->materiAr as $ar)
+                        <div class="flex items-center justify-between gap-3 rounded-xl border border-line bg-paper p-4">
+                            <div class="min-w-0">
+                                <p class="truncate text-sm font-semibold text-ink">{{ $ar->judul }}</p>
+                                <p class="mt-0.5 text-xs text-ink/50">
+                                    AR {{ $ar->tipe_ar === 'marker' ? 'dengan marker' : 'tanpa marker' }}
+                                </p>
+                            </div>
+                            <a href="{{ route('materi-ar.show', $ar->id) }}" target="_blank" rel="noopener"
+                                class="shrink-0 rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-white
+                   transition hover:bg-primaryDark">
+                                Buka AR
+                            </a>
+                        </div>
+                        @endforeach
                         @elseif ($file->tipe === 'audio')
                         {{-- Embed Audio Player --}}
                         <div>
@@ -816,6 +844,7 @@ Mata Kuliah oleh
                     </div>
 
                 </a>
+
                 {{-- Tambah Tugas --}}
                 <a href="{{ route('tugas.create', $pengajaranDosen->id) }}"
                     class="flex w-full items-center gap-3 rounded-xl border border-line

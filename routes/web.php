@@ -268,6 +268,8 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
         ->name('materi-ar.update');
     Route::delete('/materi-ar/{materiAr}', [MateriArController::class, 'destroy'])
         ->name('materi-ar.destroy');
+    Route::get('/materi-ar/{materiAr}', [MateriArController::class, 'show'])
+        ->name('materi-ar.show');
 });
 
 /*

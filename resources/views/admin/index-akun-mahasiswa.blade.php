@@ -136,7 +136,7 @@ Akun Mahasiswa
         </div>
 
 
-        {{-- Form --}}
+        {{-- Form (action diisi lewat JS saat modal dibuka) --}}
         <form
             id="formEditMahasiswa"
             method="POST">
@@ -267,6 +267,43 @@ Akun Mahasiswa
 
             </div>
 
+            {{-- Password Baru (opsional) --}}
+            <div class="mb-4">
+
+                <label class="block text-sm font-medium text-ink/70 mb-1">
+                    Password Baru
+                    <span class="text-ink/40 font-normal">(opsional)</span>
+                </label>
+
+                <div class="relative">
+
+                    <input
+                        id="editPasswordMahasiswa"
+                        type="password"
+                        name="password"
+                        autocomplete="new-password"
+                        minlength="8"
+                        class="w-full border border-line rounded-lg pl-3 pr-16 py-2 text-sm
+            focus:outline-none focus:ring-2 focus:ring-teal/40"
+                        placeholder="Kosongkan jika tidak ingin mengganti">
+
+                    <button
+                        type="button"
+                        onclick="toggleEditPassword()"
+                        id="btnTogglePassword"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-ink/50 hover:text-ink/80">
+
+                        Lihat
+
+                    </button>
+
+                </div>
+
+                <p class="mt-1 text-xs text-ink/40">
+                    Minimal 8 karakter. Jika dikosongkan, password tidak akan diubah.
+                </p>
+
+            </div>
 
             {{-- Button --}}
             <div class="flex justify-end gap-2">
@@ -810,10 +847,19 @@ Akun Mahasiswa
 <script>
     /*
     |--------------------------------------------------------------------------
+    | URL TEMPLATE UPDATE
+    |--------------------------------------------------------------------------
+    | Dibuat lewat route() agar ikut base URL / subfolder aplikasi
+    | (mis. /elearning), bukan path absolut yang di-hardcode.
+    */
+    const updateUrlTemplate = @js(route('admin.mahasiswa.update', ['id' => '__ID__']));
+
+
+    /*
+    |--------------------------------------------------------------------------
     | OPEN EDIT MAHASISWA MODAL
     |--------------------------------------------------------------------------
     */
-
     function openEditMahasiswaModal(
         id,
         nim,
@@ -824,48 +870,56 @@ Akun Mahasiswa
         phone
     ) {
 
-
         // Action form
         document.getElementById('formEditMahasiswa').action =
-            `/admin/akun-mahasiswa/${id}`;
-
+            updateUrlTemplate.replace('__ID__', id);
 
         // Isi NPM
-        document.getElementById('editNim').value =
-            nim ?? '';
-
+        document.getElementById('editNim').value = nim ?? '';
 
         // Isi Nama
-        document.getElementById('editNamaMahasiswa').value =
-            nama ?? '';
-
+        document.getElementById('editNamaMahasiswa').value = nama ?? '';
 
         // Isi Email
-        document.getElementById('editEmailMahasiswa').value =
-            email ?? '';
-
+        document.getElementById('editEmailMahasiswa').value = email ?? '';
 
         // Isi Program Studi
-        document.getElementById('editProdiMahasiswa').value =
-            prodiId ?? '';
-
+        document.getElementById('editProdiMahasiswa').value = prodiId ?? '';
 
         // Isi Angkatan
-        document.getElementById('editAngkatan').value =
-            angkatan ?? '';
-
+        document.getElementById('editAngkatan').value = angkatan ?? '';
 
         // Isi Phone
-        document.getElementById('editPhoneMahasiswa').value =
-            phone ?? '';
+        document.getElementById('editPhoneMahasiswa').value = phone ?? '';
 
+        // Selalu kosongkan field password setiap modal dibuka
+        const pw = document.getElementById('editPasswordMahasiswa');
+        pw.value = '';
+        pw.type = 'password';
+        document.getElementById('btnTogglePassword').textContent = 'Lihat';
 
         // Tampilkan modal
-        document.getElementById('modalEditMahasiswa')
-            .classList.remove('hidden');
-
+        document.getElementById('modalEditMahasiswa').classList.remove('hidden');
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | TOGGLE LIHAT / SEMBUNYIKAN PASSWORD
+    |--------------------------------------------------------------------------
+    */
+    function toggleEditPassword() {
+        const input = document.getElementById('editPasswordMahasiswa');
+        const btn = document.getElementById('btnTogglePassword');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            btn.textContent = 'Sembunyi';
+        } else {
+            input.type = 'password';
+            btn.textContent = 'Lihat';
+        }
+    }
 
 
     /*
@@ -873,12 +927,8 @@ Akun Mahasiswa
     | CLOSE EDIT MAHASISWA MODAL
     |--------------------------------------------------------------------------
     */
-
     function closeEditMahasiswaModal() {
-
-        document.getElementById('modalEditMahasiswa')
-            .classList.add('hidden');
-
+        document.getElementById('modalEditMahasiswa').classList.add('hidden');
     }
 </script>
 

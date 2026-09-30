@@ -45,7 +45,7 @@ Tambah Materi AR
                     <option value="" disabled selected>Pilih pertemuan</option>
                     @forelse ($pertemuan as $p)
                     <option value="{{ $p->id }}" @selected(old('materi_id')==$p->id)>
-                        Pertemuan {{ $p->urutan }} — {{ $p->judul }}
+                        {{ $p->judul }}
                     </option>
                     @empty
                     <option value="" disabled>Belum ada pertemuan, tambahkan materi biasa dulu</option>
