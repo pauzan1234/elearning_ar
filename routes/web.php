@@ -369,6 +369,9 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->group(function (
         Route::get('/nilai', [StudentAkademikController::class, 'nilaiIndex'])->name('nilai.index');
         Route::get('/nilai/kelas/{kelas}', [StudentAkademikController::class, 'nilaiKelas'])->name('nilai.kelas');
     });
+
+    Route::get('/materi-ar/{materiAr}', [MateriArController::class, 'show'])
+        ->name('student.materi-ar.show');
 });
 // taruh di luar grup lecturer, cukup middleware auth biasa
 Route::middleware(['auth'])->group(function () {

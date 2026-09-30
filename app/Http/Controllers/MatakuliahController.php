@@ -208,6 +208,10 @@ class MatakuliahController extends Controller
         $pengajaranDosenIds = PengajaranDosen::where('kelas_id', $kelas->id)->pluck('id');
 
         $materiList = Materi::whereIn('pengajaran_id', $pengajaranDosenIds)
+            ->with([
+                'files' => fn($q) => $q->orderBy('urutan'),
+                'materiAr',
+            ])
             ->latest()
             ->get();
 
@@ -271,27 +275,27 @@ class MatakuliahController extends Controller
         return back()->with('success', 'Matakuliah berhasil dihapus.');
     }
 
-   public function index_daftar_mk(Request $request)
-{
-    $search = trim($request->query('search', ''));
+    public function index_daftar_mk(Request $request)
+    {
+        $search = trim($request->query('search', ''));
 
-    $mataKuliahs = MataKuliah::query()
-        ->whereHas('kelas.pengajaranDosen')
-        ->with([
-            'kelas' => function ($query) {
-                $query->whereHas('pengajaranDosen')
-                    ->with('dosen.user');
-            }
-        ])
-        ->when($search !== '', function ($query) use ($search) {
-            $query->where('nama_mk', 'like', '%' . $search . '%');
-        })
-        ->latest()
-        ->paginate(12)
-        ->withQueryString();
+        $mataKuliahs = MataKuliah::query()
+            ->whereHas('kelas.pengajaranDosen')
+            ->with([
+                'kelas' => function ($query) {
+                    $query->whereHas('pengajaranDosen')
+                        ->with('dosen.user');
+                }
+            ])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where('nama_mk', 'like', '%' . $search . '%');
+            })
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
 
-    return view('student.matakuliah.daftar-mk', compact('mataKuliahs'));
-}
+        return view('student.matakuliah.daftar-mk', compact('mataKuliahs'));
+    }
 
     public function ambilMk(Kelas $kelas)
     {

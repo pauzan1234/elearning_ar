@@ -57,7 +57,14 @@ Mata Kuliah oleh
 
                     <div class="min-w-0 flex-1">
                         <h3 class="truncate text-sm font-semibold text-ink">{{ $materi->judul }}</h3>
-                        <p class="mt-1 text-xs text-ink/50">Materi pembelajaran</p>
+                        <p class="mt-1 flex items-center gap-2 text-xs text-ink/50">
+                            <span>Materi pembelajaran</span>
+                            @if ($materi->materiAr->isNotEmpty())
+                            <span class="rounded-full bg-paper px-2 py-0.5 text-[10px] font-semibold text-ink">
+                                AR
+                            </span>
+                            @endif
+                        </p>
                     </div>
 
                     <svg class="h-4 w-4 shrink-0 text-ink/30 transition-transform" :class="open ? 'rotate-180' : ''"
@@ -85,6 +92,32 @@ Mata Kuliah oleh
                         <iframe src="{{ $file->youtube_embed_url }}" class="h-full w-full" loading="lazy" allowfullscreen></iframe>
                     </div>
                     @endif
+                    @endforeach
+
+                    {{-- Materi AR (buka di tab baru) --}}
+                    @foreach ($materi->materiAr as $ar)
+                    <div class="flex items-center justify-between gap-3 rounded-xl border border-line bg-paper p-4">
+                        <div class="flex min-w-0 items-center gap-3">
+                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-ink">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                                </svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="truncate text-sm font-semibold text-ink">{{ $ar->judul }}</p>
+                                <p class="mt-0.5 text-xs text-ink/50">
+                                    Materi AR • {{ $ar->tipe_ar === 'marker' ? 'butuh marker' : 'tanpa marker' }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('student.materi-ar.show', $ar->id) }}" target="_blank" rel="noopener"
+                            class="shrink-0 rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-white
+                                   transition hover:bg-primaryDark">
+                            Lihat AR
+                        </a>
+                    </div>
                     @endforeach
                 </div>
             </div>

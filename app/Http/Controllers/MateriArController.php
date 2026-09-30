@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Materi;
 use App\Models\MateriAr;
 use App\Models\PengajaranDosen;
+use App\Models\PengajaranMahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -98,5 +99,20 @@ class MateriArController extends Controller
     public function show(MateriAr $materiAr)
     {
         return view('lecturer.materi-ar.viewer', compact('materiAr'));
+    }
+
+    public function show_mhs(MateriAr $materiAr)
+    {
+        $mahasiswa = auth()->user()->student;
+
+        $kelasId = $materiAr->materi->pengajaranDosen->kelas_id;
+
+        $terdaftar = PengajaranMahasiswa::where('kelas_id', $kelasId)
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->exists();
+
+        abort_unless($terdaftar, 403, 'Kamu tidak terdaftar di kelas ini.');
+
+        return view('student.materi-ar.show', compact('materiAr'));
     }
 }
