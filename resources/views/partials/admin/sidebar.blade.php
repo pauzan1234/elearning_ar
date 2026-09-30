@@ -1,11 +1,13 @@
 <!-- Brand -->
 <div class="h-20 flex items-center gap-2.5 px-6 border-b border-white/10 shrink-0">
-  <span class="w-9 h-9 rounded-lg bg-amber/20 border border-amber/30 flex items-center justify-center">
-    <span class="text-amber font-display font-semibold text-lg">U</span>
+  <span class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center overflow-hidden">
+    <img src="{{ asset('image/logo.png') }}"
+      alt="Logo"
+      class="w-full h-full object-contain">
   </span>
   <div class="leading-tight">
-    <p class="font-display text-lg font-semibold tracking-tight">E-Learning</p>
-    <p class="text-[11px] font-mono uppercase tracking-wider text-paper/40">Univ. Wiralodra</p>
+    <p class="font-display text-lg font-semibold tracking-tight">LMS-AR</p>
+    <p class="text-[11px] font-mono uppercase tracking-wider text-paper/40">Geospace</p>
   </div>
   <button @click="sidebarOpen = false" class="ml-auto lg:hidden text-paper/50 hover:text-paper">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -76,12 +78,12 @@
 
       <a href="{{ route('akun_dosen.index') }}"
         class="px-3 py-2 rounded-lg text-paper/60 hover:bg-teal/10 hover:text-paper text-sm transition-colors">
-        Dosen
+        Guru
       </a>
 
       <a href="{{ route('akun_mahasiswa.index') }}"
         class="px-3 py-2 rounded-lg text-paper/60 hover:bg-teal/10 hover:text-paper text-sm transition-colors">
-        Mahasiswa
+        Siswa
       </a>
     </div>
 
@@ -90,34 +92,34 @@
         <path d="M9 11l3 3L22 4" />
         <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
       </svg>
-      Matakuliah
+      Pembelajaran
     </a>
     <a href="{{route('matakuliah.pengampu')}}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-paper/70 hover:bg-teal/10 hover:text-paper text-sm font-medium transition-colors">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
         <path d="M3 3v18h18" />
         <path d="M7 15l4-6 3 4 5-8" />
       </svg>
-      Penugasan MK
+      Guru Ajar
     </a>
     <a href="{{route('peserta.mk')}}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-paper/70 hover:bg-teal/10 hover:text-paper text-sm font-medium transition-colors">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
         <rect x="3" y="4" width="18" height="16" rx="2" />
         <path d="M3 10h18M8 2v4M16 2v4" />
       </svg>
-      Peserta MK
+      Teman Belajar
     </a>
     <a href="{{ route('jadwal.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-paper/70 hover:bg-teal/10 hover:text-paper text-sm font-medium transition-colors">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
         <rect x="3" y="4" width="18" height="16" rx="2" />
         <path d="M3 10h18M8 2v4M16 2v4" />
       </svg>
-      Jadwal Kuliah
+      Jadwal Pembelajaran
     </a>
     <a href="{{ route('chat.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-paper/70 hover:bg-teal/10 hover:text-paper text-sm font-medium transition-colors">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
         <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
       </svg>
-      Pesan
+      Diskusi & Pesan
     </a>
     @include('partials.chat-course-links')
   </div>

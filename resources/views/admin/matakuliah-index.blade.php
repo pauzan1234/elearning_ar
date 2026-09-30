@@ -5,7 +5,7 @@ Selamat Datang di
 @endsection
 
 @section('judul')
-Matakuliah
+LMS-AR GeoSpace
 @endsection
 
 @section('content')
@@ -17,11 +17,11 @@ Matakuliah
 
     <div>
         <h2 class="font-display text-lg font-semibold">
-            Daftar Matakuliah
+            Daftar Pembelajaran Geometri
         </h2>
 
         <p class="text-sm text-ink/50 mt-0.5">
-            Kelola data matakuliah berdasarkan program studi.
+            Jelajahi materi, visualisasi 3D, dan aktivitas Augmented Reality untuk mengembangkan kemampuan spasial dan resiliensi belajar.
         </p>
     </div>
 
@@ -31,7 +31,7 @@ Matakuliah
                    bg-teal text-white hover:bg-teal/90
                    transition-colors">
         <span class="text-lg leading-none">+</span>
-        Tambah Matakuliah
+        Tambah Pembelajaran
     </button>
 
 </div>
@@ -48,7 +48,7 @@ Matakuliah
         <div class="flex-1">
 
             <label class="block text-xs font-medium text-ink/50 mb-1">
-                Cari Matakuliah
+                Cari Pembelajaran
             </label>
 
             <input type="text" name="search" value="{{ request('search') }}"
@@ -63,7 +63,7 @@ Matakuliah
         <div class="sm:w-64">
 
             <label class="block text-xs font-medium text-ink/50 mb-1">
-                Program Studi
+                Kelas
             </label>
 
             <select name="prodi_id"
@@ -71,7 +71,7 @@ Matakuliah
                            bg-white focus:outline-none focus:ring-2 focus:ring-teal/40">
 
                 <option value="">
-                    Semua Program Studi
+                    Semua Kelas
                 </option>
 
                 @foreach ($prodis as $prodi)
@@ -131,25 +131,25 @@ Matakuliah
                     <th
                         class="py-3 px-4 font-medium text-ink/50
                                    font-mono text-xs uppercase tracking-wide">
-                        Kode MK
+                        Kode Pembelajaran
                     </th>
 
                     <th
                         class="py-3 px-4 font-medium text-ink/50
                                    font-mono text-xs uppercase tracking-wide">
-                        Nama Matakuliah
+                        Nama Pembelajaran
                     </th>
 
                     <th
                         class="py-3 px-4 font-medium text-ink/50
                                    font-mono text-xs uppercase tracking-wide">
-                        Program Studi
+                        Kelas
                     </th>
 
                     <th
                         class="py-3 px-4 font-medium text-ink/50
                                    font-mono text-xs uppercase tracking-wide">
-                        SKS
+                        Pertemuan
                     </th>
 
                     <th
@@ -199,7 +199,7 @@ Matakuliah
                             class="inline-flex items-center px-2.5 py-1
                                              rounded-md bg-teal/10 text-teal
                                              text-xs font-medium">
-                            {{ $mk->sks }} SKS
+                            {{ $mk->sks }} Pertemuan
                         </span>
                     </td>
 
@@ -315,7 +315,7 @@ Matakuliah
         <div class="flex items-center justify-between mb-5">
 
             <h3 class="font-display text-lg font-semibold">
-                Tambah Matakuliah
+                Tambah Pembelajaran
             </h3>
 
             <button type="button" onclick="document.getElementById('modalTambah').classList.add('hidden')"
@@ -335,7 +335,7 @@ Matakuliah
             <div class="mb-4">
 
                 <label class="block text-sm font-medium text-ink/70 mb-1">
-                    Kode Matakuliah
+                    Kode Pembelajaran
                 </label>
 
                 <input type="text" name="kode_mk" value="{{ old('kode_mk') }}" required maxlength="20"
@@ -356,7 +356,7 @@ Matakuliah
             <div class="mb-4">
 
                 <label class="block text-sm font-medium text-ink/70 mb-1">
-                    Nama Matakuliah
+                    Nama Pembelajaran
                 </label>
 
                 <input type="text" name="nama_mk" value="{{ old('nama_mk') }}" required
@@ -377,7 +377,7 @@ Matakuliah
             <div class="mb-4">
 
                 <label class="block text-sm font-medium text-ink/70 mb-1">
-                    Program Studi
+                    Kelas
                 </label>
 
                 <select name="prodi_id" required
@@ -386,7 +386,7 @@ Matakuliah
                                focus:outline-none focus:ring-2 focus:ring-teal/40">
 
                     <option value="" disabled {{ old('prodi_id') ? '' : 'selected' }}>
-                        Pilih Program Studi
+                        Pilih Kelas
                     </option>
 
                     @foreach ($prodis as $prodi)
@@ -410,7 +410,7 @@ Matakuliah
             <div class="mb-5">
 
                 <label class="block text-sm font-medium text-ink/70 mb-1">
-                    SKS
+                    Pertemuan
                 </label>
 
                 <input type="number" name="sks" value="{{ old('sks') }}" required min="1"
@@ -460,7 +460,7 @@ Matakuliah
     <div class="relative bg-white w-full max-w-md rounded-xl shadow-lg p-6">
 
         <div class="flex items-center justify-between mb-5">
-            <h3 class="font-display text-lg font-semibold">Edit Matakuliah</h3>
+            <h3 class="font-display text-lg font-semibold">Edit Pembelajaran</h3>
             <button type="button" onclick="document.getElementById('modalEdit').classList.add('hidden')"
                 class="text-ink/40 hover:text-ink/70 text-xl leading-none">
                 &times;
@@ -472,24 +472,24 @@ Matakuliah
             @method('PUT')
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-ink/70 mb-1">Kode Matakuliah</label>
+                <label class="block text-sm font-medium text-ink/70 mb-1">Kode Pembelajaran</label>
                 <input type="text" id="edit_kode_mk" disabled
                     class="w-full border border-line rounded-lg px-3 py-2 text-sm bg-paper/40 text-ink/50">
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-ink/70 mb-1">Nama Matakuliah</label>
+                <label class="block text-sm font-medium text-ink/70 mb-1">Nama Pembelajaran</label>
                 <input type="text" name="nama_mk" id="edit_nama_mk" required
                     class="w-full border border-line rounded-lg px-3 py-2 text-sm
                            focus:outline-none focus:ring-2 focus:ring-teal/40">
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-ink/70 mb-1">Program Studi</label>
+                <label class="block text-sm font-medium text-ink/70 mb-1">Kelas</label>
                 <select name="prodi_id" id="edit_prodi_id" required
                     class="w-full border border-line rounded-lg px-3 py-2 text-sm bg-white
                            focus:outline-none focus:ring-2 focus:ring-teal/40">
-                    <option value="" disabled>Pilih Program Studi</option>
+                    <option value="" disabled>Pilih Kelas</option>
                     @foreach ($prodis as $prodi)
                     <option value="{{ $prodi->id }}">{{ $prodi->nama_prodi }}</option>
                     @endforeach
@@ -497,7 +497,7 @@ Matakuliah
             </div>
 
             <div class="mb-5">
-                <label class="block text-sm font-medium text-ink/70 mb-1">SKS</label>
+                <label class="block text-sm font-medium text-ink/70 mb-1">Pertemuan</label>
                 <input type="number" name="sks" id="edit_sks" required min="1" max="6"
                     class="w-full border border-line rounded-lg px-3 py-2 text-sm
                            focus:outline-none focus:ring-2 focus:ring-teal/40">

@@ -4,19 +4,19 @@ Selamat Datang di
 @endsection
 
 @section('judul')
-Akun Pengguna E-Learning
+Akun Guru LMS-AR GeoSpace
 @endsection
 
 @section('content')
 <!-- Header -->
 <div class="mb-6">
-    <h2 class="font-display text-lg font-semibold">Import Akun Dosen</h2>
-    <p class="text-sm text-ink/50 mt-0.5">Tambahkan akun dosen secara massal menggunakan file Excel</p>
+    <h2 class="font-display text-lg font-semibold">Import Akun Guru</h2>
+    <p class="text-sm text-ink/50 mt-0.5">Tambahkan akun guru secara massal menggunakan file Excel</p>
 </div>
 
 <!-- Card: Langkah-langkah -->
 <div class="border border-line rounded-xl p-5 mb-6 bg-paper/40">
-    <h3 class="text-sm font-semibold mb-3">Cara Import Akun Dosen</h3>
+    <h3 class="text-sm font-semibold mb-3">Cara Import Akun Guru</h3>
     <ol class="space-y-2 text-sm text-ink/70">
         <li class="flex gap-2">
             <span

@@ -5,7 +5,7 @@ Selamat Datang di
 @endsection
 
 @section('judul')
-Akun Mahasiswa
+Akun Siswa
 @endsection
 
 @section('content')
@@ -77,7 +77,7 @@ Akun Mahasiswa
             onclick="document.getElementById('modalUser').classList.remove('hidden')"
             class="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-teal text-white hover:bg-teal/90 transition-colors">
 
-            + Tambah Mahasiswa
+            + Tambah Siswa
 
         </button>
 
@@ -87,7 +87,7 @@ Akun Mahasiswa
             href="{{ route('mahasiswa.import') }}"
             class="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-teal text-white hover:bg-teal/90 transition-colors">
 
-            + Tambah Banyak Mahasiswa
+            + Tambah Banyak Siswa
 
         </a>
 
@@ -120,7 +120,7 @@ Akun Mahasiswa
         <div class="flex items-center justify-between mb-4">
 
             <h3 class="font-display text-lg font-semibold">
-                Edit Akun Mahasiswa
+                Edit Akun Siswa
             </h3>
 
 
@@ -221,7 +221,7 @@ Akun Mahasiswa
             <div class="mb-4">
 
                 <label class="block text-sm font-medium text-ink/70 mb-1">
-                    Program Studi
+                    Kelas
                 </label>
 
                 <select
@@ -232,7 +232,7 @@ Akun Mahasiswa
                     bg-white focus:outline-none focus:ring-2 focus:ring-teal/40">
 
                     <option value="" disabled>
-                        Pilih Program Studi
+                        Pilih Kelas
                     </option>
 
 
@@ -345,7 +345,7 @@ Akun Mahasiswa
     <div>
 
         <h2 class="font-display text-lg font-semibold">
-            Daftar Akun Mahasiswa
+            Daftar Akun Siswa
         </h2>
 
         @if (request('search'))
@@ -375,11 +375,11 @@ Akun Mahasiswa
                 </th>
 
                 <th class="py-3 pr-4 font-medium text-ink/50 font-mono text-xs uppercase tracking-wide">
-                    NPM
+                    NIS
                 </th>
 
                 <th class="py-3 pr-4 font-medium text-ink/50 font-mono text-xs uppercase tracking-wide">
-                    Nama Mahasiswa
+                    Nama Siswa
                 </th>
 
                 <th class="py-3 pr-4 font-medium text-ink/50 font-mono text-xs uppercase tracking-wide">
@@ -631,7 +631,7 @@ Akun Mahasiswa
         <div class="flex items-center justify-between mb-4">
 
             <h3 class="font-display text-lg font-semibold">
-                Tambah Akun Mahasiswa
+                Tambah Akun Siswa
             </h3>
 
 
@@ -659,7 +659,7 @@ Akun Mahasiswa
             <div class="mb-4">
 
                 <label class="block text-sm font-medium text-ink/70 mb-1">
-                    NPM
+                    NIS
                 </label>
 
                 <input
@@ -741,7 +741,7 @@ Akun Mahasiswa
             <div class="mb-4">
 
                 <label class="block text-sm font-medium text-ink/70 mb-1">
-                    Program Studi
+                    Kelas
                 </label>
 
 
@@ -757,7 +757,7 @@ Akun Mahasiswa
                         disabled
                         {{ old('prodi_id') ? '' : 'selected' }}>
 
-                        Pilih Program Studi
+                        Pilih Kelas
 
                     </option>
 

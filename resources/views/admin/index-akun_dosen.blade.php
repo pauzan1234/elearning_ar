@@ -1,11 +1,11 @@
 @extends('admin.app-admin')
 
 @section('ketjudul')
-Selamat Datang di
+Kelola
 @endsection
 
 @section('judul')
-Akun Pengguna E-Learning
+Akun Guru
 @endsection
 
 @section('content')
@@ -18,7 +18,7 @@ Akun Pengguna E-Learning
         onclick="document.getElementById('modalUser').classList.remove('hidden')"
         class="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-teal text-white hover:bg-teal/90 transition-colors">
 
-        + Tambah Dosen
+        + Tambah Guru
 
     </button>
 
@@ -28,7 +28,7 @@ Akun Pengguna E-Learning
         href="{{ route('dosen.import') }}"
         class="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-teal text-white hover:bg-teal/90 transition-colors">
 
-        + Tambah Banyak Dosen
+        + Tambah Banyak Guru
 
     </a>
 
@@ -41,11 +41,11 @@ Akun Pengguna E-Learning
     <div>
 
         <h2 class="font-display text-lg font-semibold">
-            Daftar Akun Dosen
+            Daftar Akun Guru
         </h2>
 
         <p class="text-sm text-ink/50 mt-0.5">
-            ===========================
+
         </p>
 
     </div>
@@ -75,11 +75,11 @@ Akun Pengguna E-Learning
                 </th>
 
                 <th class="py-3 pr-4 font-medium text-ink/50 font-mono text-xs uppercase tracking-wide">
-                    NIDN
+                    NUPTK
                 </th>
 
                 <th class="py-3 pr-4 font-medium text-ink/50 font-mono text-xs uppercase tracking-wide">
-                    Nama Dosen
+                    Nama Guru
                 </th>
 
                 <th class="py-3 pr-4 font-medium text-ink/50 font-mono text-xs uppercase tracking-wide">
@@ -279,7 +279,7 @@ Akun Pengguna E-Learning
         <div class="flex items-center justify-between mb-4">
 
             <h3 class="font-display text-lg font-semibold">
-                Tambah Akun Dosen
+                Tambah Akun Guru
             </h3>
 
 
@@ -309,7 +309,7 @@ Akun Pengguna E-Learning
                 <label
                     class="block text-sm font-medium text-ink/70 mb-1">
 
-                    NIDN
+                    NUPTK
 
                 </label>
 
@@ -395,7 +395,7 @@ Akun Pengguna E-Learning
                 <label
                     class="block text-sm font-medium text-ink/70 mb-1">
 
-                    Program Studi
+                    Kelas
 
                 </label>
 
@@ -410,7 +410,7 @@ Akun Pengguna E-Learning
                         disabled
                         {{ old('prodi_id') ? '' : 'selected' }}>
 
-                        Pilih Program Studi
+                        Pilih Kelas
 
                     </option>
 
@@ -499,7 +499,7 @@ Akun Pengguna E-Learning
 
             <h3 class="font-display text-lg font-semibold">
 
-                Edit Akun Dosen
+                Edit Akun Guru
 
             </h3>
 
@@ -532,7 +532,7 @@ Akun Pengguna E-Learning
                 <label
                     class="block text-sm font-medium text-ink/70 mb-1">
 
-                    NIDN
+                    NUPTK
 
                 </label>
 
@@ -595,7 +595,7 @@ Akun Pengguna E-Learning
                 <label
                     class="block text-sm font-medium text-ink/70 mb-1">
 
-                    Program Studi
+                    Kelas
 
                 </label>
 
@@ -610,7 +610,7 @@ Akun Pengguna E-Learning
                         value=""
                         disabled>
 
-                        Pilih Program Studi
+                        Pilih Kelas
 
                     </option>
 

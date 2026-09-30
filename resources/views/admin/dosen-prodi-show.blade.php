@@ -5,7 +5,7 @@ Daftar
 @endsection
 
 @section('judul')
-Dosen Prodi {{ $prodi->nama_prodi }}
+Guru Kelas {{ $prodi->nama_prodi }}
 @endsection
 
 @section('content')
@@ -18,7 +18,7 @@ Dosen Prodi {{ $prodi->nama_prodi }}
         </h2>
 
         <p class="py-3 pr-4 text-ink/70">
-            Daftar dosen Program Studi {{ $prodi->nama_prodi }}
+            Daftar Guru Kelas {{ $prodi->nama_prodi }}
         </p>
     </div>
 
@@ -27,7 +27,7 @@ Dosen Prodi {{ $prodi->nama_prodi }}
 
         <div class="p-4 border-b">
             <h3 class="font-semibold">
-                Daftar Dosen
+                Daftar Guru
             </h3>
         </div>
 
@@ -76,7 +76,7 @@ Dosen Prodi {{ $prodi->nama_prodi }}
                                         onclick="openMkAmpuModal({{ $lecturer->id }}, '{{ addslashes($lecturer->user->name) }}')"
                                         class="px-3 py-2 rounded-md bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 transition">
 
-                                        MK diampu
+                                        Pembelajaran diampu
 
                                     </button>
 
@@ -84,7 +84,7 @@ Dosen Prodi {{ $prodi->nama_prodi }}
                                         onclick="openMkModal({{ $lecturer->id }}, '{{ addslashes($lecturer->user->name) }}')"
                                         class="px-3 py-2 rounded-md bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 transition">
 
-                                        Tambah MK
+                                        Tambah Pembelajaran
 
                                     </button>
 
@@ -99,7 +99,7 @@ Dosen Prodi {{ $prodi->nama_prodi }}
 
                             <td colspan="3" class="py-6 text-center text-gray-500">
 
-                                Belum ada dosen pada program studi ini.
+                                Belum ada guru pada kelas ini.
 
                             </td>
 
@@ -128,7 +128,7 @@ Dosen Prodi {{ $prodi->nama_prodi }}
 
             <div>
                 <h3 class="font-semibold text-lg">
-                    Tambah Mata Kuliah
+                    Tambah Pembelajaran
                 </h3>
 
                 <p id="namaDosenModal" class="text-sm text-gray-500">
@@ -151,7 +151,7 @@ Dosen Prodi {{ $prodi->nama_prodi }}
             <div class="mb-4">
 
                 <label class="block text-sm font-medium mb-1">
-                    Cari Mata Kuliah
+                    Cari Pemblejaran
                 </label>
 
                 <input type="text" id="searchMk" placeholder="Ketik nama mata kuliah..."
@@ -186,7 +186,7 @@ Dosen Prodi {{ $prodi->nama_prodi }}
 
             <div>
                 <h3 class="font-semibold text-lg">
-                    Mata Kuliah Diampu
+                    Pembelajaran Diampu
                 </h3>
 
                 <p id="namaDosenAmpu" class="text-sm text-gray-500">
@@ -221,11 +221,11 @@ Dosen Prodi {{ $prodi->nama_prodi }}
                             </th>
 
                             <th class="py-3 px-4">
-                                Nama Mata Kuliah
+                                Nama Pembelajaran
                             </th>
 
                             <th class="py-3 px-4 text-center">
-                                SKS
+                                Pertemuan
                             </th>
 
                             <th class="py-3 px-4 text-center">

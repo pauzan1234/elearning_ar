@@ -7,7 +7,7 @@
 
   <!-- logo unwir -->
   <link rel="icon" type="image/png" href="{{ asset('image/logoUnwir.png') }}">
-  <title>{{ config('app.name', 'Laravel') }}</title>
+  <title>{{ config('app.name', 'LMS-AR Geospace') }}</title>
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <script src="https://cdn.tailwindcss.com"></script>
@@ -79,15 +79,17 @@
   <header class="sticky top-0 z-50 bg-paper/90 backdrop-blur border-b border-line">
     <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2.5">
-        <span class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center">
-          <span class="text-amber font-display font-semibold text-lg">U</span>
+        <span class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center overflow-hidden">
+          <img src="{{ asset('image/logo.png') }}"
+            alt="Logo"
+            class="w-full h-full object-contain">
         </span>
-        <span class="font-display text-xl font-semibold tracking-tight">E-Learning UNWIR</span>
+        <span class="font-display text-xl font-semibold tracking-tight">LMS-AR Geospace</span>
       </a>
 
       <nav class="hidden lg:flex items-center gap-9 text-[15px] font-medium text-ink/70">
         <a href="#fitur" class="hover:text-ink transition-colors">Fitur</a>
-        <a href="#kursus" class="hover:text-ink transition-colors">Mata Kuliah</a>
+        <a href="#kursus" class="hover:text-ink transition-colors">Pembelajaran</a>
         <a href="#cara-kerja" class="hover:text-ink transition-colors">Cara Pakai</a>
         <a href="#testimoni" class="hover:text-ink transition-colors">Testimoni</a>
 
@@ -136,14 +138,14 @@
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-60"></span>
             <span class="relative inline-flex rounded-full w-2 h-2 bg-teal"></span>
           </span>
-          Semester Ganjil 2026/2027 — Perkuliahan Aktif
+          Semester Ganjil 2026/2027 — Belajar Aktif
         </span>
 
         <h1 class="font-display text-[2.75rem] sm:text-5xl lg:text-[3.4rem] leading-[1.08] font-semibold tracking-tight mt-6">
-          Satu tempat untuk<br class="hidden sm:block">
-          semua perkuliahanmu di
+          Satu Tempat untuk<br class="hidden sm:block">
+          Semua Pembelajaran
           <span class="relative inline-block">
-            <span class="relative z-10">UNWIR.</span>
+            <span class="relative z-10">Geometrimu.</span>
             <svg class="absolute left-0 -bottom-1 w-full h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
               <path d="M2 9 C 50 2, 150 2, 198 9" stroke="url(#grad)" stroke-width="5" fill="none" stroke-linecap="round" />
               <defs>
@@ -157,12 +159,12 @@
         </h1>
 
         <p class="text-lg text-ink/65 leading-relaxed mt-6 max-w-md">
-          E-Learning UNWIR menyatukan materi kuliah, tugas, kuis, dan nilai dalam satu dashboard — khusus untuk mahasiswa Universitas Wiralodra.
+          LMS-AR mengintegrasikan materi geometri, eksplorasi Augmented Reality (AR), tugas, kuis, latihan kemampuan spasial, dan evaluasi dalam satu platform pembelajaran yang interaktif. Dirancang untuk membantu siswa memahami konsep geometri secara visual, mengembangkan kemampuan spasial, serta membangun resiliensi dalam menghadapi berbagai tantangan pembelajaran.
         </p>
 
         <div class="flex flex-wrap items-center gap-4 mt-9">
           <a href="{{ route('login') }}" class="inline-flex items-center gap-2 bg-ink text-paper font-medium px-6 py-3.5 rounded-full hover:bg-ink/90 transition-colors">
-            Masuk dengan Akun SIMAKO
+            Masuk ke E-Learning
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -183,7 +185,7 @@
             <span class="font-semibold text-ink">
               {{ number_format($jumlahMahasiswa, 0, ',', '.') }}+
             </span>
-            mahasiswa Universitas Wiralodra
+            Siswa
           </p>
         </div>
       </div>
@@ -201,7 +203,7 @@
           </div>
 
           <div class="p-6">
-            <p class="font-mono text-[11px] uppercase tracking-wider text-ink/40">Mata kuliah aktif kamu</p>
+            <p class="font-mono text-[11px] uppercase tracking-wider text-ink/40">Pembelajaran aktif kamu</p>
 
             <div class="space-y-3 mt-4">
               @foreach ($matakuliah as $index => $mk)
@@ -226,7 +228,7 @@
               <span class="text-xs text-ink/40 font-mono">Diperbarui hari ini</span>
               <span class="inline-flex items-center gap-1 text-xs font-medium text-teal">
                 <span class="w-1.5 h-1.5 rounded-full bg-teal"></span>
-                Tersinkron dengan SIMAKO
+                ------------
               </span>
             </div>
           </div>
@@ -235,7 +237,7 @@
         <!-- floating badge -->
         <div class="absolute -bottom-6 -left-6 bg-ink text-paper rounded-2xl px-5 py-4 shadow-xl rotate-[-3deg]">
           <p class="font-display text-2xl font-semibold">{{ number_format($jumlahMahasiswa, 0, ',', '.') }}+</p>
-          <p class="text-xs text-paper/50">mahasiswa aktif</p>
+          <p class="text-xs text-paper/50">siswa aktif</p>
         </div>
       </div>
 
@@ -252,7 +254,7 @@
           {{ number_format($jumlahMatakuliah, 0, ',', '.') }}+
         </p>
         <p class="text-sm text-paper/50 mt-1">
-          Mata kuliah daring
+          Pembelajaran daring
         </p>
       </div>
 
@@ -262,7 +264,7 @@
           {{ number_format($jumlahMahasiswa, 0, ',', '.') }}+
         </p>
         <p class="text-sm text-paper/50 mt-1">
-          Mahasiswa aktif
+          Siswa aktif
         </p>
       </div>
 
@@ -272,7 +274,7 @@
           {{ number_format($jumlahProdi, 0, ',', '.') }}
         </p>
         <p class="text-sm text-paper/50 mt-1">
-          Program Studi terhubung
+          Kelas
         </p>
       </div>
 
@@ -282,7 +284,7 @@
           {{ number_format($jumlahDosen, 0, ',', '.') }}+
         </p>
         <p class="text-sm text-paper/50 mt-1">
-          Dosen pengampu
+          Guru
         </p>
       </div>
 
@@ -292,9 +294,9 @@
   <!-- ============ FITUR ============ -->
   <section id="fitur" class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-28">
     <div class="max-w-xl">
-      <span class="font-mono text-xs uppercase tracking-wider text-ink/40">Kenapa E-Learning UNWIR</span>
+      <span class="font-mono text-xs uppercase tracking-wider text-ink/40">Mengapa LMS-AR Dikembangkan?</span>
       <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight mt-3">
-        Dibangun untuk mendukung proses belajar-mengajar di UNWIR, dari kelas sampai nilai akhir.
+        Dirancang untuk menghadirkan pembelajaran geometri yang interaktif melalui integrasi LMS dan Augmented Reality (AR), sehingga siswa dapat mengeksplorasi objek 3D, mengembangkan kemampuan spasial, dan membangun resiliensi dalam menyelesaikan tantangan matematika.
       </h2>
     </div>
 
@@ -308,7 +310,7 @@
           </svg>
         </div>
         <h3 class="font-display text-lg font-medium mt-5">Materi per pertemuan</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Materi kuliah disusun per pertemuan sesuai RPS, bukan tumpukan file tanpa urutan.</p>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Pembelajaran geometri tersusun secara bertahap dan terarah, dilengkapi eksplorasi AR, latihan spasial, dan aktivitas yang mendorong resiliensi siswa.</p>
       </div>
 
       <div class="border border-line rounded-2xl p-7 hover:border-ink/30 hover:-translate-y-1 transition-all bg-white">
@@ -319,7 +321,7 @@
           </svg>
         </div>
         <h3 class="font-display text-lg font-medium mt-5">Tugas & kuis daring</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Dosen dapat memberi tugas, kuis, dan ujian daring lengkap dengan batas waktu pengumpulan.</p>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Latihan, kuis, dan evaluasi geometri untuk mengembangkan kemampuan spasial serta melatih ketekunan siswa dalam menghadapi tantangan pembelajaran.</p>
       </div>
 
       <div class="border border-line rounded-2xl p-7 hover:border-ink/30 hover:-translate-y-1 transition-all bg-white">
@@ -329,8 +331,8 @@
             <path d="M4 21v-1a7 7 0 0114 0v1" />
           </svg>
         </div>
-        <h3 class="font-display text-lg font-medium mt-5">Diskusi langsung dengan dosen</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Forum diskusi di tiap mata kuliah memudahkan mahasiswa bertanya langsung ke dosen pengampu.</p>
+        <h3 class="font-display text-lg font-medium mt-5">Diskusi interaktif</h3>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Ruang interaksi bagi siswa untuk bertanya, berdiskusi, dan memperoleh umpan balik dari guru dalam memahami konsep geometri dan menyelesaikan tantangan pembelajaran.</p>
       </div>
 
       <div class="border border-line rounded-2xl p-7 hover:border-ink/30 hover:-translate-y-1 transition-all bg-white">
@@ -340,8 +342,8 @@
             <path d="M3 10h18M8 2v4M16 2v4" />
           </svg>
         </div>
-        <h3 class="font-display text-lg font-medium mt-5">Jadwal kuliah terintegrasi</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Jadwal kelas daring maupun tatap muka tersinkron otomatis dengan kalender akademik.</p>
+        <h3 class="font-display text-lg font-medium mt-5">Jadwal Pembelajaran</h3>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Jadwal setiap pertemuan tersusun terarah, mulai dari pembelajaran, eksplorasi AR, latihan, hingga evaluasi kemampuan spasial dan resiliensi siswa.</p>
       </div>
 
       <div class="border border-line rounded-2xl p-7 hover:border-ink/30 hover:-translate-y-1 transition-all bg-white">
@@ -352,7 +354,7 @@
           </svg>
         </div>
         <h3 class="font-display text-lg font-medium mt-5">Presensi otomatis</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Kehadiran tercatat otomatis saat mahasiswa mengakses materi atau mengikuti kelas daring.</p>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Kehadiran siswa tercatat otomatis melalui aktivitas pembelajaran pada LMS-AR, mulai dari mengakses materi hingga melakukan eksplorasi AR.</p>
       </div>
 
       <div class="border border-line rounded-2xl p-7 hover:border-ink/30 hover:-translate-y-1 transition-all bg-white">
@@ -362,8 +364,8 @@
             <path d="M7 15l4-6 3 4 5-8" />
           </svg>
         </div>
-        <h3 class="font-display text-lg font-medium mt-5">Rekap nilai real-time</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Nilai tugas, kuis, UTS, dan UAS bisa dipantau mahasiswa kapan saja tanpa menunggu pengumuman.</p>
+        <h3 class="font-display text-lg font-medium mt-5">Rekap Hasil Belajar</h3>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Pantau perkembangan hasil belajar, kemampuan spasial, dan proses belajar siswa secara berkala melalui satu sistem.</p>
       </div>
 
     </div>
@@ -374,11 +376,11 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-28">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <div>
-          <span class="font-mono text-xs uppercase tracking-wider text-ink/40">Mata Kuliah Aktif</span>
-          <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight mt-3">Mata kuliah yang paling banyak diakses mahasiswa.</h2>
+          <span class="font-mono text-xs uppercase tracking-wider text-ink/40">Eksplorasi Geometri Aktif</span>
+          <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight mt-3">Materi geometri interaktif yang dapat dieksplorasi siswa melalui LMS dan Augmented Reality (AR) untuk mengembangkan kemampuan spasial dan resiliensi.</h2>
         </div>
         <a href="#" class="inline-flex items-center gap-1.5 font-medium text-ink border-b border-ink/30 hover:border-ink pb-0.5 transition-colors">
-          Lihat semua mata kuliah
+          Lihat semua materi
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
@@ -468,7 +470,7 @@
 
             {{-- Nama Mata Kuliah --}}
             <h3 class="font-display text-lg font-medium mt-2">
-              {{ $item->kelas->matakuliah->nama_mk ?? 'Mata Kuliah' }}
+              {{ $item->kelas->matakuliah->nama_mk ?? 'Pembelajaran' }}
             </h3>
 
             {{-- SKS dan Kode Mata Kuliah --}}
@@ -481,7 +483,7 @@
             <div class="flex items-center justify-between mt-5 pt-5 border-t border-line">
 
               <span class="font-semibold">
-                {{ number_format($item->jumlah_mahasiswa, 0, ',', '.') }} mahasiswa
+                {{ number_format($item->jumlah_mahasiswa, 0, ',', '.') }} siswa
               </span>
 
               <span class="text-sm text-teal font-medium group-hover:translate-x-1 transition-transform">
@@ -498,7 +500,7 @@
 
         <div class="col-span-full text-center py-12">
           <p class="text-ink/50">
-            Belum ada mata kuliah yang tersedia.
+            Belum ada pembelajaran yang tersedia.
           </p>
         </div>
 
@@ -512,7 +514,7 @@
   <section id="cara-kerja" class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-28">
     <div class="max-w-xl">
       <span class="font-mono text-xs uppercase tracking-wider text-ink/40">Cara Pakai</span>
-      <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight mt-3">Empat langkah, dari login sampai lihat nilai.</h2>
+      <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight mt-3">Empat langkah, dari masuk hingga melihat hasil belajar.</h2>
     </div>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-14 relative">
@@ -520,23 +522,23 @@
 
       <div class="relative">
         <span class="font-mono text-sm w-12 h-12 rounded-full bg-ink text-paper flex items-center justify-center relative z-10">01</span>
-        <h3 class="font-display text-lg font-medium mt-5">Masuk dengan akun SIMAKO</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Gunakan NIM dan kata sandi SIMAKO kamu untuk masuk ke E-Learning UNWIR.</p>
+        <h3 class="font-display text-lg font-medium mt-5">01. Masuk ke LMS-AR</h3>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Gunakan akun yang telah diberikan untuk masuk ke LMS-AR dan mengakses pembelajaran geometri sesuai kelas.</p>
       </div>
       <div class="relative">
         <span class="font-mono text-sm w-12 h-12 rounded-full bg-ink text-paper flex items-center justify-center relative z-10">02</span>
-        <h3 class="font-display text-lg font-medium mt-5">Akses mata kuliah aktif</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Semua mata kuliah yang kamu ambil di KRS otomatis muncul di dashboard.</p>
+        <h3 class="font-display text-lg font-medium mt-5">02. Akses materi pembelajaran</h3>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Pilih materi geometri pada dashboard untuk mempelajari konsep, melihat video, dan mengeksplorasi objek tiga dimensi melalui Augmented Reality (AR).</p>
       </div>
       <div class="relative">
         <span class="font-mono text-sm w-12 h-12 rounded-full bg-ink text-paper flex items-center justify-center relative z-10">03</span>
-        <h3 class="font-display text-lg font-medium mt-5">Kerjakan tugas & kuis</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Unggah tugas dan ikuti kuis sesuai tenggat waktu yang ditentukan dosen.</p>
+        <h3 class="font-display text-lg font-medium mt-5">03. Eksplorasi, latihan & kuis</h3>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Lakukan aktivitas eksplorasi AR, kerjakan latihan kemampuan spasial, dan ikuti kuis sesuai petunjuk pembelajaran. Hadapi setiap tantangan dengan tekun dan reflektif.</p>
       </div>
       <div class="relative">
         <span class="font-mono text-sm w-12 h-12 rounded-full bg-amber text-ink flex items-center justify-center relative z-10">04</span>
-        <h3 class="font-display text-lg font-medium mt-5">Pantau nilai</h3>
-        <p class="text-sm text-ink/60 leading-relaxed mt-2">Nilai tugas, UTS, dan UAS bisa langsung dicek di E-Learning UNWIR.</p>
+        <h3 class="font-display text-lg font-medium mt-5">04. Pantau hasil belajar</h3>
+        <p class="text-sm text-ink/60 leading-relaxed mt-2">Lihat hasil latihan, kuis, dan perkembangan kemampuan spasial serta resiliensi untuk mengetahui kemajuan belajar dan bagian yang perlu ditingkatkan.</p>
       </div>
     </div>
   </section>
@@ -545,7 +547,7 @@
   <section id="testimoni" class="bg-ink text-paper">
     <div class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-28">
       <span class="font-mono text-xs uppercase tracking-wider text-paper/40">Testimoni</span>
-      <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight mt-3 max-w-lg">Kata mahasiswa yang sudah pakai E-Learning UNWIR.</h2>
+      <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight mt-3 max-w-lg">Kata Siswa yang Sudah Menggunakan LMS-AR GeoSpace</h2>
 
       <div class="grid md:grid-cols-3 gap-6 mt-14">
         <div class="bg-white/5 border border-white/10 rounded-2xl p-7">
@@ -554,7 +556,7 @@
             <img class="w-10 h-10 rounded-full object-cover" src="https://i.pravatar.cc/80?img=5" alt="">
             <div>
               <p class="text-sm font-medium">Dinda Ayu Pratiwi</p>
-              <p class="text-xs text-paper/40">Teknik Informatika, Semester 5</p>
+              <p class="text-xs text-paper/40">Siswi, Kelas X</p>
             </div>
           </div>
         </div>
@@ -564,7 +566,7 @@
             <img class="w-10 h-10 rounded-full object-cover" src="https://i.pravatar.cc/80?img=12" alt="">
             <div>
               <p class="text-sm font-medium">Farhan Ramadhan</p>
-              <p class="text-xs text-paper/40">Manajemen, Semester 3</p>
+              <p class="text-xs text-paper/40">Siswa, Kelas XI</p>
             </div>
           </div>
         </div>
@@ -574,7 +576,7 @@
             <img class="w-10 h-10 rounded-full object-cover" src="https://i.pravatar.cc/80?img=25" alt="">
             <div>
               <p class="text-sm font-medium">Salsabila Putri</p>
-              <p class="text-xs text-paper/40">Ilmu Hukum, Semester 1</p>
+              <p class="text-xs text-paper/40">Siswi, Kelas IX</p>
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ DAFTAR
 @endsection
 
 @section('judul')
-Peserta Matakuliah
+Peserta Pembelajaran
 @endsection
 
 @section('content')
@@ -56,7 +56,7 @@ Peserta Matakuliah
                 </th>
 
                 <th class="px-4 py-3">
-                    Nama MK
+                    Nama Pembelajaran
                 </th>
 
                 <th class="px-4 py-3">
@@ -64,11 +64,11 @@ Peserta Matakuliah
                 </th>
 
                 <th class="px-4 py-3">
-                    Prodi
+                    Kelas
                 </th>
 
                 <th class="px-4 py-3">
-                    Dosen Pengampu
+                    Guru Pengajar
                 </th>
 
                 <th class="px-4 py-3 text-center">
@@ -236,7 +236,7 @@ Peserta Matakuliah
             <div id="hasilStudent" class="mt-4 max-h-80 overflow-y-auto">
 
                 <div class="text-center text-gray-400 py-6">
-                    Ketik untuk mencari mahasiswa...
+                    Ketik untuk mencari siswa...
                 </div>
 
             </div>
@@ -249,7 +249,7 @@ Peserta Matakuliah
                        px-6 py-4 border-t">
 
             <span id="jumlahTerpilih" class="text-sm text-gray-500">
-                0 mahasiswa dipilih
+                0 siswa dipilih
             </span>
 
 
@@ -324,7 +324,7 @@ Peserta Matakuliah
 
             <span id="jumlahPeserta" class="text-sm text-gray-500">
 
-                0 mahasiswa
+                0 siswa
 
             </span>
 

@@ -1,11 +1,13 @@
 <!-- Brand -->
 <div class="h-20 flex items-center gap-2.5 px-6 border-b border-white/10 shrink-0">
-    <span class="w-9 h-9 rounded-lg bg-amber/20 border border-amber/30 flex items-center justify-center">
-        <span class="text-amber font-display font-semibold text-lg">U</span>
+    <span class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center overflow-hidden">
+        <img src="{{ asset('image/logo.png') }}"
+            alt="Logo"
+            class="w-full h-full object-contain">
     </span>
     <div class="leading-tight">
-        <p class="font-display text-lg font-semibold tracking-tight">E-Learning</p>
-        <p class="text-[11px] font-mono uppercase tracking-wider text-paper/40">Univ. Wiralodra</p>
+        <p class="font-display text-lg font-semibold tracking-tight">LMS-AR</p>
+        <p class="text-[11px] font-mono uppercase tracking-wider text-paper/40">Geospace</p>
     </div>
     <button @click="sidebarOpen = false" class="ml-auto lg:hidden text-paper/50 hover:text-paper">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -27,7 +29,8 @@
         <div class="min-w-0">
             <p class="text-sm font-medium truncate">{{ Auth::user()->name }}</p>
             <p class="text-xs text-paper/45 truncate font-mono"> {{ Auth::user()->student->nim }} ·
-                {{ Auth::user()->student?->prodi?->nama_prodi ?? '-' }}</p>
+                {{ Auth::user()->student?->prodi?->nama_prodi ?? '-' }}
+            </p>
         </div>
     </div>
 </div>
@@ -113,11 +116,11 @@
     </div>
 
     @php
-        // Asumsi total pertemuan per semester untuk hitung progres.
-        // Ganti angka ini kalau ada kolom "total_pertemuan" di tabel kelas/matakuliah.
-        $totalPertemuan = 16;
-        $jumlahMateri = $materiList->count();
-        $progress = $totalPertemuan > 0 ? min(100, round(($jumlahMateri / $totalPertemuan) * 100)) : 0;
+    // Asumsi total pertemuan per semester untuk hitung progres.
+    // Ganti angka ini kalau ada kolom "total_pertemuan" di tabel kelas/matakuliah.
+    $totalPertemuan = 16;
+    $jumlahMateri = $materiList->count();
+    $progress = $totalPertemuan > 0 ? min(100, round(($jumlahMateri / $totalPertemuan) * 100)) : 0;
     @endphp
 
     <!-- Kursus yang sedang dibuka -->
@@ -140,19 +143,19 @@
 
             <ol class="space-y-0.5">
                 @forelse($materiList as $index => $materi)
-                    <li>
-                        <span class="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-paper/60 text-[13px]">
-                            <span class="w-4 h-4 rounded-full bg-teal/40 flex items-center justify-center shrink-0">
-                                <svg width="9" height="9" viewBox="0 0 24 24" fill="none"
-                                    stroke="white" stroke-width="3">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg>
-                            </span>
-                            {{ $materi->judul ?? 'Materi ' . ($index + 1) }}
+                <li>
+                    <span class="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-paper/60 text-[13px]">
+                        <span class="w-4 h-4 rounded-full bg-teal/40 flex items-center justify-center shrink-0">
+                            <svg width="9" height="9" viewBox="0 0 24 24" fill="none"
+                                stroke="white" stroke-width="3">
+                                <path d="M20 6L9 17l-5-5" />
+                            </svg>
                         </span>
-                    </li>
+                        {{ $materi->judul ?? 'Materi ' . ($index + 1) }}
+                    </span>
+                </li>
                 @empty
-                    <li class="px-2 py-1.5 text-[13px] text-paper/40">Belum ada materi untuk kelas ini.</li>
+                <li class="px-2 py-1.5 text-[13px] text-paper/40">Belum ada materi untuk kelas ini.</li>
                 @endforelse
             </ol>
 

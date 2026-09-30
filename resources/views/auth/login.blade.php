@@ -9,8 +9,10 @@
 
             <!-- Logo -->
             <div class="w-11 h-11 mx-auto rounded-lg bg-[#F5F8FC]/10 border border-white/10 flex items-center justify-center">
-                <span class="font-display text-xl font-semibold text-[#93C5FD]">
-                    U
+                <span class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center overflow-hidden">
+                    <img src="{{ asset('image/logo.png') }}"
+                        alt="Logo"
+                        class="w-full h-full object-contain">
                 </span>
             </div>
 
@@ -19,8 +21,7 @@
             </h1>
 
             <p class="mt-2 text-sm text-white/60">
-                Masuk untuk melanjutkan aktivitas perkuliahanmu di
-                E-Learning UNWIR. </p>
+                Masuk untuk melanjutkan aktivitas pembelajaran geometri melalui LMS-AR GeoSpace.</p>
 
         </div>
 
@@ -136,7 +137,7 @@
                     type="submit"
                     class="mt-7 w-full rounded-full bg-[#1D4ED8] px-5 py-3.5 text-sm font-medium text-[#F5F8FC] shadow-[0_5px_0_0_#12326b] transition-all hover:bg-[#2563EB] active:translate-y-1 active:shadow-none focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:ring-offset-2">
 
-                    Masuk ke E-Learning
+                    Masuk ke LMS-AR GeoSpace
 
                 </button>
 
@@ -162,7 +163,7 @@
 
             <p class="font-mono text-[10px] uppercase tracking-wider text-[#0F2A4D]/40">
 
-                © {{ date('Y') }} Universitas Wiralodra
+                © {{ date('Y') }} LMS-AR GeoSpace
 
             </p>
 
