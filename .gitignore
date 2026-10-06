@@ -5,6 +5,8 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/storage/logs/laravel.log
+/resources/views/layouts/lamandepan.blade.php
 /vendor
 .env
 .env.backup
