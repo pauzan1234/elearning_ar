@@ -9,7 +9,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- logo unwir -->
-    <link rel="icon" type="image/png" href="{{ asset('image/logoUnwir.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('image/logo_black.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

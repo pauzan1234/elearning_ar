@@ -146,7 +146,7 @@
                     <p class="text-sm text-[#0F2A4D]/55">
                         Belum memiliki akun?
                         <a
-                            href="{{ route('register') }}"
+                            href=" #"
                             class="font-semibold text-[#2563EB] hover:text-[#0F2A4D] transition-colors">
                             Daftar sekarang →
                         </a>
