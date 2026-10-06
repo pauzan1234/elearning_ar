@@ -36,7 +36,7 @@
                     </p>
                 </div>
 
-                <a href="{{ route('lecturer.quiz.create', $pengajaranDosen->id) }}"
+                <a href="{{ route('quiz.create', $pengajaranDosen->id) }}"
                     class="inline-flex items-center justify-center gap-2 rounded-lg
                        bg-ink px-4 py-2.5 text-sm font-semibold text-white
                        transition hover:bg-primaryDark">
@@ -52,7 +52,7 @@
                 <div class="divide-y divide-line">
 
                     @forelse ($quizzes as $quiz)
-                        <a href="{{ route('lecturer.quiz.show', $quiz) }}"
+                        <a href="{{ route('quiz.show', $quiz) }}"
                             class="flex items-center justify-between gap-4 p-5 transition hover:bg-paper">
 
                             <div class="min-w-0 flex-1">

@@ -13,7 +13,7 @@ Detail Quiz
     <div class="mx-auto max-w-4xl px-6 py-8">
 
         <div class="mb-6">
-            <a href="{{ route('lecturer.quiz.index', $quiz->pengajaran_dosen_id) }}"
+            <a href="{{ route('quiz.index', $quiz->pengajaran_dosen_id) }}"
                 class="text-sm font-medium text-ink/50 hover:text-ink">
                 &larr; Kembali ke daftar quiz
             </a>
@@ -75,7 +75,7 @@ Detail Quiz
                 </div>
 
                 @if (!$quiz->is_published)
-                <form method="POST" action="{{ route('lecturer.quiz.publish', $quiz) }}">
+                <form method="POST" action="{{ route('quiz.publish', $quiz) }}">
                     @csrf
                     @method('PATCH')
                     <button type="submit"
@@ -101,7 +101,7 @@ Detail Quiz
 
             <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
 
-                <a href="{{ route('lecturer.quiz.template', $quiz) }}"
+                <a href="{{ route('quiz.template', $quiz) }}"
                     class="inline-flex items-center justify-center gap-2 rounded-lg border border-line
                            px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-paper">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,7 +111,7 @@ Detail Quiz
                     Download Template
                 </a>
 
-                <form method="POST" action="{{ route('lecturer.quiz.import', $quiz) }}" enctype="multipart/form-data"
+                <form method="POST" action="{{ route('quiz.import', $quiz) }}" enctype="multipart/form-data"
                     class="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
                     @csrf
 
@@ -177,7 +177,7 @@ Detail Quiz
                             class="mb-2 max-w-sm rounded-lg border border-line object-cover">
                         @endif
 
-                        <form method="POST" action="{{ route('lecturer.quiz.question.gambar', $q) }}"
+                        <form method="POST" action="{{ route('quiz.question.gambar', $q) }}"
                             enctype="multipart/form-data" class="flex flex-wrap items-center gap-2">
                             @csrf
                             <input type="file" name="gambar" accept="image/*" required
@@ -244,7 +244,7 @@ Detail Quiz
         </div>
 
         <form id="formEditSoal" method="POST"
-            data-action-template="{{ route('lecturer.quiz.question.update', ':id') }}">
+            data-action-template="{{ route('quiz.question.update', ':id') }}">
             @csrf
             @method('PUT')
 
