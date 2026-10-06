@@ -10,7 +10,7 @@
             href="{{ route('student.akademik.quiz.index') }}"
             class="text-sm text-teal hover:underline"
         >
-            ← Kembali ke mata kuliah
+            ← Kembali ke pembelajaran
         </a>
 
         <h2 class="mt-3 font-display text-xl font-semibold">
@@ -94,7 +94,7 @@
                 <div class="p-10 text-center">
 
                     <p class="text-sm text-ink/50">
-                        Belum ada quiz yang dipublish untuk mata kuliah ini.
+                        Belum ada quiz yang dipublish untuk pembelajaran ini.
                     </p>
 
                 </div>

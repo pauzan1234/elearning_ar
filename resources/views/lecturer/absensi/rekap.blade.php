@@ -34,7 +34,7 @@ Rekap Absensi - Pertemuan {{ $sesi->pertemuan_ke }}
         <div class="mb-6 grid grid-cols-3 gap-4">
             <div class="rounded-xl border border-line bg-white p-4 text-center">
                 <p class="text-2xl font-bold text-ink">{{ $totalMahasiswa }}</p>
-                <p class="text-xs text-ink/50">Total Mahasiswa</p>
+                <p class="text-xs text-ink/50">Total Siswa</p>
             </div>
             <div class="rounded-xl border border-line bg-white p-4 text-center">
                 <p class="text-2xl font-bold text-green-600">{{ $totalHadir }}</p>
@@ -87,7 +87,7 @@ Rekap Absensi - Pertemuan {{ $sesi->pertemuan_ke }}
                     @empty
                     <tr>
                         <td colspan="4" class="px-5 py-8 text-center text-ink/50">
-                            Belum ada mahasiswa terdaftar di kelas ini.
+                            Belum ada siswa terdaftar di kelas ini.
                         </td>
                     </tr>
                     @endforelse

@@ -4,7 +4,7 @@
 @section('content')
 <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
     <div>
-        <a href="{{ route('lecturer.akademik.tugas.courses') }}" class="text-sm text-teal hover:underline">← Kembali ke mata kuliah</a>
+        <a href="{{ route('lecturer.akademik.tugas.courses') }}" class="text-sm text-teal hover:underline">← Kembali ke pembelajaran</a>
         <h1 class="mt-2 font-display text-xl font-semibold">{{ $pengajaranDosen->kelas->matakuliah->nama_mk }}</h1>
         <p class="mt-1 text-sm text-ink/50">{{ $pengajaranDosen->kelas->kode_mk }} · Kelas {{ $pengajaranDosen->kelas->kode_kelas }}</p>
     </div>
@@ -24,7 +24,7 @@
             </div>
         </a>
         @empty
-        <div class="p-10 text-center text-sm text-ink/50">Belum ada tugas pada mata kuliah ini.</div>
+        <div class="p-10 text-center text-sm text-ink/50">Belum ada tugas pada pembelajaran ini.</div>
         @endforelse
     </div>
 </div>

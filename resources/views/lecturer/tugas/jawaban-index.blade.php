@@ -28,7 +28,7 @@ Koreksi Tugas
         <div class="rounded-2xl border border-line bg-white p-6 shadow-sm">
             <h1 class="font-display text-lg font-semibold text-ink">{{ $tugas->judul }}</h1>
             <p class="mt-1 text-sm text-ink/50">
-                {{ $jawabanList->count() }} mahasiswa mengumpulkan
+                {{ $jawabanList->count() }} siswa mengumpulkan
             </p>
         </div>
 
@@ -70,7 +70,7 @@ Koreksi Tugas
                 @empty
                 <div class="p-6">
                     <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
-                        <p class="text-sm text-ink/50">Belum ada mahasiswa yang mengumpulkan tugas.</p>
+                        <p class="text-sm text-ink/50">Belum ada siswa yang mengumpulkan tugas.</p>
                     </div>
                 </div>
                 @endforelse

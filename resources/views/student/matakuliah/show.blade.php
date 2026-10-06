@@ -1,7 +1,7 @@
 @extends('student.app-student-show-mk')
 
 @section('ketjudul')
-Mata Kuliah oleh
+Pembelajaran oleh
 @foreach ($dosenList as $pj)
 {{ $pj->lecturer->user->name }}@if (!$loop->last), @endif
 @endforeach
@@ -206,7 +206,7 @@ Mata Kuliah oleh
 
         <div class="border-b border-line p-6">
             <h2 class="font-display text-lg font-semibold text-ink">Quiz</h2>
-            <p class="mt-1 text-sm text-ink/50">Quiz pilihan ganda untuk mata kuliah ini.</p>
+            <p class="mt-1 text-sm text-ink/50">Quiz pilihan ganda untuk pembelajaran ini.</p>
         </div>
 
         <div class="divide-y divide-line">
@@ -269,7 +269,7 @@ Mata Kuliah oleh
 
     {{-- Info Mata Kuliah --}}
     <div class="rounded-2xl border border-line bg-white p-6 shadow-sm">
-        <h2 class="font-display text-base font-semibold text-ink">Info Mata Kuliah</h2>
+        <h2 class="font-display text-base font-semibold text-ink">Info Pembelajaran</h2>
 
         <div class="mt-4 space-y-3 text-sm">
             <div class="flex items-center justify-between">

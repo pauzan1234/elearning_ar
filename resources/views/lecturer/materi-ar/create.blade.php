@@ -1,7 +1,7 @@
 @extends('lecturer.app-lecturer')
 
 @section('ketjudul')
-Mata Kuliah oleh
+Pembelajaran oleh
 {{ $pengajaranDosen->lecturer->user->name ?? '-' }}
 @endsection
 
@@ -18,7 +18,7 @@ Tambah Materi AR
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-        Kembali ke Mata Kuliah
+        Kembali ke Pmebelajaran
     </a>
 
     <div class="rounded-2xl border border-line bg-white p-6 shadow-sm">
@@ -94,7 +94,7 @@ Tambah Materi AR
                            file:bg-teal/10 file:text-teal file:text-sm file:font-medium">
                 <p class="mt-1.5 text-xs text-ink/45">
                     Maks 20MB. Ekspor dari Blender, atau unduh model gratis dari Sketchfab / Poly Pizza (format glTF Binary).
-                    Mahasiswa akan bisa menempatkan model ini langsung di ruang nyata lewat kamera HP — tidak perlu marker/kartu cetak.
+                    Siswa akan bisa menempatkan model ini langsung di ruang nyata lewat kamera HP — tidak perlu marker/kartu cetak.
                 </p>
                 @error('file_model')
                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>

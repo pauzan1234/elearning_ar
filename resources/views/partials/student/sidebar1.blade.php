@@ -57,7 +57,7 @@
                 <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
             </svg>
-            Daftar Matakuliah
+            Daftar Pembelajaran
         </a>
         <a href="{{ route('student.matakuliah.index') }}"
             class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-paper/70 hover:bg-white/5 hover:text-paper text-sm font-medium transition-colors">
@@ -66,7 +66,7 @@
                 <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
             </svg>
-            Mata Kuliah Saya
+            Pembelajaran Saya
         </a>
         <a href="{{ route('student.akademik.tugas.index') }}"
             class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-paper/70 hover:bg-white/5 hover:text-paper text-sm font-medium transition-colors">
@@ -102,7 +102,7 @@
                 <rect x="3" y="4" width="18" height="16" rx="2" />
                 <path d="M3 10h18M8 2v4M16 2v4" />
             </svg>
-            Jadwal Kuliah
+            Jadwal Pelajaran
         </a>
         <a href="{{ route('chat.index') }}"
             class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-paper/70 hover:bg-white/5 hover:text-paper text-sm font-medium transition-colors">

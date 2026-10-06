@@ -32,7 +32,7 @@
                         Daftar Quiz
                     </h1>
                     <p class="mt-1 text-sm text-ink/50">
-                        Kelola quiz pilihan ganda untuk mata kuliah ini.
+                        Kelola quiz pilihan ganda untuk pembelajaran ini.
                     </p>
                 </div>
 

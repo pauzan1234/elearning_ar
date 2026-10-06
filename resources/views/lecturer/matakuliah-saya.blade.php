@@ -4,7 +4,7 @@ Dashboard
 @endsection
 
 @section('judul')
-Daftar Mata Kuliah
+Daftar Pembelajaran
 @endsection
 
 @section('content')
@@ -44,7 +44,7 @@ Daftar Mata Kuliah
             <div class="mt-5">
 
                 <p class="font-mono text-[10px] font-medium uppercase tracking-[0.15em] text-ink/40">
-                    Mata Kuliah
+                    Pembelajaran
                 </p>
 
                 <h2
@@ -71,7 +71,7 @@ Daftar Mata Kuliah
                                transition-colors duration-300
                                group-hover:text-white">
 
-                    Kelola Mata Kuliah
+                    Kelola Pembelajaran
 
                 </span>
 
@@ -134,11 +134,11 @@ Daftar Mata Kuliah
         </div>
 
         <h3 class="mt-4 text-base font-semibold text-ink">
-            Belum Ada Mata Kuliah
+            Belum Ada Pembelajaran
         </h3>
 
         <p class="mt-1 max-w-sm text-sm text-ink/50">
-            Belum terdapat mata kuliah yang ditugaskan kepada Anda.
+            Belum terdapat pembelajaran yang ditugaskan kepada Anda.
         </p>
 
     </div>

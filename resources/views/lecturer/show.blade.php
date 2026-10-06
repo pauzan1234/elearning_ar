@@ -1,7 +1,7 @@
 @extends('lecturer.app-lecturer')
 
 @section('ketjudul')
-Mata Kuliah oleh
+Pembelajaran oleh
 @foreach ($pengajaran->pengajaranDosen as $pj)
 {{ $pj->lecturer->user->name }}
 @endforeach
@@ -61,7 +61,7 @@ Mata Kuliah oleh
                 <a href="#mahasiswa"
                     class="relative rounded-lg px-4 py-2.5 text-sm font-medium text-ink/60
                                    transition hover:bg-paper hover:text-ink">
-                    Mahasiswa
+                    Siswa
                     @if (isset($pengajuanPending) && $pengajuanPending->count())
                     <span
                         class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center
@@ -98,7 +98,7 @@ Mata Kuliah oleh
                     </h2>
 
                     <p class="mt-1 text-sm text-ink/50">
-                        Kelola materi yang akan diberikan kepada mahasiswa.
+                        Kelola materi yang akan diberikan kepada siswa.
                     </p>
 
                 </div>
@@ -399,7 +399,7 @@ Mata Kuliah oleh
                     </h2>
 
                     <p class="mt-1 text-sm text-ink/50">
-                        Kelola tugas dan pengumpulan mahasiswa.
+                        Kelola tugas dan pengumpulan siswa.
                     </p>
 
                 </div>
@@ -494,7 +494,7 @@ Mata Kuliah oleh
                     </h2>
 
                     <p class="mt-1 text-sm text-ink/50">
-                        Kelola quiz pilihan ganda untuk mata kuliah ini.
+                        Kelola quiz pilihan ganda untuk pembelajaran ini.
                     </p>
 
                 </div>
@@ -584,15 +584,15 @@ Mata Kuliah oleh
                 sm:flex-row sm:items-center">
                 <div>
                     <h2 class="font-display text-lg font-semibold text-ink">
-                        Mahasiswa
+                        Siswa
                     </h2>
                     <p class="mt-1 text-sm text-ink/50">
-                        Daftar mahasiswa yang mengambil kelas ini.
+                        Daftar siswa yang mengambil kelas ini.
                     </p>
                 </div>
 
                 <span class="text-sm font-medium text-ink/60">
-                    {{ $pengajaran->mahasiswa->count() }} mahasiswa
+                    {{ $pengajaran->mahasiswa->count() }} siswa
                 </span>
             </div>
 
@@ -600,7 +600,7 @@ Mata Kuliah oleh
             @if (isset($pengajuanPending) && $pengajuanPending->count())
             <div class="border-b border-line bg-amber-50/60 p-6">
                 <h3 class="text-sm font-semibold text-amber-800">
-                    {{ $pengajuanPending->count() }} mahasiswa mengajukan masuk kelas ini
+                    {{ $pengajuanPending->count() }} siswa mengajukan masuk kelas ini
                 </h3>
 
                 <div class="mt-3 divide-y divide-amber-100">
@@ -610,7 +610,7 @@ Mata Kuliah oleh
                             <div
                                 class="flex h-9 w-9 shrink-0 items-center justify-center
                                        rounded-full bg-white text-xs font-semibold text-amber-700">
-                                {{ strtoupper(substr($pengajuan->mahasiswa->user->name ?? 'M', 0, 1)) }}
+                                {{ strtoupper(substr($pengajuan->siswa->user->name ?? 'M', 0, 1)) }}
                             </div>
                             <div class="min-w-0">
                                 <p class="truncate text-sm font-medium text-ink">
@@ -635,7 +635,7 @@ Mata Kuliah oleh
 
                             <form method="POST"
                                 action="{{ route('lecturer.pengajuan.reject', $pengajuan->id) }}"
-                                onsubmit="return confirm('Tolak pengajuan mahasiswa ini?')">
+                                onsubmit="return confirm('Tolak pengajuan siswa ini?')">
                                 @csrf
                                 <button type="submit"
                                     class="rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold
@@ -682,7 +682,7 @@ Mata Kuliah oleh
                         class="rounded-xl border border-dashed border-line
                         bg-paper p-8 text-center">
                         <p class="text-sm text-ink/50">
-                            Belum ada mahasiswa yang mengambil kelas ini.
+                            Belum ada siswa yang mengambil kelas ini.
                         </p>
                     </div>
                 </div>
@@ -703,7 +703,7 @@ Mata Kuliah oleh
             <div class="flex flex-col justify-between gap-4 border-b border-line p-6 sm:flex-row sm:items-center">
                 <div>
                     <h2 class="font-display text-lg font-semibold text-ink">Absensi</h2>
-                    <p class="mt-1 text-sm text-ink/50">Kelola kehadiran mahasiswa per pertemuan.</p>
+                    <p class="mt-1 text-sm text-ink/50">Kelola kehadiran siswa per pertemuan.</p>
                 </div>
 
                 <div class="flex items-center gap-2">
@@ -739,7 +739,7 @@ Mata Kuliah oleh
                         </h3>
                         <p class="mt-1 text-xs text-ink/50">
                             {{ $s->dibuka_pada->format('d M Y, H:i') }}
-                            • {{ $s->absensi()->count() }} mahasiswa hadir
+                            • {{ $s->absensi()->count() }} siswa hadir
                         </p>
                     </div>
 
@@ -760,7 +760,7 @@ Mata Kuliah oleh
                 <div class="p-6">
                     <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
                         <p class="text-sm text-ink/50">
-                            Belum ada sesi absensi untuk mata kuliah ini.
+                            Belum ada sesi absensi untuk pembelajaran ini.
                         </p>
                     </div>
                 </div>
@@ -978,7 +978,7 @@ Mata Kuliah oleh
 
 
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-ink/50">Mahasiswa</span>
+                    <span class="text-sm text-ink/50">Siswa</span>
                     <span class="font-semibold text-ink">
                         {{ $pengajaran->mahasiswa->count() }}
                     </span>

@@ -83,7 +83,7 @@
                         <circle cx="11" cy="11" r="8" />
                         <path d="M21 21l-4.3-4.3" />
                     </svg> -->
-                    <!-- <input type="text" placeholder="Cari mata kuliah..." class="w-full pl-9 pr-3 py-2.5 rounded-lg bg-paper border border-line text-sm focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"> -->
+                    <!-- <input type="text" placeholder="Cari pembelajaran..." class="w-full pl-9 pr-3 py-2.5 rounded-lg bg-paper border border-line text-sm focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"> -->
                 </div>
 
                 <div class="ml-auto flex items-center gap-4">

@@ -1,10 +1,10 @@
 @extends('lecturer.app-lecturer-create-materi')
 @section('ketjudul', 'Tugas')
-@section('judul', 'Tugas per Mata Kuliah')
+@section('judul', 'Tugas per Pembelajaran')
 @section('content')
 <div class="mb-6">
-    <h1 class="font-display text-xl font-semibold">Pilih Mata Kuliah</h1>
-    <p class="mt-1 text-sm text-ink/50">Pilih mata kuliah yang Anda ampu untuk melihat daftar tugas dan submission mahasiswa.</p>
+    <h1 class="font-display text-xl font-semibold">Pilih Pembelajaran</h1>
+    <p class="mt-1 text-sm text-ink/50">Pilih pembelajaran yang Anda ampu untuk melihat daftar tugas dan submission siswa.</p>
 </div>
 <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
 @forelse($pengajaranList as $pengajaran)
@@ -19,7 +19,7 @@
         <div class="mt-5 flex items-center text-sm font-semibold text-teal">Lihat tugas <span class="ml-2">→</span></div>
     </a>
 @empty
-    <div class="sm:col-span-2 xl:col-span-3 rounded-2xl border border-dashed border-line bg-white p-10 text-center text-sm text-ink/50">Belum ada mata kuliah yang Anda ampu.</div>
+    <div class="sm:col-span-2 xl:col-span-3 rounded-2xl border border-dashed border-line bg-white p-10 text-center text-sm text-ink/50">Belum ada pembelajaran yang Anda ampu.</div>
 @endforelse
 </div>
 @endsection

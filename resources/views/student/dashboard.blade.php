@@ -4,9 +4,9 @@
 @section('content')
 <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
     <a href="{{ route('student.matakuliah.index') }}" class="rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:shadow-md">
-        <p class="text-xs font-mono uppercase tracking-wide text-ink/45">Mata Kuliah</p>
+        <p class="text-xs font-mono uppercase tracking-wide text-ink/45">Pembelajaran</p>
         <p class="mt-4 font-display text-3xl font-semibold">{{ $totalMatkul }}</p>
-        <p class="mt-1 text-sm text-ink/50">Mata kuliah yang diikuti</p>
+        <p class="mt-1 text-sm text-ink/50">Pembelajaran yang diikuti</p>
     </a>
     <a href="{{ route('student.akademik.tugas.index') }}" class="rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:shadow-md">
         <p class="text-xs font-mono uppercase tracking-wide text-ink/45">Tugas</p>

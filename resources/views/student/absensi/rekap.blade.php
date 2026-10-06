@@ -97,7 +97,7 @@ Rekap Absensi
                 </div>
                 @empty
                 <div class="px-6 py-10 text-center text-sm text-ink/40">
-                    Belum ada riwayat absensi untuk mata kuliah ini.
+                    Belum ada riwayat absensi untuk pembelajaran ini.
                 </div>
                 @endforelse
             </div>

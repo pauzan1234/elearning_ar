@@ -4,7 +4,7 @@
 @endsection
 
 @section('judul')
-    Daftar Mata Kuliah
+    Daftar Pembelajaran
 @endsection
 
 @section('content')
@@ -25,7 +25,7 @@
         {{-- Form pencarian --}}
         <form method="GET" action="{{ url()->current() }}" class="mb-5">
             <div class="relative max-w-md">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama mata kuliah..."
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Pembelajaran..."
                     class="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 pr-10 text-sm text-slate-700 placeholder-slate-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100">
                 <button type="submit"
                     class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-indigo-600">
@@ -95,7 +95,7 @@
                                 </form>
                             </div>
                         @empty
-                            <p class="py-4 text-sm text-slate-400">Belum ada kelas untuk mata kuliah ini.</p>
+                            <p class="py-4 text-sm text-slate-400">Belum ada kelas untuk pembelajaran ini.</p>
                         @endforelse
                     </div>
                 </div>
@@ -103,9 +103,9 @@
                 <div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-slate-50 py-12 text-center">
                     <p class="text-sm text-slate-500">
                         @if (request('search'))
-                            Tidak ada mata kuliah yang cocok dengan pencarian "{{ request('search') }}".
+                            Tidak ada pembelajaran yang cocok dengan pencarian "{{ request('search') }}".
                         @else
-                            Belum ada mata kuliah dengan dosen.
+                            Belum ada pembelajaran dengan dosen.
                         @endif
                     </p>
                 </div>

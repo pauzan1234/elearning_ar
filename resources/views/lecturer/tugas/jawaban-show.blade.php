@@ -87,7 +87,7 @@ Koreksi Jawaban
             </div>
             @endif
             @else
-            <p class="mt-2 text-sm text-ink/50">Mahasiswa belum mengupload file.</p>
+            <p class="mt-2 text-sm text-ink/50">Siswa belum mengupload file.</p>
             @endif
         </div>
 

@@ -82,7 +82,7 @@ Absensi - {{ $sesi->kelas->matakuliah->nama_mk }}
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1a4 4 0 10-8 0 4 4 0 008 0zm6-2a4 4 0 10-8 0" />
                 </svg>
-                <span id="jumlah-hadir">{{ $sesi->absensi()->count() }}</span> mahasiswa sudah absen
+                <span id="jumlah-hadir">{{ $sesi->absensi()->count() }}</span> siswa sudah absen
             </div>
 
             {{-- Aksi --}}

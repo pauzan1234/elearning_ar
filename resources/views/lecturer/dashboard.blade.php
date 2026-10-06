@@ -4,7 +4,7 @@ Dashboard
 @endsection
 
 @section('judul')
-Ringkasan E-Learning UNWIR
+Ringkasan LMS-AR Geospace
 @endsection
 
 @section('content')
@@ -22,7 +22,7 @@ Ringkasan E-Learning UNWIR
       <span class="text-xs font-mono px-2 py-1 rounded-full bg-teal/10 text-teal">Ganjil 2026/2027</span>
     </div>
     <p class="font-display text-3xl font-semibold mt-5">{{ number_format($totalMatkul, 0, ',', '.') }}</p>
-    <p class="text-sm text-ink/55 mt-1">Mata Kuliah Aktif</p>
+    <p class="text-sm text-ink/55 mt-1">Pembelajaran Aktif</p>
   </div>
 
   <div class="bg-white border border-line rounded-2xl p-6">
@@ -52,7 +52,7 @@ Ringkasan E-Learning UNWIR
       <span class="text-xs font-mono px-2 py-1 rounded-full bg-amber/15 text-ink">Aktif</span>
     </div>
     <p class="font-display text-3xl font-semibold mt-5">{{ number_format($totalMahasiswa, 0, ',', '.') }}</p>
-    <p class="text-sm text-ink/55 mt-1">Mahasiswa Terdaftar</p>
+    <p class="text-sm text-ink/55 mt-1">Siswa Terdaftar</p>
   </div>
 
 </div>

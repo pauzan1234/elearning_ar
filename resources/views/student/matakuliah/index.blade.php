@@ -4,7 +4,7 @@ Dashboard
 @endsection
 
 @section('judul')
-Daftar Mata Kuliah
+Daftar Pembelajaran
 @endsection
 
 @section('content')
@@ -13,10 +13,10 @@ Daftar Mata Kuliah
 
     <div class="mb-6">
         <h1 class="font-display text-xl font-semibold text-ink">
-            Mata Kuliah Saya
+            Pembelajaran Saya
         </h1>
         <p class="mt-1 text-sm text-ink/50">
-            Daftar mata kuliah yang kamu ambil semester ini.
+            Daftar Ppmbelajaran yang kamu ambil semester ini.
         </p>
     </div>
 
@@ -61,7 +61,7 @@ Daftar Mata Kuliah
                     class="mt-5 flex items-center justify-center gap-2 rounded-lg bg-ink px-4 py-2.5
                                    text-sm font-semibold text-white transition
                                    hover:bg-primaryDark">
-                    Buka Mata Kuliah
+                    Buka Pembelajaran
                     <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -76,7 +76,7 @@ Daftar Mata Kuliah
         <div class="col-span-full">
             <div class="rounded-2xl border border-dashed border-line bg-white p-10 text-center">
                 <p class="text-sm text-ink/50">
-                    Kamu belum terdaftar di mata kuliah apapun.
+                    Kamu belum terdaftar di pembelajaran apapun.
                 </p>
             </div>
         </div>

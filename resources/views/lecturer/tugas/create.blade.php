@@ -18,7 +18,7 @@ Tambah Tugas
                 Tambah Tugas Baru
             </h2>
             <p class="mt-1 text-sm text-ink/50">
-                Isi soal dan deskripsi tugas untuk mahasiswa.
+                Isi soal dan deskripsi tugas untuk siswa.
             </p>
 
             <form method="POST"

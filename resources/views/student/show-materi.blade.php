@@ -1,7 +1,7 @@
 @extends('student.app-student')
 
 @section('ketjudul')
-Mata Kuliah
+Pembelajaran
 @endsection
 
 @section('judul')
@@ -66,7 +66,7 @@ Mata Kuliah
                         </h2>
 
                         <p class="mt-1 text-sm text-ink/50">
-                            {{ $materiList->count() }} materi tersedia untuk mata kuliah ini.
+                            {{ $materiList->count() }} materi tersedia untuk pembelajaran ini.
                         </p>
 
                     </div>

@@ -18,7 +18,7 @@ Rekap Absensi
             Rekap Absensi
         </h1>
         <p class="mt-1 text-sm text-ink/50">
-            Rekapitulasi kehadiran mahasiswa per pertemuan.
+            Rekapitulasi kehadiran siswa per pertemuan.
         </p>
     </div>
 
@@ -55,7 +55,7 @@ Rekap Absensi
                     </h3>
                     <p class="mt-1 text-xs text-ink/50">
                         {{ $s->dibuka_pada->format('d M Y, H:i') }}
-                        • {{ $s->absensi->count() }} mahasiswa hadir
+                        • {{ $s->absensi->count() }} siswa hadir
                     </p>
                 </a>
 
@@ -157,8 +157,8 @@ Rekap Absensi
                         <table class="w-full text-sm">
                             <thead class="bg-paper">
                                 <tr>
-                                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-ink/60">Mahasiswa</th>
-                                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-ink/60">NIM</th>
+                                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-ink/60">Siswa</th>
+                                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-ink/60">NIS</th>
                                     <th class="px-4 py-2.5 text-left text-xs font-semibold text-ink/60">Status</th>
                                     <th class="px-4 py-2.5 text-left text-xs font-semibold text-ink/60">Waktu Absen</th>
                                 </tr>
@@ -193,7 +193,7 @@ Rekap Absensi
                                 @empty
                                 <tr>
                                     <td colspan="4" class="px-4 py-6 text-center text-sm text-ink/50">
-                                        Belum ada mahasiswa yang absen.
+                                        Belum ada siswa yang absen.
                                     </td>
                                 </tr>
                                 @endforelse
@@ -209,7 +209,7 @@ Rekap Absensi
                     @if ($belumAbsen->count())
                     <div class="mt-4 rounded-xl border border-dashed border-line bg-paper p-4">
                         <p class="text-xs font-semibold text-ink/60">
-                            {{ $belumAbsen->count() }} mahasiswa belum absen:
+                            {{ $belumAbsen->count() }} siswa belum absen:
                         </p>
                         <p class="mt-1 text-xs text-ink/50">
                             {{ $belumAbsen->pluck('user.name')->filter()->implode(', ') }}
@@ -226,7 +226,7 @@ Rekap Absensi
         <div class="p-6">
             <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
                 <p class="text-sm text-ink/50">
-                    Belum ada sesi absensi untuk mata kuliah ini.
+                    Belum ada sesi absensi untuk pelajaran ini.
                 </p>
             </div>
         </div>

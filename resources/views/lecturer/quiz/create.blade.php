@@ -50,7 +50,7 @@
                         <label class="block text-sm font-medium text-ink">
                             Deskripsi <span class="text-ink/40">(opsional)</span>
                         </label>
-                        <textarea name="deskripsi" rows="3" placeholder="Instruksi singkat untuk mahasiswa"
+                        <textarea name="deskripsi" rows="3" placeholder="Instruksi singkat untuk siswa"
                             class="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm
                                text-ink outline-none transition focus:border-ink">{{ old('deskripsi') }}</textarea>
                         @error('deskripsi')
