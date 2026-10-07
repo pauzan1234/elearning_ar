@@ -55,7 +55,7 @@ class MateriHtmlController extends Controller
 
         // GANTI nama route ini dengan route halaman pembelajaran dosen milikmu
         return redirect()
-            ->route('pengajaran.show', $pengajaranDosen->id)
+            ->route('lecturer.pengajaran.show', $pengajaranDosen->id)
             ->with('success', 'Materi interaktif berhasil ditambahkan.');
     }
 
@@ -69,6 +69,14 @@ class MateriHtmlController extends Controller
     {
         abort_unless($materiFile->tipe === MateriFile::TIPE_HTML, 404);
         abort_unless(Storage::disk('local')->exists($materiFile->file_path), 404);
+
+        // Materi disembunyikan: hanya dosen pemilik yang boleh membuka file-nya
+        $materi = $materiFile->materi;
+        if ($materi->is_hidden) {
+            $lecturer = auth()->user()?->lecturer; // sesuaikan relasi User -> Lecturer
+            $pemilik  = $lecturer && (int) $materi->pengajaran->dosen_id === (int) $lecturer->id;
+            abort_unless($pemilik, 404);
+        }
 
         return response()->file(
             Storage::disk('local')->path($materiFile->file_path),

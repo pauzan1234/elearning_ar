@@ -297,4 +297,20 @@ class MateriController extends Controller
 
         // kalau url kosong dan tidak remove, biarkan yang lama tetap ada
     }
+
+    public function toggleHide(Materi $materi)
+    {
+        // Opsional tapi disarankan: pastikan yang menekan adalah dosen pemilik pengajaran ini
+        // $lecturer = auth()->user()?->lecturer;
+        // abort_unless($lecturer && (int) $materi->pengajaran->dosen_id === (int) $lecturer->id, 403);
+
+        $materi->update(['is_hidden' => ! $materi->is_hidden]);
+
+        return back()->with(
+            'success',
+            $materi->is_hidden
+                ? 'Materi disembunyikan dari siswa.'
+                : 'Materi ditampilkan kembali ke siswa.'
+        );
+    }
 }

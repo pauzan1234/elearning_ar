@@ -149,7 +149,7 @@ Pembelajaran oleh
                 ->implode(', ');
                 @endphp
 
-                <div x-data="{ open: false }">
+                <div x-data="{ open: false }" class="{{ $materi->is_hidden ? 'bg-paper/60' : '' }}">
 
                     {{-- Header (klik untuk expand/collapse) --}}
                     <div class="flex items-center gap-4 p-5">
@@ -180,6 +180,11 @@ Pembelajaran oleh
                                     Materi pembelajaran
                                     @if ($labelTipe)
                                     • {{ $labelTipe }}
+                                    @endif
+                                    @if ($materi->is_hidden)
+                                    <span class="ml-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+                                        Disembunyikan dari siswa
+                                    </span>
                                     @endif
                                 </p>
                             </div>
@@ -226,6 +231,15 @@ Pembelajaran oleh
                                     class="block w-full px-4 py-2 text-left text-sm text-ink/70 hover:bg-paper">
                                     Edit
                                 </a>
+
+                                <form method="POST" action="{{ route('materi.toggle-hide', $materi->id) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit"
+                                        class="block w-full px-4 py-2 text-left text-sm text-ink/70 hover:bg-paper">
+                                        {{ $materi->is_hidden ? 'Tampilkan' : 'Sembunyikan' }}
+                                    </button>
+                                </form>
 
                                 <form method="POST" action="{{ route('materi.destroy', $materi->id) }}"
                                     onsubmit="return confirm('Yakin ingin menghapus materi ini?')">

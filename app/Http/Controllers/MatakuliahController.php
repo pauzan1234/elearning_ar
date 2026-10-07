@@ -208,6 +208,7 @@ class MatakuliahController extends Controller
         $pengajaranDosenIds = PengajaranDosen::where('kelas_id', $kelas->id)->pluck('id');
 
         $materiList = Materi::whereIn('pengajaran_id', $pengajaranDosenIds)
+            ->visible()
             ->with([
                 'files' => fn($q) => $q->orderBy('urutan'),
                 'materiAr',

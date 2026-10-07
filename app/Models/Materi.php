@@ -13,6 +13,7 @@ class Materi extends Model
         'judul',
         'deskripsi',
         'urutan',
+        'is_hidden'
     ];
 
     public function pengajaran()
@@ -28,5 +29,17 @@ class Materi extends Model
     public function materiAr()
     {
         return $this->hasMany(MateriAr::class, 'materi_id');
+    }
+
+
+
+    protected $casts = [
+        'is_hidden' => 'boolean',
+    ];
+
+    // Scope: hanya materi yang tampil ke siswa
+    public function scopeVisible($query)
+    {
+        return $query->where('is_hidden', false);
     }
 }

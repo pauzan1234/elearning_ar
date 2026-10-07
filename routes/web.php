@@ -271,6 +271,9 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
         ->name('materi-ar.destroy');
     Route::get('/materi-ar/{materiAr}', [MateriArController::class, 'show'])
         ->name('materi-ar.show');
+
+    Route::patch('/materi/{materi}/toggle-hide', [MateriController::class, 'toggleHide'])
+        ->name('materi.toggle-hide');
 });
 
 /*
