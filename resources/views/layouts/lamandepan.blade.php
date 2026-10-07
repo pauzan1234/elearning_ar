@@ -92,36 +92,67 @@
         <a href="#kursus" class="hover:text-ink transition-colors">Pembelajaran</a>
         <a href="#cara-kerja" class="hover:text-ink transition-colors">Cara Pakai</a>
         <a href="#testimoni" class="hover:text-ink transition-colors">Testimoni</a>
+        <a href="{{ asset('apk/lms-ar.apk') }}" download="lms-ar.apk" class="hover:text-ink transition-colors">Download APK</a>
 
       </nav>
 
       <div class="flex items-center gap-3">
+
         @if (Route::has('login'))
         @auth
         <a
           href="{{ url('/dashboard') }}"
-          class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
+          class="inline-block px-5 py-1.5 border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] rounded-sm text-sm leading-normal">
           Dashboard
         </a>
         @else
         <a
           href="{{ route('login') }}"
-          class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal">
+          class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-sm leading-normal">
           Log in
         </a>
 
+        {{-- Register dinonaktifkan: tidak bisa diklik & tidak menuju URL --}}
         @if (Route::has('register'))
-        <a
-          href="{{ route('register') }}"
-          class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
+        <span
+          aria-disabled="true"
+          title="Pendaftaran dinonaktifkan"
+          class="hidden sm:inline-block px-5 py-1.5 border border-[#19140035] text-[#1b1b18] rounded-sm text-sm leading-normal opacity-50 cursor-not-allowed select-none pointer-events-none">
           Register
-        </a>
+        </span>
         @endif
         @endauth
         @endif
 
+        {{-- Tombol hamburger (hanya mobile/tablet) --}}
+        <button
+          id="menu-toggle"
+          type="button"
+          aria-label="Buka menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border border-line text-ink hover:bg-white transition-colors">
+          <svg id="icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="icon-close" class="hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+
       </div>
     </div>
+
+    {{-- Menu navigasi mobile --}}
+    <nav id="mobile-menu" class="hidden lg:hidden border-t border-line bg-paper">
+      <div class="max-w-7xl mx-auto px-6 py-3 flex flex-col text-[15px] font-medium text-ink/80">
+        <a href="#fitur" class="mobile-link py-3 border-b border-line hover:text-ink">Fitur</a>
+        <a href="#kursus" class="mobile-link py-3 border-b border-line hover:text-ink">Pembelajaran</a>
+        <a href="#cara-kerja" class="mobile-link py-3 border-b border-line hover:text-ink">Cara Pakai</a>
+        <a href="#testimoni" class="mobile-link py-3 border-b border-line hover:text-ink">Testimoni</a>
+        <a href="{{ asset('apk/lms-ar.apk') }}" download="lms-ar.apk" class="mobile-link py-3 hover:text-ink">Download APK</a>
+      </div>
+    </nav>
   </header>
 
   <!-- ============ HERO ============ -->
@@ -296,8 +327,9 @@
     <div class="max-w-xl">
       <span class="font-mono text-xs uppercase tracking-wider text-ink/40">Mengapa LMS-AR Dikembangkan?</span>
       <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight mt-3">
-        Dirancang untuk menghadirkan pembelajaran geometri yang interaktif melalui integrasi LMS dan Augmented Reality (AR), sehingga siswa dapat mengeksplorasi objek 3D, mengembangkan kemampuan spasial, dan membangun resiliensi dalam menyelesaikan tantangan matematika.
+        Dirancang untuk menghadirkan pembelajaran geometri yang interaktif melalui integrasi LMS dan Augmented Reality (AR), 
       </h2>
+      <p>sehingga siswa dapat mengeksplorasi objek 3D, mengembangkan kemampuan spasial, dan membangun resiliensi dalam menyelesaikan tantangan matematika.</p>
     </div>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
@@ -387,54 +419,6 @@
         </a>
       </div>
 
-      <!-- <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7 mt-14">
-
-        <article class="group border border-line rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-          <div class="h-44 bg-gradient-to-br from-teal to-ink relative overflow-hidden">
-            <span class="absolute top-3 left-3 font-mono text-[11px] uppercase tracking-wider bg-white/90 text-ink px-2.5 py-1 rounded-full">Teknik Informatika</span>
-          </div>
-          <div class="p-6">
-            <div class="flex items-center gap-1 text-ink/50 text-xs font-mono">Prodi Teknik Informatika · Semester 5</div>
-            <h3 class="font-display text-lg font-medium mt-2">Pemrograman Web Lanjut</h3>
-            <p class="text-sm text-ink/55 mt-1.5">3 SKS · 16 pertemuan · Ganjil 2025/2026</p>
-            <div class="flex items-center justify-between mt-5 pt-5 border-t border-line">
-              <span class="font-semibold">142 mahasiswa</span>
-              <span class="text-sm text-teal font-medium group-hover:translate-x-1 transition-transform">Lihat kelas →</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="group border border-line rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-          <div class="h-44 bg-gradient-to-br from-coral to-ink relative overflow-hidden">
-            <span class="absolute top-3 left-3 font-mono text-[11px] uppercase tracking-wider bg-white/90 text-ink px-2.5 py-1 rounded-full">Manajemen</span>
-          </div>
-          <div class="p-6">
-            <div class="flex items-center gap-1 text-ink/50 text-xs font-mono">Prodi Manajemen · Semester 3</div>
-            <h3 class="font-display text-lg font-medium mt-2">Manajemen Keuangan Perusahaan</h3>
-            <p class="text-sm text-ink/55 mt-1.5">3 SKS · 16 pertemuan · Ganjil 2025/2026</p>
-            <div class="flex items-center justify-between mt-5 pt-5 border-t border-line">
-              <span class="font-semibold">118 mahasiswa</span>
-              <span class="text-sm text-teal font-medium group-hover:translate-x-1 transition-transform">Lihat kelas →</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="group border border-line rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-          <div class="h-44 bg-gradient-to-br from-amber to-ink relative overflow-hidden">
-            <span class="absolute top-3 left-3 font-mono text-[11px] uppercase tracking-wider bg-white/90 text-ink px-2.5 py-1 rounded-full">Hukum</span>
-          </div>
-          <div class="p-6">
-            <div class="flex items-center gap-1 text-ink/50 text-xs font-mono">Prodi Ilmu Hukum · Semester 1</div>
-            <h3 class="font-display text-lg font-medium mt-2">Pengantar Hukum Perdata</h3>
-            <p class="text-sm text-ink/55 mt-1.5">2 SKS · 16 pertemuan · Ganjil 2025/2026</p>
-            <div class="flex items-center justify-between mt-5 pt-5 border-t border-line">
-              <span class="font-semibold">96 mahasiswa</span>
-              <span class="text-sm text-teal font-medium group-hover:translate-x-1 transition-transform">Lihat kelas →</span>
-            </div>
-          </div>
-        </article>
-
-      </div> -->
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7 mt-14">
 
         @forelse ($kursusPopuler as $index => $item)
@@ -461,12 +445,6 @@
 
           {{-- Isi Card --}}
           <div class="p-6">
-
-            {{-- Prodi dan Kode Kelas --}}
-            <!-- <div class="flex items-center gap-1 text-ink/50 text-xs font-mono">
-              Prodi {{ $item->kelas->matakuliah->prodi->nama_prodi ?? '-' }}
-              · Semester {{ $item->kelas->semester ?? '-' }}
-            </div> -->
 
             {{-- Nama Mata Kuliah --}}
             <h3 class="font-display text-lg font-medium mt-2">
@@ -584,19 +562,6 @@
     </div>
   </section>
 
-  <!-- ============ CTA BANNER ============ -->
-  <section class="max-w-7xl mx-auto px-6 lg:px-10 py-24">
-    <div class="dot-grid border border-line rounded-3xl px-8 py-16 lg:py-20 text-center relative overflow-hidden">
-      <h2 class="font-display text-3xl lg:text-[2.6rem] font-semibold tracking-tight max-w-2xl mx-auto leading-tight">
-        Lanjutkan perkuliahanmu <span class="highlight-mark">hari ini juga.</span>
-      </h2>
-      <p class="text-ink/60 mt-4 max-w-md mx-auto">Gunakan akun SIMAKO kamu — tidak perlu mendaftar akun baru.</p>
-      <a href="{{ route('login') }}" class="inline-flex items-center gap-2 bg-coral text-paper font-medium px-7 py-3.5 rounded-full hover:bg-coral/90 transition-colors mt-8 shadow-[0_6px_0_0_#12326b] active:translate-y-1 active:shadow-none">
-        Masuk ke E-Learning UNWIR
-      </a>
-    </div>
-  </section>
-
   <!-- ============ FOOTER ============ -->
   <footer class="border-t border-line bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16 grid sm:grid-cols-2 lg:grid-cols-5 gap-10">
@@ -605,23 +570,23 @@
           <span class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center">
             <span class="text-amber font-display font-semibold text-lg">U</span>
           </span>
-          <span class="font-display text-xl font-semibold">E-Learning UNWIR</span>
+          <span class="font-display text-xl font-semibold">LMS-AR Geospace</span>
         </div>
-        <p class="text-sm text-ink/55 mt-4 max-w-xs leading-relaxed">Platform pembelajaran daring resmi Universitas Wiralodra — satu tempat untuk materi kuliah, tugas, dan nilai.</p>
+        <p class="text-sm text-ink/55 mt-4 max-w-xs leading-relaxed">LMS AR dan Geometri</p>
       </div>
       <div>
         <p class="font-medium text-sm">Layanan</p>
         <ul class="text-sm text-ink/55 space-y-2.5 mt-4">
           <li><a href="#fitur" class="hover:text-ink transition-colors">Fitur</a></li>
-          <li><a href="#kursus" class="hover:text-ink transition-colors">Mata Kuliah</a></li>
+          <li><a href="#kursus" class="hover:text-ink transition-colors">Pembelajaran</a></li>
           <li><a href="#cara-kerja" class="hover:text-ink transition-colors">Cara Pakai</a></li>
         </ul>
       </div>
       <div>
         <p class="font-medium text-sm">Universitas</p>
         <ul class="text-sm text-ink/55 space-y-2.5 mt-4">
-          <li><a href="#" class="hover:text-ink transition-colors">Tentang UNWIR</a></li>
-          <li><a href="#" class="hover:text-ink transition-colors">Fakultas & Prodi</a></li>
+          <li><a href="#" class="hover:text-ink transition-colors">Tentang LMS-AR</a></li>
+          <li><a href="#" class="hover:text-ink transition-colors">Kelas</a></li>
           <li><a href="#" class="hover:text-ink transition-colors">Kalender Akademik</a></li>
         </ul>
       </div>
@@ -630,17 +595,44 @@
         <ul class="text-sm text-ink/55 space-y-2.5 mt-4">
           <li><a href="#" class="hover:text-ink transition-colors">Pusat Bantuan</a></li>
           <li><a href="#" class="hover:text-ink transition-colors">Kebijakan Privasi</a></li>
-          <li><a href="#" class="hover:text-ink transition-colors">Hubungi BAAK</a></li>
+          <li><a href="#" class="hover:text-ink transition-colors">Hubungi kami</a></li>
         </ul>
       </div>
     </div>
     <div class="border-t border-line">
       <div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ink/40">
-        <p>© 2026 E-Learning UNWIR — Universitas Wiralodra. Seluruh hak cipta dilindungi.</p>
-        <p>Dibuat dengan Laravel 12 & Tailwind CSS</p>
+        <p>© 2026 LMS AR-GEOSPACE. Seluruh hak cipta dilindungi.</p>
+        <p>Dibuat dengan cinta untuk dunia pendidikan</p>
       </div>
     </div>
   </footer>
+
+  <script>
+    (function() {
+      const toggle = document.getElementById('menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      const iconOpen = document.getElementById('icon-open');
+      const iconClose = document.getElementById('icon-close');
+
+      function setMenu(open) {
+        menu.classList.toggle('hidden', !open);
+        iconOpen.classList.toggle('hidden', open);
+        iconClose.classList.toggle('hidden', !open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      toggle.addEventListener('click', function() {
+        setMenu(menu.classList.contains('hidden'));
+      });
+
+      // Tutup menu setelah salah satu link diklik
+      document.querySelectorAll('.mobile-link').forEach(function(link) {
+        link.addEventListener('click', function() {
+          setMenu(false);
+        });
+      });
+    })();
+  </script>
 
 </body>
 
