@@ -59,6 +59,11 @@ Pembelajaran oleh
                         <h3 class="truncate text-sm font-semibold text-ink">{{ $materi->judul }}</h3>
                         <p class="mt-1 flex items-center gap-2 text-xs text-ink/50">
                             <span>Materi pembelajaran</span>
+                            @if ($materi->files->contains('tipe', 'html'))
+                            <span class="rounded-full bg-purple-50 px-2 py-0.5 text-[10px] font-semibold text-purple-700">
+                                Interaktif
+                            </span>
+                            @endif
                             @if ($materi->materiAr->isNotEmpty())
                             <span class="rounded-full bg-paper px-2 py-0.5 text-[10px] font-semibold text-ink">
                                 AR
@@ -90,6 +95,28 @@ Pembelajaran oleh
                     @elseif ($file->tipe === 'video_youtube' && $file->youtube_embed_url)
                     <div class="aspect-video w-full overflow-hidden rounded-xl border border-line">
                         <iframe src="{{ $file->youtube_embed_url }}" class="h-full w-full" loading="lazy" allowfullscreen></iframe>
+                    </div>
+                    @elseif ($file->tipe === 'html' && $file->url)
+                    {{-- Materi interaktif (file HTML + JavaScript) --}}
+                    <div>
+                        <div class="mb-2 flex items-center justify-between">
+                            <span class="text-xs font-medium text-ink/50">
+                                Materi Interaktif
+                                @if ($file->nama_asli)
+                                • {{ $file->nama_asli }}
+                                @endif
+                            </span>
+                            <a href="{{ $file->url }}" target="_blank" rel="noopener"
+                                class="text-xs font-medium text-blue-600 hover:underline">
+                                Buka layar penuh
+                            </a>
+                        </div>
+
+                        {{-- sandbox: script jalan, tapi terisolasi dari aplikasi (tanpa allow-same-origin) --}}
+                        <iframe src="{{ $file->url }}"
+                            sandbox="allow-scripts allow-pointer-lock allow-fullscreen"
+                            allowfullscreen loading="lazy"
+                            class="h-[640px] w-full rounded-xl border border-line bg-white"></iframe>
                     </div>
                     @endif
                     @endforeach

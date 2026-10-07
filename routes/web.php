@@ -28,6 +28,7 @@ use App\Http\Controllers\Student\AkademikController as StudentAkademikController
 use App\Models\PengajaranMahasiswa;
 use App\Http\Controllers\Lecturer\PengajuanController;
 use App\Http\Controllers\MateriArController;
+use App\Http\Controllers\MateriHtmlController;
 
 /*
 |--------------------------------------------------------------------------
@@ -377,5 +378,20 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->group(function (
 Route::middleware(['auth'])->group(function () {
     Route::get('/materi-ar/{materiAr}/view', [MateriArController::class, 'show'])
         ->name('materi-ar.show');
+});
+
+
+
+Route::middleware('auth')->group(function () {
+
+    // Dosen: form + simpan
+    Route::get('/pengajaran/{pengajaranDosen}/materi-html/create', [MateriHtmlController::class, 'create'])
+        ->name('materi-html.create');
+    Route::post('/pengajaran/{pengajaranDosen}/materi-html', [MateriHtmlController::class, 'store'])
+        ->name('materi-html.store');
+
+    // Dosen & siswa: sajikan file (dipakai iframe / tab baru)
+    Route::get('/materi-html/file/{materiFile}', [MateriHtmlController::class, 'file'])
+        ->name('materi-html.file');
 });
 require __DIR__ . '/auth.php';

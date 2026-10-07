@@ -83,6 +83,7 @@ Pembelajaran
                         'pdf' => 'PDF',
                         'audio' => 'Audio',
                         'video_youtube' => 'Video',
+                        'html' => 'Interaktif',
                         default => ucfirst($file->tipe),
                         };
                         })->unique()->implode(', ');
@@ -207,6 +208,34 @@ Pembelajaran
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowfullscreen></iframe>
                                     </div>
+                                </div>
+
+                                @elseif ($file->tipe === 'html' && $file->url)
+
+                                {{-- Materi interaktif (file HTML + JavaScript) --}}
+                                <div>
+                                    <div class="mb-2 flex items-center justify-between">
+                                        <span class="text-xs font-medium text-ink/50">
+                                            Materi Interaktif
+                                            @if ($file->nama_asli)
+                                            • {{ $file->nama_asli }}
+                                            @endif
+                                        </span>
+                                        <a href="{{ $file->url }}" target="_blank" rel="noopener"
+                                            class="text-xs font-medium text-blue-600 hover:underline">
+                                            Buka layar penuh
+                                        </a>
+                                    </div>
+
+                                    {{-- sandbox: script jalan, tapi terisolasi dari aplikasi (tanpa allow-same-origin) --}}
+                                    <iframe src="{{ $file->url }}"
+                                        sandbox="allow-scripts allow-pointer-lock allow-fullscreen"
+                                        allowfullscreen loading="lazy"
+                                        class="h-[640px] w-full rounded-xl border border-line bg-white"></iframe>
+
+                                    <p class="mt-2 text-xs text-ink/40">
+                                        Geser, putar, atau zoom objek langsung di dalam kotak di atas.
+                                    </p>
                                 </div>
 
                                 @endif
