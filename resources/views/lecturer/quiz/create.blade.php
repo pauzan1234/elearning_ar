@@ -13,7 +13,7 @@
         <div class="mx-auto max-w-2xl px-6 py-8">
 
             <div class="mb-6">
-                <a href="{{ route('quiz.index', $pengajaranDosen->id) }}"
+                <a href="{{ route('lecturer.quiz.index', $pengajaranDosen->id) }}"
                     class="text-sm font-medium text-ink/50 hover:text-ink">
                     &larr; Kembali ke daftar quiz
                 </a>
@@ -28,7 +28,7 @@
                     Isi informasi dasar dulu. Soal akan diisi lewat upload template Excel di langkah berikutnya.
                 </p>
 
-                <form method="POST" action="{{ route('quiz.store', $pengajaranDosen->id) }}" class="mt-6 space-y-4">
+                <form method="POST" action="{{ route('lecturer.quiz.store', $pengajaranDosen->id) }}" class="mt-6 space-y-4">
                     @csrf
 
                     {{-- Judul --}}
@@ -74,7 +74,7 @@
 
                     {{-- Aksi --}}
                     <div class="mt-6 flex justify-end gap-3">
-                        <a href="{{ route('quiz.index', $pengajaranDosen->id) }}"
+                        <a href="{{ route('lecturer.quiz.index', $pengajaranDosen->id) }}"
                             class="rounded-lg border border-line px-4 py-2.5 text-sm font-semibold text-ink
                                transition hover:bg-paper">
                             Batal

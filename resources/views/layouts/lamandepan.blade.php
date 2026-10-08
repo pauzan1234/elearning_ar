@@ -92,7 +92,7 @@
         <a href="#kursus" class="hover:text-ink transition-colors">Pembelajaran</a>
         <a href="#cara-kerja" class="hover:text-ink transition-colors">Cara Pakai</a>
         <a href="#testimoni" class="hover:text-ink transition-colors">Testimoni</a>
-        <a href="{{ asset('apk/lms-ar.apk') }}" download="lms-ar.apk" class="hover:text-ink transition-colors">Download APK</a>
+        <a href="{{ asset('apklms/lms.apk') }}" download="lms-ar.apk" class="hover:text-ink transition-colors">Download APK</a>
 
       </nav>
 
@@ -150,7 +150,7 @@
         <a href="#kursus" class="mobile-link py-3 border-b border-line hover:text-ink">Pembelajaran</a>
         <a href="#cara-kerja" class="mobile-link py-3 border-b border-line hover:text-ink">Cara Pakai</a>
         <a href="#testimoni" class="mobile-link py-3 border-b border-line hover:text-ink">Testimoni</a>
-        <a href="{{ asset('apk/lms-ar.apk') }}" download="lms-ar.apk" class="mobile-link py-3 hover:text-ink">Download APK</a>
+        <a href="{{ asset('apklms/lms.apk') }}" download="lms-ar.apk" class="mobile-link py-3 hover:text-ink">Download APK</a>
       </div>
     </nav>
   </header>
