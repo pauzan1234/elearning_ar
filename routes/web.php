@@ -29,6 +29,7 @@ use App\Models\PengajaranMahasiswa;
 use App\Http\Controllers\Lecturer\PengajuanController;
 use App\Http\Controllers\MateriArController;
 use App\Http\Controllers\MateriHtmlController;
+use App\Http\Controllers\ProdiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -397,4 +398,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/materi-html/file/{materiFile}', [MateriHtmlController::class, 'file'])
         ->name('materi-html.file');
 });
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::resource('prodi', ProdiController::class)->except(['show']);
+});
+
+Route::get('/prodi', function () {
+    $prodis = Prodi::latest()->paginate(10);
+    return view('prodi.index', compact('prodis'));
+})->middleware('auth')->name('prodi.index');
 require __DIR__ . '/auth.php';
