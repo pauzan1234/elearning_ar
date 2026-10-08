@@ -415,6 +415,16 @@ Pembelajaran oleh
                             class="rounded-lg border border-line px-3 py-1.5 text-xs font-semibold text-ink hover:bg-paper">
                             Edit
                         </a>
+                        <form method="POST" action="{{ route('tugas.destroy', $tugas->id) }}"
+                            onsubmit="return confirm('Yakin ingin menghapus tugas ini? Semua jawaban siswa pada tugas ini juga akan ikut terhapus.')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600
+                   transition hover:bg-red-50">
+                                Hapus
+                            </button>
+                        </form>
                     </div>
 
                 </div>
