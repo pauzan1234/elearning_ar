@@ -132,7 +132,7 @@ class QuizController extends Controller
         $quiz->delete();
 
         return redirect()
-            ->route('lecturer.quiz.index', $pengajaranDosenId)
+            ->route('pengajaran.show', $pengajaranDosenId)
             ->with('success', 'Quiz berhasil dihapus.');
     }
     public function uploadGambarSoal(Request $request, QuizQuestion $quizQuestion)

@@ -14,7 +14,7 @@ Kelas
 
 <a href="{{ route('prodi.create') }}"
     class="inline-flex items-center px-4 py-2 bg-gray-800 text-white text-xs font-semibold uppercase tracking-widest rounded-md hover:bg-gray-700">
-    + Tambah Prodi
+    + Tambah Kelas
 </a>
 <div class="py-12">
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
@@ -30,7 +30,7 @@ Kelas
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Prodi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Kelas</th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
                     </tr>
                 </thead>

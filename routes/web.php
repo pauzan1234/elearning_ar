@@ -230,7 +230,8 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
         Route::patch('/{quiz}/publish', [QuizController::class, 'publish'])->name('publish');
         Route::post('/question/{quizQuestion}/gambar', [QuizController::class, 'uploadGambarSoal'])->name('question.gambar');
         Route::put('/question/{quizQuestion}', [QuizController::class, 'updateSoal'])->name('question.update');
-    Route::delete('/question/{quizQuestion}', [QuizController::class, 'destroyQuestion'])->name('question.destroy');
+        Route::delete('/question/{quizQuestion}', [QuizController::class, 'destroyQuestion'])->name('question.destroy');
+        Route::delete('/{quiz}', [QuizController::class, 'destroy'])->name('destroy');
     });
 
     // Tugas

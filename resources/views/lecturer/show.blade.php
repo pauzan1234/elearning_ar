@@ -466,10 +466,9 @@ Pembelajaran oleh
             <div class="divide-y divide-line">
 
                 @forelse ($quizList ?? [] as $quiz)
-                <a href="{{ route('lecturer.quiz.show', $quiz) }}"
-                    class="flex items-center justify-between gap-4 p-5 transition hover:bg-paper">
+                <div class="flex items-center justify-between gap-4 p-5 transition hover:bg-paper">
 
-                    <div class="min-w-0 flex-1">
+                    <a href="{{ route('lecturer.quiz.show', $quiz) }}" class="min-w-0 flex-1">
                         <h3 class="truncate text-sm font-semibold text-ink">{{ $quiz->judul }}</h3>
                         <p class="mt-1 text-xs text-ink/50">
                             {{ $quiz->questions_count ?? $quiz->questions->count() }} soal
@@ -477,19 +476,37 @@ Pembelajaran oleh
                             • {{ $quiz->durasi_menit }} menit
                             @endif
                         </p>
+                    </a>
+
+                    <div class="flex shrink-0 items-center gap-3">
+                        @if ($quiz->is_published)
+                        <span class="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700">
+                            Published
+                        </span>
+                        @else
+                        <span class="rounded-full bg-yellow-50 px-3 py-1 text-xs font-semibold text-yellow-700">
+                            Draft
+                        </span>
+                        @endif
+
+                        <form action="{{ route('lecturer.quiz.destroy', $quiz) }}" method="POST"
+                            onsubmit="return confirm('Hapus quiz &quot;{{ addslashes($quiz->judul) }}&quot;? Semua soal di dalamnya juga akan ikut terhapus.')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" title="Hapus quiz"
+                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-500
+                       transition hover:bg-red-50 hover:text-red-700">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </form>
                     </div>
 
-                    @if ($quiz->is_published)
-                    <span class="shrink-0 rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700">
-                        Published
-                    </span>
-                    @else
-                    <span class="shrink-0 rounded-full bg-yellow-50 px-3 py-1 text-xs font-semibold text-yellow-700">
-                        Draft
-                    </span>
-                    @endif
+                </div>
 
-                </a>
+
                 @empty
 
                 <div class="p-6">

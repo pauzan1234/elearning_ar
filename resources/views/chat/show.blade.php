@@ -1,6 +1,6 @@
 @extends(Auth::user()->role === 'admin' ? 'admin.app-admin' : (Auth::user()->role === 'lecturer' ? 'lecturer.app-lecturer' : 'student.app-student'))
 
-@section('ketjudul', 'Chat Mata Kuliah')
+@section('ketjudul', 'Chat Pembelajaran')
 @section('judul', ($kelas->matakuliah->nama_mk ?? $kelas->kode_mk) . ' · Kelas ' . $kelas->kode_kelas)
 
 @section('content')
@@ -16,19 +16,19 @@
 
         <div id="chat-box" class="h-[55vh] min-h-[380px] overflow-y-auto p-5 bg-slate-50 space-y-3">
             @forelse($messages as $message)
-                @php($mine = $message->user_id === Auth::id())
-                <div class="flex {{ $mine ? 'justify-end' : 'justify-start' }}" data-message-id="{{ $message->id }}">
-                    <div class="max-w-[82%] md:max-w-[70%] {{ $mine ? 'bg-blue-600 text-white' : 'bg-white border border-line text-ink' }} rounded-2xl px-4 py-3 shadow-sm">
-                        <div class="flex gap-2 items-center mb-1 text-[11px] {{ $mine ? 'text-blue-100' : 'text-ink/45' }}">
-                            <span class="font-semibold">{{ $message->user->name ?? 'Pengguna' }}</span>
-                            <span>·</span><span>{{ $message->user->role ?? '-' }}</span>
-                        </div>
-                        <p class="text-sm whitespace-pre-wrap break-words">{{ $message->message }}</p>
-                        <p class="text-[10px] mt-1.5 text-right {{ $mine ? 'text-blue-100' : 'text-ink/40' }}">{{ optional($message->created_at)->format('d/m/Y H:i') }}</p>
+            @php($mine = $message->user_id === Auth::id())
+            <div class="flex {{ $mine ? 'justify-end' : 'justify-start' }}" data-message-id="{{ $message->id }}">
+                <div class="max-w-[82%] md:max-w-[70%] {{ $mine ? 'bg-blue-600 text-white' : 'bg-white border border-line text-ink' }} rounded-2xl px-4 py-3 shadow-sm">
+                    <div class="flex gap-2 items-center mb-1 text-[11px] {{ $mine ? 'text-blue-100' : 'text-ink/45' }}">
+                        <span class="font-semibold">{{ $message->user->name ?? 'Pengguna' }}</span>
+                        <span>·</span><span>{{ $message->user->role ?? '-' }}</span>
                     </div>
+                    <p class="text-sm whitespace-pre-wrap break-words">{{ $message->message }}</p>
+                    <p class="text-[10px] mt-1.5 text-right {{ $mine ? 'text-blue-100' : 'text-ink/40' }}">{{ optional($message->created_at)->format('d/m/Y H:i') }}</p>
                 </div>
+            </div>
             @empty
-                <div id="empty-chat" class="h-full flex items-center justify-center text-sm text-ink/40">Belum ada pesan. Mulai percakapan pertama.</div>
+            <div id="empty-chat" class="h-full flex items-center justify-center text-sm text-ink/40">Belum ada pesan. Mulai percakapan pertama.</div>
             @endforelse
         </div>
 
@@ -44,77 +44,105 @@
 </div>
 
 <script>
-(() => {
-    const box = document.getElementById('chat-box');
-    const form = document.getElementById('chat-form');
-    const input = document.getElementById('message-input');
-    const button = document.getElementById('send-button');
-    const currentUserId = {{ (int) Auth::id() }};
-    let lastId = {{ (int) ($messages->max('id') ?? 0) }};
-
-    const scrollBottom = () => { box.scrollTop = box.scrollHeight; };
-    scrollBottom();
-
-    function appendMessage(message) {
-        if (document.querySelector(`[data-message-id="${message.id}"]`)) return;
-        document.getElementById('empty-chat')?.remove();
-
-        const mine = Number(message.user_id) === currentUserId;
-        const row = document.createElement('div');
-        row.className = `flex ${mine ? 'justify-end' : 'justify-start'}`;
-        row.dataset.messageId = message.id;
-
-        const bubble = document.createElement('div');
-        bubble.className = `max-w-[82%] md:max-w-[70%] ${mine ? 'bg-blue-600 text-white' : 'bg-white border border-line text-ink'} rounded-2xl px-4 py-3 shadow-sm`;
-
-        const meta = document.createElement('div');
-        meta.className = `flex gap-2 items-center mb-1 text-[11px] ${mine ? 'text-blue-100' : 'text-ink/45'}`;
-        meta.textContent = `${message.name} · ${message.role}`;
-
-        const text = document.createElement('p');
-        text.className = 'text-sm whitespace-pre-wrap break-words';
-        text.textContent = message.message;
-
-        const time = document.createElement('p');
-        time.className = `text-[10px] mt-1.5 text-right ${mine ? 'text-blue-100' : 'text-ink/40'}`;
-        time.textContent = message.time;
-
-        bubble.append(meta, text, time); row.appendChild(bubble); box.appendChild(row);
-        lastId = Math.max(lastId, Number(message.id));
-    }
-
-    async function poll() {
-        try {
-            const response = await fetch(`{{ route('chat.messages', $kelas) }}?after=${lastId}`, {headers: {'Accept': 'application/json'}});
-            if (!response.ok) return;
-            const data = await response.json();
-            if (data.messages?.length) {
-                const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 120;
-                data.messages.forEach(appendMessage);
-                if (nearBottom) scrollBottom();
+    (() => {
+        const box = document.getElementById('chat-box');
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('message-input');
+        const button = document.getElementById('send-button');
+        const currentUserId = {
+            {
+                (int) Auth::id()
             }
-        } catch (_) {}
-    }
+        };
+        let lastId = {
+            {
+                (int)($messages - > max('id') ?? 0)
+            }
+        };
 
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const value = input.value.trim();
-        if (!value) return;
-        button.disabled = true;
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                headers: {'Accept':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}','Content-Type':'application/json'},
-                body: JSON.stringify({message:value})
-            });
-            if (!response.ok) throw new Error('Gagal mengirim pesan');
-            const message = await response.json();
-            appendMessage(message); input.value = ''; scrollBottom(); input.focus();
-        } catch (e) { alert(e.message); }
-        finally { button.disabled = false; }
-    });
+        const scrollBottom = () => {
+            box.scrollTop = box.scrollHeight;
+        };
+        scrollBottom();
 
-    setInterval(poll, 3000);
-})();
+        function appendMessage(message) {
+            if (document.querySelector(`[data-message-id="${message.id}"]`)) return;
+            document.getElementById('empty-chat')?.remove();
+
+            const mine = Number(message.user_id) === currentUserId;
+            const row = document.createElement('div');
+            row.className = `flex ${mine ? 'justify-end' : 'justify-start'}`;
+            row.dataset.messageId = message.id;
+
+            const bubble = document.createElement('div');
+            bubble.className = `max-w-[82%] md:max-w-[70%] ${mine ? 'bg-blue-600 text-white' : 'bg-white border border-line text-ink'} rounded-2xl px-4 py-3 shadow-sm`;
+
+            const meta = document.createElement('div');
+            meta.className = `flex gap-2 items-center mb-1 text-[11px] ${mine ? 'text-blue-100' : 'text-ink/45'}`;
+            meta.textContent = `${message.name} · ${message.role}`;
+
+            const text = document.createElement('p');
+            text.className = 'text-sm whitespace-pre-wrap break-words';
+            text.textContent = message.message;
+
+            const time = document.createElement('p');
+            time.className = `text-[10px] mt-1.5 text-right ${mine ? 'text-blue-100' : 'text-ink/40'}`;
+            time.textContent = message.time;
+
+            bubble.append(meta, text, time);
+            row.appendChild(bubble);
+            box.appendChild(row);
+            lastId = Math.max(lastId, Number(message.id));
+        }
+
+        async function poll() {
+            try {
+                const response = await fetch(`{{ route('chat.messages', $kelas) }}?after=${lastId}`, {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if (!response.ok) return;
+                const data = await response.json();
+                if (data.messages?.length) {
+                    const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 120;
+                    data.messages.forEach(appendMessage);
+                    if (nearBottom) scrollBottom();
+                }
+            } catch (_) {}
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const value = input.value.trim();
+            if (!value) return;
+            button.disabled = true;
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: value
+                    })
+                });
+                if (!response.ok) throw new Error('Gagal mengirim pesan');
+                const message = await response.json();
+                appendMessage(message);
+                input.value = '';
+                scrollBottom();
+                input.focus();
+            } catch (e) {
+                alert(e.message);
+            } finally {
+                button.disabled = false;
+            }
+        });
+
+        setInterval(poll, 3000);
+    })();
 </script>
 @endsection
