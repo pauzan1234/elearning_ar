@@ -9,62 +9,52 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class MateriHtmlController extends Controller
 {
     /** Form upload materi interaktif (HTML + JS) */
+
     public function create(PengajaranDosen $pengajaranDosen)
     {
         $this->authorizeDosen($pengajaranDosen);
 
-        return view('lecturer.materi-html.create', compact('pengajaranDosen'));
+        $pertemuan = Materi::where('pengajaran_id', $pengajaranDosen->id)
+            ->orderBy('urutan')
+            ->get();
+
+        return view('lecturer.materi-html.create', compact('pengajaranDosen', 'pertemuan'));
     }
 
-    /** Simpan materi + file html */
     public function store(Request $request, PengajaranDosen $pengajaranDosen)
     {
         $this->authorizeDosen($pengajaranDosen);
 
         $data = $request->validate([
-            'judul'     => ['required', 'string', 'max:255'],
-            'deskripsi' => ['nullable', 'string'],
-            'file'      => ['required', 'file', 'mimes:html,htm', 'max:10240'], // 10 MB
+            'materi_id' => [
+                'required',
+                Rule::exists('materis', 'id')->where('pengajaran_id', $pengajaranDosen->id),
+            ],
+            'file' => ['required', 'file', 'mimes:html,htm', 'max:10240'],
         ]);
 
+        $materi = Materi::findOrFail($data['materi_id']);
         $upload = $request->file('file');
 
-        // Disimpan di disk PRIVATE (local), bukan public, supaya hanya
-        // bisa dibuka lewat method file() di bawah (dengan header sandbox).
+        // Disk PRIVATE (local), disajikan lewat method file() yang sudah ada
         $path = $upload->storeAs('materi-html', Str::uuid() . '.html', 'local');
 
-        DB::transaction(function () use ($data, $pengajaranDosen, $path, $upload) {
-            $materi = Materi::create([
-                'pengajaran_id' => $pengajaranDosen->id,
-                'judul'         => $data['judul'],
-                'deskripsi'     => $data['deskripsi'] ?? null,
-                'urutan'        => (Materi::where('pengajaran_id', $pengajaranDosen->id)->max('urutan') ?? 0) + 1,
-            ]);
+        $materi->files()->create([
+            'tipe'      => MateriFile::TIPE_HTML,
+            'file_path' => $path,
+            'nama_asli' => $upload->getClientOriginalName(),
+            'urutan'    => ($materi->files()->max('urutan') ?? 0) + 1,
+        ]);
 
-            $materi->files()->create([
-                'tipe'      => MateriFile::TIPE_HTML,
-                'file_path' => $path,
-                'nama_asli' => $upload->getClientOriginalName(),
-                'urutan'    => 1,
-            ]);
-        });
-
-        // GANTI nama route ini dengan route halaman pembelajaran dosen milikmu
         return redirect()
-            ->route('lecturer.pengajaran.show', $pengajaranDosen->id)
+            ->route('pengajaran.show', $pengajaranDosen->id)
             ->with('success', 'Materi interaktif berhasil ditambahkan.');
     }
-
-    /**
-     * Sajikan file HTML ke iframe / tab baru.
-     * Header CSP "sandbox" membuat halaman berjalan di origin terisolasi:
-     * script tetap jalan, tapi tidak bisa menyentuh sesi/cookie aplikasi,
-     * baik saat di-embed maupun dibuka langsung di tab baru.
-     */
     public function file(MateriFile $materiFile)
     {
         abort_unless($materiFile->tipe === MateriFile::TIPE_HTML, 404);

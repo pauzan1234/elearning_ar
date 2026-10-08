@@ -307,7 +307,6 @@ Pembelajaran oleh
                         </div>
 
                         @elseif ($file->tipe === 'html')
-                        {{-- BARU: Embed materi interaktif (file .html berisi HTML + JavaScript) --}}
                         <div>
                             <div class="mb-2 flex items-center justify-between">
                                 <span class="text-xs font-medium text-ink/50">
@@ -319,7 +318,6 @@ Pembelajaran oleh
                                 </a>
                             </div>
 
-                            {{-- sandbox: script boleh jalan, tapi terisolasi dari halaman utama (tanpa allow-same-origin) --}}
                             <iframe src="{{ $file->url }}"
                                 sandbox="allow-scripts allow-pointer-lock allow-fullscreen"
                                 allowfullscreen loading="lazy"
