@@ -12,6 +12,7 @@ use App\Models\Student;
 use App\Models\Tugas;
 use App\Models\TugasJawaban;
 use Illuminate\Support\Collection;
+use Illuminate\Http\RedirectResponse;
 
 class AkademikController extends Controller
 {
@@ -231,8 +232,8 @@ class AkademikController extends Controller
             ->get()
             ->keyBy('sesi_absensi_id');
 
-        $tugasScores = $tugasJawaban->pluck('skor')->filter(fn ($value) => $value !== null);
-        $quizScores = $quizJawaban->pluck('skor')->filter(fn ($value) => $value !== null);
+        $tugasScores = $tugasJawaban->pluck('skor')->filter(fn($value) => $value !== null);
+        $quizScores = $quizJawaban->pluck('skor')->filter(fn($value) => $value !== null);
         $hadir = $absensi->where('status', 'hadir')->count();
         $izin = $absensi->where('status', 'izin')->count();
         $sakit = $absensi->where('status', 'sakit')->count();
@@ -254,5 +255,20 @@ class AkademikController extends Controller
             'sakit' => $sakit,
             'alpha' => $alphaTercatat + $belumTercatat,
         ];
+    }
+
+    public function quizJawabanReset(Quiz $quiz, QuizJawaban $quizJawaban): RedirectResponse
+    {
+        $quiz->load('pengajaranDosen');
+        $this->authorizePengajaran($quiz->pengajaranDosen);
+
+        // Pastikan jawaban ini memang milik quiz tersebut
+        abort_unless((int) $quizJawaban->quiz_id === (int) $quiz->id, 404);
+
+        $quizJawaban->delete(); // quiz_jawaban_detail ikut terhapus (cascadeOnDelete)
+
+        return redirect()
+            ->route('lecturer.akademik.quiz.jawaban.index', $quiz)
+            ->with('success', 'Pengerjaan siswa berhasil direset, ia bisa mengerjakan ulang.');
     }
 }

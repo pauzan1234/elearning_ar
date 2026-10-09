@@ -232,6 +232,7 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
         Route::put('/question/{quizQuestion}', [QuizController::class, 'updateSoal'])->name('question.update');
         Route::delete('/question/{quizQuestion}', [QuizController::class, 'destroyQuestion'])->name('question.destroy');
         Route::delete('/{quiz}', [QuizController::class, 'destroy'])->name('destroy');
+        Route::delete('/{quiz}/jawaban/{quizJawaban}', [QuizController::class, 'resetJawaban'])->name('jawaban.reset');
     });
 
     // Tugas
@@ -261,6 +262,9 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
         Route::get('/nilai-menu', [LecturerAkademikController::class, 'nilaiCourses'])->name('nilai.courses');
         Route::get('/nilai-menu/{pengajaranDosen}', [LecturerAkademikController::class, 'nilaiStudents'])->name('nilai.students');
         Route::get('/nilai-menu/{pengajaranDosen}/mahasiswa/{student}', [LecturerAkademikController::class, 'nilaiStudent'])->name('nilai.student');
+
+        Route::delete('/quiz-jawaban/{quiz}/{quizJawaban}/reset', [LecturerAkademikController::class, 'quizJawabanReset'])
+            ->name('quiz.jawaban.reset');
     });
     // Materi AR
     Route::get('/materi-ar/{pengajaranDosen}/create', [MateriArController::class, 'create'])

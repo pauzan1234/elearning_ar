@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\QuizJawaban;
 
 class QuizController extends Controller
 {
@@ -70,7 +71,28 @@ class QuizController extends Controller
         $this->authorizeQuiz($quiz);
         $quiz->load('questions', 'pengajaranDosen');
 
-        return view('lecturer.quiz.show', compact('quiz'));
+        // Daftar mahasiswa yang sudah mengerjakan
+        $hasil = QuizJawaban::with('mahasiswa')
+            ->where('quiz_id', $quiz->id)
+            ->latest('waktu_submit')
+            ->get();
+
+        return view('lecturer.quiz.show', compact('quiz', 'hasil'));
+    }
+
+    /**
+     * Reset pengerjaan satu mahasiswa agar bisa mengerjakan ulang.
+     */
+    public function resetJawaban(Quiz $quiz, QuizJawaban $quizJawaban): RedirectResponse
+    {
+        $this->authorizeQuiz($quiz);
+
+        // Pastikan jawaban ini memang milik quiz tersebut
+        abort_unless((int) $quizJawaban->quiz_id === (int) $quiz->id, 404);
+
+        $quizJawaban->delete(); // quiz_jawaban_detail ikut terhapus (cascadeOnDelete)
+
+        return back()->with('success', 'Pengerjaan mahasiswa berhasil direset, ia bisa mengerjakan ulang.');
     }
 
     /**
