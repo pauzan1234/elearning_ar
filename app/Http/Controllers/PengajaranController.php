@@ -15,6 +15,8 @@ use App\Models\SesiAbsensi;
 use App\Models\Tugas;
 use App\Exports\RekapNilaiExport;
 use App\Models\PengajuanKelas;
+use App\Models\Pertemuan;
+use App\Models\Quiz;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -338,7 +340,7 @@ class PengajaranController extends Controller
 
 
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $kelas = Kelas::with([
             'pengajaranDosen.lecturer.user', // untuk daftar nama dosen pengampu, ditampilkan di @section('ketjudul')
@@ -369,29 +371,6 @@ class PengajaranController extends Controller
             abort(403, 'Anda tidak mengajar di kelas ini.');
         }
 
-        // urutkan materi terbaru di atas (opsional, sesuaikan selera)
-        $materiList = $pengajaranDosen->materi()
-            ->with(['files', 'materiAr'])   // <-- tambah materiAr
-            ->with('files')
-            ->orderBy('urutan')
-            ->orderByDesc('created_at')
-            ->get();
-
-        $sesiAbsensiList = SesiAbsensi::where('kelas_id', $kelas->id)
-            ->latest('dibuka_pada')
-            ->get();
-
-        // ...kode yang sudah ada (ambil $pengajaran, $materiList, $sesiAbsensiList, dll)
-
-        $quizList = \App\Models\Quiz::where('pengajaran_dosen_id', $pengajaranDosen->id)
-            ->withCount('questions')
-            ->latest()
-            ->get();
-
-        $tugasList = Tugas::where('pengajaran_dosen_id', $pengajaranDosen->id)
-            ->withCount('jawaban')
-            ->latest()
-            ->get();
 
         $pengajuanPending = PengajuanKelas::where('kelas_id', $kelas->id)
             ->where('status', 'pending')
@@ -399,18 +378,54 @@ class PengajaranController extends Controller
             ->latest()
             ->get();
 
-        return view(
-            'lecturer.show',
-            [
-                'pengajaran' => $kelas,               // dipakai untuk info kelas & mata kuliah
-                'pengajaranDosen' => $pengajaranDosen, // dipakai untuk link Tambah Materi
-                'materiList' => $materiList,           // dipakai untuk render daftar materi
-                'sesiAbsensiList' => $sesiAbsensiList, // <-- tambahan
-                'quizList' => $quizList,
-                'tugasList' => $tugasList, // tambahkan ini
-                'pengajuanPending' => $pengajuanPending, // tambahan
-            ]
-        );
+        $pertemuanList = Pertemuan::where('kelas_id', $kelas->id)->orderBy('pertemuan_ke')->get();
+        if ($pertemuanList->isEmpty()) {
+            $pertemuanList = collect([
+                Pertemuan::create(['kelas_id' => $kelas->id, 'pertemuan_ke' => 1])
+            ]);
+        }
+
+        // Pertemuan aktif: dari ?pertemuan=ID, default yang pertama
+        $pertemuan = $pertemuanList->firstWhere('id', (int) $request->query('pertemuan'))
+            ?? $pertemuanList->first();
+
+        $materiList = $pengajaranDosen->materi()
+            ->where('pertemuan_id', $pertemuan->id)
+            ->with(['files', 'materiAr'])
+            ->orderBy('urutan')
+            ->orderByDesc('created_at')
+            ->get();
+
+        $sesiAbsensiList = SesiAbsensi::where('kelas_id', $kelas->id)
+            ->where('pertemuan_ke', $pertemuan->pertemuan_ke)
+            ->latest('dibuka_pada')
+            ->get();
+
+        $quizList = Quiz::where('pengajaran_dosen_id', $pengajaranDosen->id)
+            ->where('pertemuan_id', $pertemuan->id)
+            ->withCount('questions')
+            ->latest()
+            ->get();
+
+        $tugasList = Tugas::where('pengajaran_dosen_id', $pengajaranDosen->id)
+            ->where('pertemuan_id', $pertemuan->id)
+            ->withCount('jawaban')
+            ->latest()
+            ->get();
+
+        // $pengajuanPending tetap sama (tingkat kelas, bukan per pertemuan)
+
+        return view('lecturer.show', [
+            'pengajaran'       => $kelas,
+            'pengajaranDosen'  => $pengajaranDosen,
+            'pertemuanList'    => $pertemuanList,
+            'pertemuan'        => $pertemuan,
+            'materiList'       => $materiList,
+            'sesiAbsensiList'  => $sesiAbsensiList,
+            'quizList'         => $quizList,
+            'tugasList'        => $tugasList,
+            'pengajuanPending' => $pengajuanPending,
+        ]);
     }
     public function daftarPeserta(Kelas $kelas)
     {
@@ -447,7 +462,15 @@ class PengajaranController extends Controller
         ]);
     }
 
+    public function storePertemuan($kelasId)
+    {
+        $next = (Pertemuan::where('kelas_id', $kelasId)->max('pertemuan_ke') ?? 0) + 1;
+        $p = Pertemuan::create(['kelas_id' => $kelasId, 'pertemuan_ke' => $next]);
 
+        return redirect()
+            ->route('pengajaran.show', ['id' => $kelasId, 'pertemuan' => $p->id])
+            ->with('success', "Pertemuan {$next} berhasil ditambahkan.");
+    }
 
     public function rekapNilai(PengajaranDosen $pengajaranDosen)
     {

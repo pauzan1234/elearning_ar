@@ -3,64 +3,108 @@
 namespace App\Http\Controllers\Lecturer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Materi;
 use App\Models\PengajaranDosen;
 use App\Models\Tugas;
 use App\Models\TugasFile;
 use App\Models\TugasJawaban;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Throwable;
+use Illuminate\Support\Facades\DB;
+
 
 class TugasController extends Controller
 {
-    public function create(PengajaranDosen $pengajaranDosen)
+    public function create(Request $request, PengajaranDosen $pengajaranDosen)
     {
         $this->authorizePengajaran($pengajaranDosen);
         // load relasi supaya tahu ini tugas untuk kelas/matkul apa
         $pengajaranDosen->load('kelas.matakuliah');
+        $pertemuanId = $request->query('pertemuan');
 
-        return view('lecturer.tugas.create', compact('pengajaranDosen'));
+
+        return view('lecturer.tugas.create', compact('pengajaranDosen', 'pertemuanId'));
     }
+
+
+
 
     public function store(Request $request, PengajaranDosen $pengajaranDosen)
     {
-        $this->authorizePengajaran($pengajaranDosen);
+        abort_unless($pengajaranDosen->lecturer->user_id === Auth::id(), 403);
+
+
         $validated = $request->validate([
+            'pertemuan_id' => [
+                'nullable',
+                Rule::exists('pertemuan', 'id')
+                    ->where('kelas_id', $pengajaranDosen->kelas_id),
+            ],
             'judul'       => 'required|string|max:255',
             'deskripsi'   => 'nullable|string',
             'deadline'    => 'nullable|date',
             'bobot_nilai' => 'nullable|integer|min:0|max:100',
-            'files'       => 'nullable|array',
-            'files.*'     => 'file|mimes:pdf,jpg,jpeg,png|max:10240', // max 10MB per file
+            'files'       => 'nullable|array|max:10',
+            'files.*'     => 'file|mimes:pdf,jpg,jpeg,png|max:10240',
+        ], [
+            'judul.required'      => 'Judul tugas wajib diisi.',
+            'files.*.mimes'       => 'Lampiran harus berupa PDF, JPG, JPEG, atau PNG.',
+            'files.*.max'         => 'Ukuran setiap lampiran maksimal 10 MB.',
+            'files.max'           => 'Maksimal 10 lampiran.',
+            'pertemuan_id.exists' => 'Pertemuan tidak valid.',
         ]);
 
-        $tugas = Tugas::create([
-            'pengajaran_dosen_id' => $pengajaranDosen->id,
-            'judul'               => $validated['judul'],
-            'deskripsi'           => $validated['deskripsi'] ?? null,
-            'deadline'            => $validated['deadline'] ?? null,
-            'bobot_nilai'         => $validated['bobot_nilai'] ?? null,
-        ]);
+        $uploadedPaths = [];
 
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $index => $file) {
-                $path = $file->store('tugas-soal', 'public');
-
-                $extension = strtolower($file->getClientOriginalExtension());
-                $fileType  = $extension === 'pdf' ? 'pdf' : 'gambar';
-
-                TugasFile::create([
-                    'tugas_id'  => $tugas->id,
-                    'file_path' => $path,
-                    'file_type' => $fileType,
-                    'urutan'    => $index + 1,
+        try {
+            DB::transaction(function () use ($request, $validated, $pengajaranDosen, &$uploadedPaths) {
+                $tugas = Tugas::create([
+                    'pengajaran_dosen_id' => $pengajaranDosen->id,
+                    'pertemuan_id'        => $validated['pertemuan_id'] ?? null,
+                    'judul'               => $validated['judul'],
+                    'deskripsi'           => $validated['deskripsi'] ?? null,
+                    'deadline'            => $validated['deadline'] ?? null,
+                    'bobot_nilai'         => $validated['bobot_nilai'] ?? null,
                 ]);
+
+                foreach ($request->file('files', []) as $index => $file) {
+                    $path = $file->store('tugas-soal', 'public');
+                    $uploadedPaths[] = $path;
+
+                    TugasFile::create([
+                        'tugas_id'  => $tugas->id,
+                        'file_path' => $path,
+                        'file_type' => strtolower($file->getClientOriginalExtension()) === 'pdf'
+                            ? 'pdf'
+                            : 'gambar',
+                        'urutan'    => $index + 1,
+                    ]);
+                }
+            });
+        } catch (Throwable $e) {
+            foreach ($uploadedPaths as $path) {
+                Storage::disk('public')->delete($path);
             }
+
+            report($e);
+
+            return back()
+                ->withInput()
+                ->with('error', 'Gagal menyimpan tugas. Silakan coba lagi.');
         }
 
         return redirect()
-            ->route('pengajaran.show', $pengajaranDosen->kelas_id) // sesuaikan dengan route show kamu
+            ->route('pengajaran.show', array_filter([
+                'id'        => $pengajaranDosen->kelas_id,
+                'pertemuan' => $validated['pertemuan_id'] ?? null,
+            ]))
             ->with('success', 'Tugas berhasil ditambahkan.');
     }
+
+
     public function edit(Tugas $tugas)
     {
         $this->authorizeTugas($tugas);
@@ -121,13 +165,21 @@ class TugasController extends Controller
         }
 
         return redirect()
-            ->route('pengajaran.show', ['id' => $tugas->pengajaranDosen->kelas_id])
+            ->route('pengajaran.show', array_filter([
+                'id'        => $tugas->pengajaranDosen->kelas_id,
+                'pertemuan' => $tugas->pertemuan_id,
+            ]))
             ->with('success', 'Tugas berhasil diperbarui.');
     }
 
     public function destroy(Tugas $tugas)
     {
         $this->authorizeTugas($tugas);
+
+        // Ambil dulu sebelum dihapus
+        $kelasId     = $tugas->pengajaranDosen->kelas_id;
+        $pertemuanId = $tugas->pertemuan_id;
+
         foreach ($tugas->files as $file) {
             Storage::disk('public')->delete($file->file_path);
         }
@@ -135,7 +187,10 @@ class TugasController extends Controller
         $tugas->delete();
 
         return redirect()
-            ->route('pengajaran.show', ['id' => $tugas->pengajaranDosen->kelas_id])
+            ->route('pengajaran.show', array_filter([
+                'id'         => $kelasId,
+                'pertemuan'  => $pertemuanId,
+            ]))
             ->with('success', 'Tugas berhasil dihapus.');
     }
     public function show(Tugas $tugas)

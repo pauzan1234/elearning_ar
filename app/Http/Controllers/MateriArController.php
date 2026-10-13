@@ -9,16 +9,23 @@ use App\Models\PengajaranMahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class MateriArController extends Controller
 {
-    public function create(PengajaranDosen $pengajaranDosen)
+    public function create(Request $request, PengajaranDosen $pengajaranDosen)
     {
         abort_unless($pengajaranDosen->lecturer->user_id === Auth::id(), 403);
 
-        $pertemuan = Materi::where('pengajaran_id', $pengajaranDosen->id)->get();
+        $pertemuanId = $request->query('pertemuan');
 
-        return view('lecturer.materi-ar.create', compact('pengajaranDosen', 'pertemuan'));
+        $materiList = Materi::where('pengajaran_id', $pengajaranDosen->id)
+            ->when($pertemuanId, fn($q) => $q->where('pertemuan_id', $pertemuanId))
+            ->orderBy('urutan')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('lecturer.materi-ar.create', compact('pengajaranDosen', 'materiList', 'pertemuanId'));
     }
 
     public function store(Request $request, PengajaranDosen $pengajaranDosen)
@@ -26,7 +33,11 @@ class MateriArController extends Controller
         abort_unless($pengajaranDosen->lecturer->user_id === Auth::id(), 403);
 
         $validated = $request->validate([
-            'materi_id'  => 'required|exists:materis,id',
+            // materi harus milik pengajaran ini (pertemuan ikut dari materi)
+            'materi_id' => [
+                'required',
+                Rule::exists('materis', 'id')->where('pengajaran_id', $pengajaranDosen->id),
+            ],
             'judul'      => 'required|string|max:255',
             'deskripsi'  => 'nullable|string',
             'file_model' => 'required|file|max:20480', // 20MB

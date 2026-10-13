@@ -11,6 +11,7 @@ class Materi extends Model
     protected $fillable = [
         'pengajaran_id',
         'judul',
+        'pertemuan_id',
         'deskripsi',
         'urutan',
         'is_hidden'
@@ -41,5 +42,9 @@ class Materi extends Model
     public function scopeVisible($query)
     {
         return $query->where('is_hidden', false);
+    }
+    public function pertemuan()
+    {
+        return $this->belongsTo(Pertemuan::class);
     }
 }

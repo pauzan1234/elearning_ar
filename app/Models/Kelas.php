@@ -70,4 +70,8 @@ class Kelas extends Model
     {
         return $this->hasMany(JadwalMatakuliah::class, 'kelas_id');
     }
+    public function pertemuan()
+    {
+        return $this->hasMany(Pertemuan::class);
+    }
 }

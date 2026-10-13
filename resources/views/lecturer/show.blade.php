@@ -13,12 +13,42 @@ Pembelajaran oleh
 
 @section('content')
 
+@php
+// Parameter pertemuan aktif, dipakai di semua link "tambah"
+$pParam = ['pertemuan' => $pertemuan->id];
+@endphp
+
 {{-- Notifikasi sukses (hapus, tambah, dll) --}}
 @if (session('success'))
 <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
     {{ session('success') }}
 </div>
 @endif
+
+{{-- =================================================
+            SELECTOR PERTEMUAN
+================================================== --}}
+<div class="mb-6 overflow-x-auto">
+    <div class="flex min-w-max items-center gap-2">
+        @foreach ($pertemuanList as $p)
+        <a href="{{ route('pengajaran.show', ['id' => $pengajaran->id, 'pertemuan' => $p->id]) }}"
+            class="rounded-lg border px-4 py-2 text-sm font-semibold transition
+                   {{ (int) $p->id === (int) $pertemuan->id
+                        ? 'border-ink bg-ink text-white'
+                        : 'border-line bg-white text-ink/60 hover:bg-paper hover:text-ink' }}">
+            Pertemuan {{ $p->pertemuan_ke }}
+        </a>
+        @endforeach
+
+        <form method="POST" action="{{ route('lecturer.pertemuan.store', $pengajaran->id) }}">
+            @csrf
+            <button type="submit"
+                class="rounded-lg border border-dashed border-line px-4 py-2 text-sm font-semibold text-ink/60 hover:bg-paper">
+                + Pertemuan
+            </button>
+        </form>
+    </div>
+</div>
 
 <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
 
@@ -77,7 +107,7 @@ Pembelajaran oleh
 
                 <div>
                     <h2 class="font-display text-lg font-semibold text-ink">
-                        Materi Pembelajaran
+                        Materi Pembelajaran — Pertemuan {{ $pertemuan->pertemuan_ke }}
                     </h2>
                     <p class="mt-1 text-sm text-ink/50">
                         Kelola materi yang akan diberikan kepada siswa.
@@ -87,7 +117,7 @@ Pembelajaran oleh
                 <div class="flex flex-wrap items-center gap-2">
 
                     {{-- Tambah Materi --}}
-                    <a href="{{ route('materi.create', $pengajaranDosen->id) }}"
+                    <a href="{{ route('materi.create', array_merge([$pengajaranDosen->id], $pParam)) }}"
                         class="inline-flex items-center justify-center gap-2 rounded-lg
                                bg-ink px-4 py-2.5 text-sm font-semibold text-white
                                transition hover:bg-primaryDark">
@@ -99,7 +129,7 @@ Pembelajaran oleh
                     </a>
 
                     {{-- Tambah Materi AR (model 3D) --}}
-                    <a href="{{ route('materi-ar.create', $pengajaranDosen->id) }}"
+                    <a href="{{ route('materi-ar.create', array_merge([$pengajaranDosen->id], $pParam)) }}"
                         class="inline-flex items-center justify-center gap-2 rounded-lg
                                border border-teal/30 bg-teal/10 px-4 py-2.5 text-sm font-semibold text-teal
                                transition hover:bg-teal/20">
@@ -110,8 +140,8 @@ Pembelajaran oleh
                         Tambah Materi AR
                     </a>
 
-                    {{-- BARU: Tambah Materi Interaktif (file HTML + JavaScript) --}}
-                    <a href="{{ route('materi-html.create', $pengajaranDosen->id) }}"
+                    {{-- Tambah Materi Interaktif (file HTML + JavaScript) --}}
+                    <a href="{{ route('materi-html.create', array_merge([$pengajaranDosen->id], $pParam)) }}"
                         class="inline-flex items-center justify-center gap-2 rounded-lg
                                border border-purple-300 bg-purple-50 px-4 py-2.5 text-sm font-semibold text-purple-700
                                transition hover:bg-purple-100">
@@ -127,12 +157,11 @@ Pembelajaran oleh
 
 
             {{-- =================================================
-                        LIST MATERI (dari database, dengan embed player)
+                        LIST MATERI
             ================================================== --}}
             <div class="divide-y divide-line">
 
                 @forelse ($materiList as $materi)
-                {{-- Label tipe konten yang dimiliki materi ini, misal "PDF, Video" --}}
                 @php
                 $labelTipe = $materi->files
                 ->map(function ($file) {
@@ -189,7 +218,7 @@ Pembelajaran oleh
                                 </p>
                             </div>
 
-                            {{-- Chevron indikator expand --}}
+                            {{-- Chevron --}}
                             <svg class="h-4 w-4 shrink-0 text-ink/30 transition-transform"
                                 :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -199,7 +228,7 @@ Pembelajaran oleh
 
                         </button>
 
-                        {{-- Tombol Materi AR (buka di tab baru) --}}
+                        {{-- Tombol Materi AR --}}
                         @foreach ($materi->materiAr as $ar)
                         <a href="{{ route('materi-ar.show', $ar->id) }}" target="_blank" rel="noopener"
                             title="{{ $ar->judul }}"
@@ -257,7 +286,7 @@ Pembelajaran oleh
                     </div>
 
 
-                    {{-- Body: konten embed (PDF, audio, video, HTML interaktif) --}}
+                    {{-- Body: konten embed --}}
                     <div x-show="open" x-cloak class="space-y-5 px-5 pb-5">
 
                         @if ($materi->deskripsi)
@@ -268,7 +297,6 @@ Pembelajaran oleh
 
                         @foreach ($materi->files as $file)
                         @if ($file->tipe === 'pdf')
-                        {{-- Embed PDF --}}
                         <div>
                             <div class="mb-2 flex items-center justify-between">
                                 <span class="text-xs font-medium text-ink/50">
@@ -284,7 +312,6 @@ Pembelajaran oleh
                         </div>
 
                         @elseif ($file->tipe === 'audio')
-                        {{-- Embed Audio Player --}}
                         <div>
                             <p class="mb-2 text-xs font-medium text-ink/50">
                                 {{ $file->nama_asli ?? 'Rekaman Audio' }}
@@ -296,7 +323,6 @@ Pembelajaran oleh
                         </div>
 
                         @elseif ($file->tipe === 'video_youtube' && $file->youtube_embed_url)
-                        {{-- Embed Video YouTube --}}
                         <div>
                             <p class="mb-2 text-xs font-medium text-ink/50">Video Pembelajaran</p>
                             <div class="aspect-video w-full overflow-hidden rounded-xl border border-line">
@@ -326,7 +352,7 @@ Pembelajaran oleh
                         @endif
                         @endforeach
 
-                        {{-- Materi AR (ditampilkan sekali per materi, di luar loop file) --}}
+                        {{-- Materi AR --}}
                         @foreach ($materi->materiAr as $ar)
                         <div class="flex items-center justify-between gap-3 rounded-xl border border-line bg-paper p-4">
                             <div class="min-w-0">
@@ -349,11 +375,11 @@ Pembelajaran oleh
 
                 @empty
 
-                {{-- Empty State --}}
                 <div class="p-6">
                     <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
                         <p class="text-sm text-ink/50">
-                            Belum ada materi. Klik "Tambah Materi" untuk mulai menambahkan.
+                            Belum ada materi untuk Pertemuan {{ $pertemuan->pertemuan_ke }}.
+                            Klik "Tambah Materi" untuk mulai menambahkan.
                         </p>
                     </div>
                 </div>
@@ -371,17 +397,18 @@ Pembelajaran oleh
 
             <div class="flex flex-col justify-between gap-4 border-b border-line p-6 sm:flex-row sm:items-center">
                 <div>
-                    <h2 class="font-display text-lg font-semibold text-ink">Tugas</h2>
+                    <h2 class="font-display text-lg font-semibold text-ink">
+                        Tugas — Pertemuan {{ $pertemuan->pertemuan_ke }}
+                    </h2>
                     <p class="mt-1 text-sm text-ink/50">Kelola tugas dan pengumpulan siswa.</p>
                 </div>
 
-                <a href="{{ route('tugas.create', $pengajaranDosen->id) }}"
+                <a href="{{ route('tugas.create', array_merge([$pengajaranDosen->id], $pParam)) }}"
                     class="rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primaryDark">
                     + Tambah Tugas
                 </a>
             </div>
 
-            {{-- List Tugas --}}
             <div class="divide-y divide-line">
 
                 @forelse ($tugasList as $tugas)
@@ -421,7 +448,7 @@ Pembelajaran oleh
                             @method('DELETE')
                             <button type="submit"
                                 class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600
-                   transition hover:bg-red-50">
+                                       transition hover:bg-red-50">
                                 Hapus
                             </button>
                         </form>
@@ -432,7 +459,7 @@ Pembelajaran oleh
 
                 <div class="p-6">
                     <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
-                        <p class="text-sm text-ink/50">Belum ada tugas.</p>
+                        <p class="text-sm text-ink/50">Belum ada tugas untuk Pertemuan {{ $pertemuan->pertemuan_ke }}.</p>
                     </div>
                 </div>
                 @endforelse
@@ -449,11 +476,13 @@ Pembelajaran oleh
 
             <div class="flex flex-col justify-between gap-4 border-b border-line p-6 sm:flex-row sm:items-center">
                 <div>
-                    <h2 class="font-display text-lg font-semibold text-ink">Quiz</h2>
-                    <p class="mt-1 text-sm text-ink/50">Kelola quiz pilihan ganda untuk pembelajaran ini.</p>
+                    <h2 class="font-display text-lg font-semibold text-ink">
+                        Quiz — Pertemuan {{ $pertemuan->pertemuan_ke }}
+                    </h2>
+                    <p class="mt-1 text-sm text-ink/50">Kelola quiz pilihan ganda untuk pertemuan ini.</p>
                 </div>
 
-                <a href="{{ route('lecturer.quiz.index', $pengajaranDosen->id) }}"
+                <a href="{{ route('lecturer.quiz.index', array_merge([$pengajaranDosen->id], $pParam)) }}"
                     class="inline-flex items-center justify-center gap-2 rounded-lg
                            bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primaryDark">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -495,7 +524,7 @@ Pembelajaran oleh
                             @method('DELETE')
                             <button type="submit" title="Hapus quiz"
                                 class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-500
-                       transition hover:bg-red-50 hover:text-red-700">
+                                       transition hover:bg-red-50 hover:text-red-700">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -506,13 +535,13 @@ Pembelajaran oleh
 
                 </div>
 
-
                 @empty
 
                 <div class="p-6">
                     <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
                         <p class="text-sm text-ink/50">
-                            Belum ada quiz. Klik "Buat Quiz" untuk mulai menambahkan.
+                            Belum ada quiz untuk Pertemuan {{ $pertemuan->pertemuan_ke }}.
+                            Klik "Buat Quiz" untuk mulai menambahkan.
                         </p>
                     </div>
                 </div>
@@ -524,7 +553,7 @@ Pembelajaran oleh
 
 
         {{-- =================================================
-                    MAHASISWA
+                    MAHASISWA (tingkat kelas)
         ================================================== --}}
         <div id="mahasiswa" class="mt-8 overflow-hidden rounded-2xl border border-line bg-white shadow-sm">
 
@@ -539,7 +568,6 @@ Pembelajaran oleh
                 </span>
             </div>
 
-            {{-- Pengajuan masuk kelas (menunggu persetujuan) --}}
             @if (isset($pengajuanPending) && $pengajuanPending->count())
             <div class="border-b border-line bg-amber-50/60 p-6">
                 <h3 class="text-sm font-semibold text-amber-800">
@@ -591,7 +619,6 @@ Pembelajaran oleh
             </div>
             @endif
 
-            {{-- List Mahasiswa --}}
             <div class="divide-y divide-line">
 
                 @forelse ($pengajaran->mahasiswa as $mhs)
@@ -635,8 +662,10 @@ Pembelajaran oleh
 
             <div class="flex flex-col justify-between gap-4 border-b border-line p-6 sm:flex-row sm:items-center">
                 <div>
-                    <h2 class="font-display text-lg font-semibold text-ink">Absensi</h2>
-                    <p class="mt-1 text-sm text-ink/50">Kelola kehadiran siswa per pertemuan.</p>
+                    <h2 class="font-display text-lg font-semibold text-ink">
+                        Absensi — Pertemuan {{ $pertemuan->pertemuan_ke }}
+                    </h2>
+                    <p class="mt-1 text-sm text-ink/50">Kelola kehadiran siswa untuk pertemuan ini.</p>
                 </div>
 
                 <div class="flex items-center gap-2">
@@ -683,7 +712,7 @@ Pembelajaran oleh
                 <div class="p-6">
                     <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
                         <p class="text-sm text-ink/50">
-                            Belum ada sesi absensi untuk pembelajaran ini.
+                            Belum ada sesi absensi untuk Pertemuan {{ $pertemuan->pertemuan_ke }}.
                         </p>
                     </div>
                 </div>
@@ -700,17 +729,16 @@ Pembelajaran oleh
     ================================================== --}}
     <div class="space-y-6">
 
-        {{-- =================================================
-                    AKSI CEPAT
-        ================================================== --}}
+        {{-- AKSI CEPAT --}}
         <div class="rounded-2xl border border-line bg-white p-6 shadow-sm">
 
             <h2 class="font-display text-base font-semibold text-ink">Aksi Cepat</h2>
+            <p class="mt-1 text-xs text-ink/50">Untuk Pertemuan {{ $pertemuan->pertemuan_ke }}</p>
 
             <div class="mt-4 space-y-3">
 
                 {{-- Tambah Materi --}}
-                <a href="{{ route('materi.create', $pengajaranDosen->id) }}"
+                <a href="{{ route('materi.create', array_merge([$pengajaranDosen->id], $pParam)) }}"
                     class="flex w-full items-center gap-3 rounded-xl border border-line p-3 text-left transition hover:bg-paper">
                     <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-paper text-ink">+</div>
                     <div>
@@ -720,7 +748,7 @@ Pembelajaran oleh
                 </a>
 
                 {{-- Tambah Materi AR --}}
-                <a href="{{ route('materi-ar.create', $pengajaranDosen->id) }}"
+                <a href="{{ route('materi-ar.create', array_merge([$pengajaranDosen->id], $pParam)) }}"
                     class="flex w-full items-center gap-3 rounded-xl border border-teal/20 bg-teal/5
                            p-3 text-left transition hover:bg-teal/10">
                     <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-teal/15 text-teal">
@@ -735,8 +763,8 @@ Pembelajaran oleh
                     </div>
                 </a>
 
-                {{-- BARU: Tambah Materi Interaktif (HTML) --}}
-                <a href="{{ route('materi-html.create', $pengajaranDosen->id) }}"
+                {{-- Tambah Materi Interaktif (HTML) --}}
+                <a href="{{ route('materi-html.create', array_merge([$pengajaranDosen->id], $pParam)) }}"
                     class="flex w-full items-center gap-3 rounded-xl border border-purple-200 bg-purple-50/60
                            p-3 text-left transition hover:bg-purple-50">
                     <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-700">
@@ -752,7 +780,7 @@ Pembelajaran oleh
                 </a>
 
                 {{-- Tambah Tugas --}}
-                <a href="{{ route('tugas.create', $pengajaranDosen->id) }}"
+                <a href="{{ route('tugas.create', array_merge([$pengajaranDosen->id], $pParam)) }}"
                     class="flex w-full items-center gap-3 rounded-xl border border-line p-3 text-left transition hover:bg-paper">
                     <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-paper text-ink">+</div>
                     <div>
@@ -762,7 +790,7 @@ Pembelajaran oleh
                 </a>
 
                 {{-- Buat Quiz --}}
-                <a href="{{ route('lecturer.quiz.index', $pengajaranDosen->id) }}"
+                <a href="{{ route('lecturer.quiz.index', array_merge([$pengajaranDosen->id], $pParam)) }}"
                     class="flex w-full items-center gap-3 rounded-xl border border-line p-3 text-left transition hover:bg-paper">
                     <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-paper text-ink">+</div>
                     <div>
@@ -792,12 +820,12 @@ Pembelajaran oleh
         </div>
 
 
-        {{-- =================================================
-                    RINGKASAN
-        ================================================== --}}
+        {{-- RINGKASAN --}}
         <div class="rounded-2xl border border-line bg-white p-6 shadow-sm">
 
-            <h2 class="font-display text-base font-semibold text-ink">Ringkasan</h2>
+            <h2 class="font-display text-base font-semibold text-ink">
+                Ringkasan Pertemuan {{ $pertemuan->pertemuan_ke }}
+            </h2>
 
             <div class="mt-5 space-y-4">
 
@@ -817,7 +845,7 @@ Pembelajaran oleh
                 </div>
 
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-ink/50">Siswa</span>
+                    <span class="text-sm text-ink/50">Siswa (seluruh kelas)</span>
                     <span class="font-semibold text-ink">{{ $pengajaran->mahasiswa->count() }}</span>
                 </div>
 
@@ -869,9 +897,10 @@ Pembelajaran oleh
 
             <div>
                 <label class="block text-sm font-medium text-ink">Pertemuan Ke</label>
-                <input type="number" name="pertemuan_ke" min="1" required
-                    value="{{ old('pertemuan_ke', $sesiAbsensiList->count() + 1) }}"
-                    class="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm
+                {{-- Otomatis mengikuti pertemuan yang sedang dipilih --}}
+                <input type="number" name="pertemuan_ke" min="1" required readonly
+                    value="{{ old('pertemuan_ke', $pertemuan->pertemuan_ke) }}"
+                    class="mt-1.5 w-full rounded-lg border border-line bg-paper px-3.5 py-2.5 text-sm
                            text-ink outline-none transition focus:border-ink">
                 @error('pertemuan_ke')
                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>

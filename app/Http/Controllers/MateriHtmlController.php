@@ -10,36 +10,47 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class MateriHtmlController extends Controller
 {
     /** Form upload materi interaktif (HTML + JS) */
 
-    public function create(PengajaranDosen $pengajaranDosen)
+    public function create(Request $request, PengajaranDosen $pengajaranDosen)
     {
         $this->authorizeDosen($pengajaranDosen);
 
-        $pertemuan = Materi::where('pengajaran_id', $pengajaranDosen->id)
+        $pertemuanId = $request->query('pertemuan');
+
+        $materiList = Materi::where('pengajaran_id', $pengajaranDosen->id)
+            ->when($pertemuanId, fn($q) => $q->where('pertemuan_id', $pertemuanId))
             ->orderBy('urutan')
+            ->orderByDesc('created_at')
             ->get();
 
-        return view('lecturer.materi-html.create', compact('pengajaranDosen', 'pertemuan'));
+        return view('lecturer.materi-html.create', compact('pengajaranDosen', 'materiList', 'pertemuanId'));
     }
-
     public function store(Request $request, PengajaranDosen $pengajaranDosen)
     {
-        $this->authorizeDosen($pengajaranDosen);
+        abort_unless($pengajaranDosen->lecturer->user_id === Auth::id(), 403);
 
-        $data = $request->validate([
+        $validated = $request->validate([
+            // materi harus milik pengajaran ini (pertemuan ikut dari materi)
             'materi_id' => [
                 'required',
                 Rule::exists('materis', 'id')->where('pengajaran_id', $pengajaranDosen->id),
             ],
-            'file' => ['required', 'file', 'mimes:html,htm', 'max:10240'],
+            'file' => ['required', 'file', 'mimes:html,htm', 'max:10240'], // 10MB
         ]);
 
-        $materi = Materi::findOrFail($data['materi_id']);
         $upload = $request->file('file');
+
+        $ext = strtolower($upload->getClientOriginalExtension());
+        if (!in_array($ext, ['html', 'htm'])) {
+            return back()->withErrors(['file' => 'File harus berformat .html atau .htm'])->withInput();
+        }
+
+        $materi = Materi::findOrFail($validated['materi_id']);
 
         // Disk PRIVATE (local), disajikan lewat method file() yang sudah ada
         $path = $upload->storeAs('materi-html', Str::uuid() . '.html', 'local');
@@ -52,7 +63,7 @@ class MateriHtmlController extends Controller
         ]);
 
         return redirect()
-            ->route('pengajaran.show', $pengajaranDosen->id)
+            ->route('pengajaran.show', ['id' => $pengajaranDosen->kelas_id, 'pertemuan' => $materi->pertemuan_id])
             ->with('success', 'Materi interaktif berhasil ditambahkan.');
     }
     public function file(MateriFile $materiFile)

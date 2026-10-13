@@ -10,6 +10,7 @@ use App\Models\Materi;
 use App\Models\PengajaranDosen;
 use App\Models\PengajaranMahasiswa;
 use App\Models\PengajuanKelas;
+use App\Models\Pertemuan;
 use App\Models\Quiz;
 use App\Models\Tugas;
 use Illuminate\Support\Facades\Auth;
@@ -232,13 +233,18 @@ class MatakuliahController extends Controller
             ->with('lecturer.user')
             ->get();
 
+        $pertemuanList = Pertemuan::where('kelas_id', $kelas->id)
+            ->orderBy('pertemuan_ke')
+            ->get();
+
         return view('student.matakuliah.show', compact(
             'kelas',
             'materiList',
             'mahasiswa',
             'tugasList',
             'quizList',
-            'dosenList'
+            'dosenList',
+            'pertemuanList'
         ));
     }
 

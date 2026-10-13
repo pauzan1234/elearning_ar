@@ -69,7 +69,7 @@ Tambah Materi
                 class="divide-y divide-line">
 
                 @csrf
-
+                <input type="hidden" name="pertemuan_id" value="{{ old('pertemuan_id', $pertemuanId) }}">
                 {{-- =================================================
                     INFO DASAR
                 ================================================== --}}

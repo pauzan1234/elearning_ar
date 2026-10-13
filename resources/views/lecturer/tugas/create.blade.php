@@ -26,7 +26,7 @@ Tambah Tugas
                 enctype="multipart/form-data"
                 class="mt-6 space-y-5">
                 @csrf
-
+                <input type="hidden" name="pertemuan_id" value="{{ old('pertemuan_id', $pertemuanId) }}">
                 {{-- Judul --}}
                 <div>
                     <label class="block text-sm font-medium text-ink">Judul Tugas</label>

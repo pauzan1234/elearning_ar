@@ -12,8 +12,68 @@ Pembelajaran oleh
 @endsection
 
 @section('content')
+@php
+// ---- Tentukan pertemuan aktif dari ?pertemuan= ----
+$pertemuanIds = $pertemuanList->pluck('id')->map(fn ($id) => (string) $id)->all();
+$aktifId = (string) request('pertemuan');
+
+$adaTanpaPertemuan = $materiList->whereNull('pertemuan_id')->isNotEmpty()
+|| $tugasList->whereNull('pertemuan_id')->isNotEmpty()
+|| $quizList->whereNull('pertemuan_id')->isNotEmpty();
+
+if ($aktifId === 'lainnya' && $adaTanpaPertemuan) {
+$aktifId = 'lainnya';
+} elseif (!in_array($aktifId, $pertemuanIds, true)) {
+$aktifId = (string) ($pertemuanList->first()->id ?? 'lainnya');
+}
+
+$pertemuanAktif = $pertemuanList->firstWhere('id', (int) $aktifId);
+
+// ---- Filter konten sesuai pertemuan aktif ----
+$cocok = fn ($item) => $aktifId === 'lainnya'
+? is_null($item->pertemuan_id)
+: (string) $item->pertemuan_id === $aktifId;
+
+$materiAktif = $materiList->filter($cocok);
+$tugasAktif = $tugasList->filter($cocok);
+$quizAktif = $quizList->filter($cocok);
+@endphp
 
 <div class="lg:col-span-2">
+
+    {{-- =================================================
+        TOMBOL PERTEMUAN
+        ================================================== --}}
+    <div class="mb-4 overflow-x-auto">
+        <div class="flex min-w-max gap-2">
+            @foreach ($pertemuanList as $p)
+            <a href="{{ request()->fullUrlWithQuery(['pertemuan' => $p->id]) }}"
+                class="rounded-lg border px-4 py-2 text-sm font-semibold transition
+                    {{ (string) $p->id === $aktifId
+                        ? 'border-ink bg-ink text-white'
+                        : 'border-line bg-white text-ink/70 hover:bg-paper hover:text-ink' }}">
+                Pertemuan {{ $p->pertemuan_ke }}
+            </a>
+            @endforeach
+
+            @if ($adaTanpaPertemuan)
+            <a href="{{ request()->fullUrlWithQuery(['pertemuan' => 'lainnya']) }}"
+                class="rounded-lg border px-4 py-2 text-sm font-semibold transition
+                    {{ $aktifId === 'lainnya'
+                        ? 'border-ink bg-ink text-white'
+                        : 'border-line bg-white text-ink/70 hover:bg-paper hover:text-ink' }}">
+                Lainnya
+            </a>
+            @endif
+        </div>
+    </div>
+
+    <p class="mb-6 text-sm text-ink/50">
+        Menampilkan konten
+        <span class="font-semibold text-ink">
+            {{ $pertemuanAktif ? 'Pertemuan ' . $pertemuanAktif->pertemuan_ke : 'tanpa pertemuan' }}
+        </span>
+    </p>
 
     {{-- Navigation --}}
     <div class="mb-6 overflow-x-auto">
@@ -44,7 +104,7 @@ Pembelajaran oleh
         </div>
 
         <div class="divide-y divide-line">
-            @forelse ($materiList as $materi)
+            @forelse ($materiAktif as $materi)
             <div x-data="{ open: false }">
                 <button type="button" @click="open = !open"
                     class="flex w-full items-center gap-4 p-5 text-left">
@@ -151,7 +211,7 @@ Pembelajaran oleh
             @empty
             <div class="p-6">
                 <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
-                    <p class="text-sm text-ink/50">Belum ada materi.</p>
+                    <p class="text-sm text-ink/50">Belum ada materi di pertemuan ini.</p>
                 </div>
             </div>
             @endforelse
@@ -169,7 +229,7 @@ Pembelajaran oleh
         </div>
 
         <div class="divide-y divide-line">
-            @forelse ($tugasList as $tugas)
+            @forelse ($tugasAktif as $tugas)
             @php
             $jawabanSaya = $tugas->jawaban->first();
             $sudahSubmit = $jawabanSaya && $jawabanSaya->status !== 'belum_submit';
@@ -219,7 +279,7 @@ Pembelajaran oleh
             @empty
             <div class="p-6">
                 <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
-                    <p class="text-sm text-ink/50">Belum ada tugas.</p>
+                    <p class="text-sm text-ink/50">Belum ada tugas di pertemuan ini.</p>
                 </div>
             </div>
             @endforelse
@@ -237,7 +297,7 @@ Pembelajaran oleh
         </div>
 
         <div class="divide-y divide-line">
-            @forelse ($quizList as $quiz)
+            @forelse ($quizAktif as $quiz)
             <a href="{{ route('student.quiz.show', $quiz->id) }}"
                 class="flex items-center justify-between gap-4 p-5 transition hover:bg-paper">
 
@@ -258,7 +318,7 @@ Pembelajaran oleh
             @empty
             <div class="p-6">
                 <div class="rounded-xl border border-dashed border-line bg-paper p-8 text-center">
-                    <p class="text-sm text-ink/50">Belum ada quiz.</p>
+                    <p class="text-sm text-ink/50">Belum ada quiz di pertemuan ini.</p>
                 </div>
             </div>
             @endforelse
@@ -332,23 +392,24 @@ Pembelajaran oleh
         </div>
     </div>
 
-    {{-- Ringkasan --}}
+    {{-- Ringkasan (pertemuan aktif / total) --}}
     <div class="rounded-2xl border border-line bg-white p-6 shadow-sm">
         <h2 class="font-display text-base font-semibold text-ink">Ringkasan</h2>
 
         <div class="mt-5 space-y-4">
             <div class="flex items-center justify-between">
                 <span class="text-sm text-ink/50">Materi</span>
-                <span class="font-semibold text-ink">{{ $materiList->count() }}</span>
+                <span class="font-semibold text-ink">{{ $materiAktif->count() }} / {{ $materiList->count() }}</span>
             </div>
             <div class="flex items-center justify-between">
                 <span class="text-sm text-ink/50">Tugas</span>
-                <span class="font-semibold text-ink">{{ $tugasList->count() }}</span>
+                <span class="font-semibold text-ink">{{ $tugasAktif->count() }} / {{ $tugasList->count() }}</span>
             </div>
             <div class="flex items-center justify-between">
                 <span class="text-sm text-ink/50">Quiz</span>
-                <span class="font-semibold text-ink">{{ $quizList->count() }}</span>
+                <span class="font-semibold text-ink">{{ $quizAktif->count() }} / {{ $quizList->count() }}</span>
             </div>
+            <p class="text-xs text-ink/40">Angka: pertemuan ini / total semua pertemuan.</p>
         </div>
     </div>
 

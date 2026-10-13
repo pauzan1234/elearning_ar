@@ -13,7 +13,7 @@
 <div class="overflow-hidden rounded-2xl border border-line bg-white shadow-sm">
     <div class="divide-y divide-line">
         @forelse($tugasList as $tugas)
-        <a href="{{ route('lecturer.tugas.jawaban.index', $tugas) }}" class="flex flex-col gap-3 p-5 transition hover:bg-paper sm:flex-row sm:items-center sm:justify-between">
+        <a href="{{ route('tugas.jawaban.index', $tugas) }}" class="flex flex-col gap-3 p-5 transition hover:bg-paper sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h2 class="font-semibold">{{ $tugas->judul }}</h2>
                 <p class="mt-1 text-xs text-ink/50">Deadline: {{ $tugas->deadline?->format('d M Y H:i') ?? 'Tanpa deadline' }}</p>

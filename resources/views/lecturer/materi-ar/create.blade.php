@@ -18,7 +18,7 @@ Tambah Materi AR
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-        Kembali ke Pmebelajaran
+        Kembali ke Pembelajaran
     </a>
 
     <div class="rounded-2xl border border-line bg-white p-6 shadow-sm">
@@ -33,22 +33,22 @@ Tambah Materi AR
         <form action="{{ route('materi-ar.store', $pengajaranDosen->id) }}" method="POST"
             enctype="multipart/form-data" class="mt-6 space-y-5">
             @csrf
-
+            <input type="hidden" name="pertemuan_id" value="{{ old('pertemuan_id', $pertemuanId) }}">
             {{-- Pertemuan --}}
             <div>
                 <label class="block text-sm font-medium text-ink">
-                    Pertemuan
+                    Materi
                 </label>
                 <select name="materi_id" required
                     class="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm
-                           text-ink outline-none transition focus:border-teal focus:ring-2 focus:ring-teal/20">
-                    <option value="" disabled selected>Pilih pertemuan</option>
-                    @forelse ($pertemuan as $p)
-                    <option value="{{ $p->id }}" @selected(old('materi_id')==$p->id)>
-                        {{ $p->judul }}
+           text-ink outline-none transition focus:border-teal focus:ring-2 focus:ring-teal/20">
+                    <option value="" disabled selected>Pilih materi</option>
+                    @forelse ($materiList as $m)
+                    <option value="{{ $m->id }}" @selected(old('materi_id')==$m->id)>
+                        {{ $m->judul }}
                     </option>
                     @empty
-                    <option value="" disabled>Belum ada pertemuan, tambahkan materi biasa dulu</option>
+                    <option value="" disabled>Belum ada materi di pertemuan ini, tambahkan materi biasa dulu</option>
                     @endforelse
                 </select>
                 @error('materi_id')

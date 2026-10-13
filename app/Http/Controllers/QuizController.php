@@ -13,18 +13,21 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\QuizJawaban;
+use Illuminate\Validation\Rule;
+use App\Models\Pertemuan;
 
 class QuizController extends Controller
 {
     /**
      * Daftar quiz untuk satu mata kuliah (pengajaran dosen).
      */
-    public function index(PengajaranDosen $pengajaranDosen)
+    public function index(Request $request, PengajaranDosen $pengajaranDosen)
     {
+
         $this->authorizePengajaran($pengajaranDosen);
         $quizzes = Quiz::where('pengajaran_dosen_id', $pengajaranDosen->id)
-            ->withCount('questions')
-            ->latest()
+            ->when($request->query('pertemuan'), fn($q, $id) => $q->where('pertemuan_id', $id))
+            ->withCount(['questions', 'jawaban'])
             ->get();
 
         return view('lecturer.quiz.index', compact('pengajaranDosen', 'quizzes'));
@@ -33,29 +36,43 @@ class QuizController extends Controller
     /**
      * Form buat quiz baru.
      */
-    public function create(PengajaranDosen $pengajaranDosen)
+
+
+    public function create(Request $request, PengajaranDosen $pengajaranDosen)
     {
         $this->authorizePengajaran($pengajaranDosen);
-        return view('lecturer.quiz.create', compact('pengajaranDosen'));
-    }
 
+        $pertemuanId   = $request->query('pertemuan');
+        $pertemuanList = Pertemuan::where('kelas_id', $pengajaranDosen->kelas_id)
+            ->orderBy('pertemuan_ke')
+            ->get();
+
+        return view('lecturer.quiz.create', compact('pengajaranDosen', 'pertemuanId', 'pertemuanList'));
+    }
     /**
      * Simpan quiz baru (masih kosong, belum ada soal).
      */
     public function store(Request $request, PengajaranDosen $pengajaranDosen): RedirectResponse
     {
         $this->authorizePengajaran($pengajaranDosen);
+
         $validated = $request->validate([
-            'judul' => ['required', 'string', 'max:255'],
-            'deskripsi' => ['nullable', 'string'],
-            'durasi_menit' => ['nullable', 'integer', 'min:1', 'max:600'],
+            'pertemuan_id' => [
+                'nullable',
+                Rule::exists('pertemuan', 'id')
+                    ->where('kelas_id', $pengajaranDosen->kelas_id),
+            ],
+            'judul'        => 'required|string|max:255',
+            'deskripsi'    => 'nullable|string',
+            'durasi_menit' => 'nullable|integer|min:1|max:600',
         ]);
 
         $quiz = Quiz::create([
             'pengajaran_dosen_id' => $pengajaranDosen->id,
-            'judul' => $validated['judul'],
-            'deskripsi' => $validated['deskripsi'] ?? null,
-            'durasi_menit' => $validated['durasi_menit'] ?? null,
+            'pertemuan_id'        => $validated['pertemuan_id'] ?? null, // <- ini yang kemungkinan hilang
+            'judul'               => $validated['judul'],
+            'deskripsi'           => $validated['deskripsi'] ?? null,
+            'durasi_menit'        => $validated['durasi_menit'] ?? null,
         ]);
 
         return redirect()
@@ -149,12 +166,17 @@ class QuizController extends Controller
      */
     public function destroy(Quiz $quiz): RedirectResponse
     {
+        $pertemuanId = $quiz->pertemuan_id;
+        $kelasId     = $quiz->pengajaranDosen->kelas_id;
         $this->authorizeQuiz($quiz);
         $pengajaranDosenId = $quiz->pengajaran_dosen_id;
         $quiz->delete();
 
         return redirect()
-            ->route('pengajaran.show', $pengajaranDosenId)
+            ->route('pengajaran.show', array_filter([
+                'id'         => $kelasId,
+                'pertemuan'  => $pertemuanId,
+            ]))
             ->with('success', 'Quiz berhasil dihapus.');
     }
     public function uploadGambarSoal(Request $request, QuizQuestion $quizQuestion)

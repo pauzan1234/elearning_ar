@@ -17,6 +17,7 @@ class Quiz extends Model
         'deskripsi',
         'durasi_menit',
         'is_published',
+        'pertemuan_id',
     ];
 
     protected $casts = [
@@ -35,5 +36,10 @@ class Quiz extends Model
     public function jawaban()
     {
         return $this->hasMany(QuizJawaban::class, 'quiz_id');
+    }
+
+    public function pertemuan()
+    {
+        return $this->belongsTo(Pertemuan::class);
     }
 }

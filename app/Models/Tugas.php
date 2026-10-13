@@ -17,6 +17,7 @@ class Tugas extends Model
         'deskripsi',
         'deadline',
         'bobot_nilai',
+        'pertemuan_id',
     ];
 
     protected $casts = [
@@ -36,5 +37,10 @@ class Tugas extends Model
     public function jawaban(): HasMany
     {
         return $this->hasMany(TugasJawaban::class);
+    }
+
+    public function pertemuan()
+    {
+        return $this->belongsTo(Pertemuan::class);
     }
 }

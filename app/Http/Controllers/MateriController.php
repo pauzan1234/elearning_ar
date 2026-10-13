@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class MateriController extends Controller
 {
@@ -29,16 +30,16 @@ class MateriController extends Controller
     /**
      * Tampilkan halaman form tambah materi.
      */
-    public function create(PengajaranDosen $pengajaran)
+    public function create(Request $request, PengajaranDosen $pengajaran)
     {
         $this->authorizePengajaran($pengajaran);
 
-
+        $pertemuanId = $request->query('pertemuan');
         // eager load supaya bisa tampilkan nama dosen & nama mk di halaman form
         // matakuliah diakses lewat kelas, karena pengajaran_dosen tidak punya relasi langsung ke matakuliah
         $pengajaran->load('lecturer.user', 'kelas.matakuliah');
 
-        return view('lecturer.materi.create', compact('pengajaran'));
+        return view('lecturer.materi.create', compact('pengajaran', 'pertemuanId'));
     }
 
     /**
@@ -49,6 +50,10 @@ class MateriController extends Controller
         $this->authorizePengajaran($pengajaran);
 
         $request->validate([
+            'pertemuan_id' => [
+                'required',
+                Rule::exists('pertemuan', 'id')->where('kelas_id', $pengajaran->kelas_id),
+            ],
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
 
@@ -73,6 +78,7 @@ class MateriController extends Controller
 
             $materi = Materi::create([
                 'pengajaran_id' => $pengajaran->id,
+                'pertemuan_id' => $request->pertemuan_id, // <-- baru
                 'judul' => $request->judul,
                 'deskripsi' => $request->deskripsi,
             ]);
@@ -122,7 +128,7 @@ class MateriController extends Controller
         });
 
         return redirect()
-            ->route('pengajaran.show', $pengajaran->kelas_id)
+            ->route('pengajaran.show', ['id' => $pengajaran->kelas_id, 'pertemuan' => $request->pertemuan_id])
             ->with('success', 'Materi berhasil ditambahkan.');
     }
 

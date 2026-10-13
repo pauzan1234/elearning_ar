@@ -193,6 +193,11 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
     Route::get('/profile', [ProfileController::class, 'edit_lecturer'])->name('lecturer.profile.edit');
     Route::match(['put', 'patch'], '/profile', [ProfileController::class, 'update_lecturer'])->name('lecturer.profile.update');
 
+
+    Route::post('/kelas/{kelas}/pertemuan', [PengajaranController::class, 'storePertemuan'])
+        ->name('lecturer.pertemuan.store');
+
+
     // Mata kuliah yang diampu
     Route::get('/matakuliahsaya', [PengajaranController::class, 'mk_saya'])->name('matakuliah.ampu');
 
