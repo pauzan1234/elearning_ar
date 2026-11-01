@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use App\Models\SesiAbsensi;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class SesiAbsensiController extends Controller
 {
@@ -80,5 +82,59 @@ class SesiAbsensiController extends Controller
         $sesi->load(['kelas.matakuliah', 'kelas.mahasiswa.user', 'absensi']);
 
         return view('lecturer.absensi.rekap', compact('sesi'));
+    }
+    public function updateStatus(Request $request, SesiAbsensi $sesi)
+    {
+        $data = $request->validate([
+            'status'     => ['required', 'array'],
+            'status.*'   => ['required', 'in:izin,sakit,alpha'],
+            'catatan'    => ['nullable', 'array'],
+            'catatan.*'  => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $sesi->load(['kelas.mahasiswa', 'absensi']);
+
+        $idMahasiswaKelas = $sesi->kelas->mahasiswa->pluck('id')->all();
+        $absensiExisting  = $sesi->absensi->keyBy('mahasiswa_id');
+
+        DB::transaction(function () use ($data, $sesi, $idMahasiswaKelas, $absensiExisting) {
+            foreach ($data['status'] as $mahasiswaId => $status) {
+                $mahasiswaId = (int) $mahasiswaId;
+
+                // Abaikan mahasiswa yang bukan anggota kelas ini
+                if (! in_array($mahasiswaId, $idMahasiswaKelas, true)) {
+                    continue;
+                }
+
+                $existing = $absensiExisting->get($mahasiswaId);
+
+                // Mahasiswa yang sudah scan QR tidak boleh diubah
+                if ($existing && $existing->waktu_absen) {
+                    continue;
+                }
+
+                // Alpha = tidak ada baris di tabel absensi
+                if ($status === 'alpha') {
+                    $existing?->delete();
+                    continue;
+                }
+
+                Absensi::updateOrCreate(
+                    [
+                        'sesi_absensi_id' => $sesi->id,
+                        'mahasiswa_id'    => $mahasiswaId,
+                    ],
+                    [
+                        'status'      => $status,
+                        'catatan'     => $data['catatan'][$mahasiswaId] ?? null,
+                        'waktu_absen' => null,
+                    ]
+                );
+            }
+        });
+
+        return redirect()
+            ->route('lecturer.absensi.rekap', $sesi)
+            ->with('success', 'Rekap kehadiran berhasil diperbarui.');
     }
 }

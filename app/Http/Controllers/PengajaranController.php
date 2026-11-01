@@ -472,6 +472,26 @@ class PengajaranController extends Controller
             ->with('success', "Pertemuan {$next} berhasil ditambahkan.");
     }
 
+    public function toggleHide(Pertemuan $pertemuan)
+    {
+        $lecturer = Auth::user()->lecturer;
+        abort_unless($lecturer, 403, 'Akun ini tidak terdaftar sebagai dosen.');
+
+        // Pastikan dosen ini memang mengajar di kelas pertemuan tersebut
+        $mengajar = PengajaranDosen::where('kelas_id', $pertemuan->kelas_id)
+            ->where('dosen_id', $lecturer->id)
+            ->exists();
+        abort_unless($mengajar, 403, 'Anda tidak mengajar di kelas ini.');
+
+        $pertemuan->update(['is_hidden' => ! $pertemuan->is_hidden]);
+
+        return redirect()
+            ->route('pengajaran.show', ['id' => $pertemuan->kelas_id, 'pertemuan' => $pertemuan->id])
+            ->with('success', $pertemuan->is_hidden
+                ? "Pertemuan {$pertemuan->pertemuan_ke} disembunyikan dari siswa."
+                : "Pertemuan {$pertemuan->pertemuan_ke} kini tampil di siswa.");
+    }
+
     public function rekapNilai(PengajaranDosen $pengajaranDosen)
     {
         // Pastikan pengajaranDosen ini milik dosen yang sedang login

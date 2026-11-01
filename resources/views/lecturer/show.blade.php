@@ -28,27 +28,62 @@ $pParam = ['pertemuan' => $pertemuan->id];
 {{-- =================================================
             SELECTOR PERTEMUAN
 ================================================== --}}
-<div class="mb-6 overflow-x-auto">
-    <div class="flex min-w-max items-center gap-2">
-        @foreach ($pertemuanList as $p)
-        <a href="{{ route('pengajaran.show', ['id' => $pengajaran->id, 'pertemuan' => $p->id]) }}"
-            class="rounded-lg border px-4 py-2 text-sm font-semibold transition
-                   {{ (int) $p->id === (int) $pertemuan->id
-                        ? 'border-ink bg-ink text-white'
-                        : 'border-line bg-white text-ink/60 hover:bg-paper hover:text-ink' }}">
-            Pertemuan {{ $p->pertemuan_ke }}
-        </a>
-        @endforeach
+<div class="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
 
-        <form method="POST" action="{{ route('lecturer.pertemuan.store', $pengajaran->id) }}">
-            @csrf
-            <button type="submit"
-                class="rounded-lg border border-dashed border-line px-4 py-2 text-sm font-semibold text-ink/60 hover:bg-paper">
-                + Pertemuan
-            </button>
-        </form>
+    <div class="overflow-x-auto">
+        <div class="flex min-w-max items-center gap-2">
+            @foreach ($pertemuanList as $p)
+            <a href="{{ route('pengajaran.show', ['id' => $pengajaran->id, 'pertemuan' => $p->id]) }}"
+                class="inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-semibold transition
+                       {{ (int) $p->id === (int) $pertemuan->id
+                            ? 'border-ink bg-ink text-white'
+                            : 'border-line bg-white text-ink/60 hover:bg-paper hover:text-ink' }}
+                       {{ $p->is_hidden && (int) $p->id !== (int) $pertemuan->id ? 'border-dashed opacity-70' : '' }}">
+                Pertemuan {{ $p->pertemuan_ke }}
+
+                @if ($p->is_hidden)
+                {{-- ikon mata dicoret --}}
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" title="Disembunyikan">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                </svg>
+                @endif
+            </a>
+            @endforeach
+
+            <form method="POST" action="{{ route('lecturer.pertemuan.store', $pengajaran->id) }}">
+                @csrf
+                <button type="submit"
+                    class="rounded-lg border border-dashed border-line px-4 py-2 text-sm font-semibold text-ink/60 hover:bg-paper">
+                    + Pertemuan
+                </button>
+            </form>
+        </div>
     </div>
+
+    {{-- Tombol hide / tampilkan untuk pertemuan yang sedang aktif --}}
+    <form method="POST" action="{{ route('lecturer.pertemuan.toggle-hide', $pertemuan->id) }}" class="shrink-0">
+        @csrf
+        @method('PATCH')
+        <button type="submit"
+            class="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition
+                   {{ $pertemuan->is_hidden
+                        ? 'border-green-200 bg-green-50 text-green-700 hover:bg-green-100'
+                        : 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100' }}">
+            @if ($pertemuan->is_hidden)
+            Tampilkan Pertemuan {{ $pertemuan->pertemuan_ke }}
+            @else
+            Sembunyikan Pertemuan {{ $pertemuan->pertemuan_ke }}
+            @endif
+        </button>
+    </form>
 </div>
+
+@if ($pertemuan->is_hidden)
+<div class="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+    Pertemuan ini <strong>disembunyikan</strong>. Siswa tidak dapat melihat materi, tugas, maupun quiz di dalamnya.
+</div>
+@endif
 
 <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
 

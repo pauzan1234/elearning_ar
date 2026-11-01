@@ -221,6 +221,8 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
     Route::post('/absensi/{sesi}/tutup', [SesiAbsensiController::class, 'tutup'])->name('lecturer.absensi.tutup');
     Route::get('/absensi/{sesi}/count', [SesiAbsensiController::class, 'count'])->name('lecturer.absensi.count');
     Route::get('/absensi/{sesi}/rekap', [SesiAbsensiController::class, 'rekap'])->name('lecturer.absensi.rekap');
+    Route::put('/absensi/{sesi}/rekap', [SesiAbsensiController::class, 'updateStatus'])
+        ->name('lecturer.absensi.update-status');
     Route::get('/pengajaran/{pengajaranDosen}/absensi/rekap', [AbsensiController::class, 'rekapSemua'])->name('lecturer.absensi.rekapSemua');
     Route::get('/pengajaran/{pengajaranDosen}/absensi/rekap/export', [AbsensiController::class, 'exportRekap'])->name('lecturer.absensi.rekapSemua.export');
 
@@ -288,7 +290,11 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
     Route::patch('/materi/{materi}/toggle-hide', [MateriController::class, 'toggleHide'])
         ->name('materi.toggle-hide');
 });
-
+Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function () {
+    // ...route lain
+    Route::patch('/pertemuan/{pertemuan}/toggle-hide', [PengajaranController::class, 'toggleHide'])
+        ->name('lecturer.pertemuan.toggle-hide');
+});
 /*
 |--------------------------------------------------------------------------
 | STUDENT

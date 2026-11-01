@@ -22,7 +22,28 @@ Pembelajaran
             ================================================== --}}
             <div class="lg:col-span-2">
 
-
+                {{-- =================================================
+    SELECTOR PERTEMUAN (hanya yang tidak disembunyikan)
+================================================== --}}
+                @if ($pertemuanList->isNotEmpty())
+                <div class="mb-6 overflow-x-auto">
+                    <div class="flex min-w-max items-center gap-2">
+                        @foreach ($pertemuanList as $p)
+                        <a href="{{ request()->fullUrlWithQuery(['pertemuan' => $p->id]) }}"
+                            class="rounded-lg border px-4 py-2 text-sm font-semibold transition
+                   {{ (int) $p->id === (int) $pertemuan->id
+                        ? 'border-ink bg-ink text-white'
+                        : 'border-line bg-white text-ink/60 hover:bg-paper hover:text-ink' }}">
+                            Pertemuan {{ $p->pertemuan_ke }}
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+                @else
+                <div class="mb-6 rounded-xl border border-dashed border-line bg-white p-8 text-center">
+                    <p class="text-sm text-ink/50">Belum ada pertemuan yang dibuka oleh dosen.</p>
+                </div>
+                @endif
                 {{-- =================================================
                     NAVIGATION
                 ================================================== --}}

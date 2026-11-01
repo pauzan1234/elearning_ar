@@ -194,7 +194,7 @@ class MatakuliahController extends Controller
 
         return view('student.matakuliah.index', compact('pengajaranList'));
     }
-    public function show(Kelas $kelas)
+    public function show(Request $request, Kelas $kelas)
     {
         $mahasiswa = auth()->user()->student;
 
@@ -208,33 +208,51 @@ class MatakuliahController extends Controller
 
         $pengajaranDosenIds = PengajaranDosen::where('kelas_id', $kelas->id)->pluck('id');
 
-        $materiList = Materi::whereIn('pengajaran_id', $pengajaranDosenIds)
+        // Hanya pertemuan yang tidak disembunyikan
+        $pertemuanList = Pertemuan::where('kelas_id', $kelas->id)
             ->visible()
-            ->with([
-                'files' => fn($q) => $q->orderBy('urutan'),
-                'materiAr',
-            ])
-            ->latest()
+            ->orderBy('pertemuan_ke')
             ->get();
 
-        $tugasList = Tugas::whereIn('pengajaran_dosen_id', $pengajaranDosenIds)
-            ->with(['files', 'jawaban' => function ($q) use ($mahasiswa) {
-                $q->where('mahasiswa_id', $mahasiswa->id);
-            }])
-            ->latest()
-            ->get();
+        // Pertemuan aktif dari ?pertemuan=ID. Jika ID itu hidden/tidak ada,
+        // otomatis jatuh ke pertemuan visible pertama (tidak bisa ditembus lewat URL).
+        $pertemuan = $pertemuanList->firstWhere('id', (int) $request->query('pertemuan'))
+            ?? $pertemuanList->first();
 
-        $quizList = Quiz::whereIn('pengajaran_dosen_id', $pengajaranDosenIds)
-            ->where('is_published', true)
-            ->withCount('questions')
-            ->get();
+        if ($pertemuan) {
+            $materiList = Materi::whereIn('pengajaran_id', $pengajaranDosenIds)
+                ->where('pertemuan_id', $pertemuan->id)
+                ->visible()
+                ->with([
+                    'files' => fn($q) => $q->orderBy('urutan'),
+                    'materiAr',
+                ])
+                ->orderBy('urutan')
+                ->orderByDesc('created_at')
+                ->get();
+
+            $tugasList = Tugas::whereIn('pengajaran_dosen_id', $pengajaranDosenIds)
+                ->where('pertemuan_id', $pertemuan->id)
+                ->with(['files', 'jawaban' => function ($q) use ($mahasiswa) {
+                    $q->where('mahasiswa_id', $mahasiswa->id);
+                }])
+                ->latest()
+                ->get();
+
+            $quizList = Quiz::whereIn('pengajaran_dosen_id', $pengajaranDosenIds)
+                ->where('pertemuan_id', $pertemuan->id)
+                ->where('is_published', true)
+                ->withCount('questions')
+                ->get();
+        } else {
+            // Semua pertemuan disembunyikan
+            $materiList = collect();
+            $tugasList  = collect();
+            $quizList   = collect();
+        }
 
         $dosenList = PengajaranDosen::where('kelas_id', $kelas->id)
             ->with('lecturer.user')
-            ->get();
-
-        $pertemuanList = Pertemuan::where('kelas_id', $kelas->id)
-            ->orderBy('pertemuan_ke')
             ->get();
 
         return view('student.matakuliah.show', compact(
@@ -244,7 +262,8 @@ class MatakuliahController extends Controller
             'tugasList',
             'quizList',
             'dosenList',
-            'pertemuanList'
+            'pertemuanList',
+            'pertemuan'
         ));
     }
 
