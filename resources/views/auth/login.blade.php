@@ -10,7 +10,7 @@
             <!-- Logo -->
             <div class="w-11 h-11 mx-auto rounded-lg bg-[#F5F8FC]/10 border border-white/10 flex items-center justify-center">
                 <span class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center overflow-hidden">
-                    <img src="{{ asset('image/LMS AR-GEO-PNG-NO BACKGROUND.png') }}"
+                    <img src="{{ asset('image/LMS AR-GEO-PNG-NO BACKGROUND.png') }}?v=2"
                         alt="Logo"
                         class="w-full h-full object-contain">
                 </span>
