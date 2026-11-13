@@ -269,10 +269,10 @@ php artisan migrate:fresh --seed
 
 akun berikut tersedia untuk pengujian.
 
-| Role | Nama | Email | Password |
-|---|---|---|---|
-| Admin | Administrator | `admin@example.com` | `admin123` |
-| Dosen | Dosen Demo | `dosen@example.com` | `dosen123` |
+| Role      | Nama           | Email                   | Password       |
+| --------- | -------------- | ----------------------- | -------------- |
+| Admin     | Administrator  | `admin@example.com`     | `admin123`     |
+| Dosen     | Dosen Demo     | `dosen@example.com`     | `dosen123`     |
 | Mahasiswa | Mahasiswa Demo | `mahasiswa@example.com` | `mahasiswa123` |
 
 > Akun tersebut adalah akun development/demo. Ganti password sebelum digunakan pada lingkungan production.
@@ -436,21 +436,21 @@ Import jadwal hanya dapat dilakukan oleh **Admin**.
 
 Kolom file Excel:
 
-| Kolom | Keterangan |
-|---|---|
-| `kode_mk` | Kode mata kuliah |
-| `kode_kelas` | Kode kelas |
-| `hari` | Hari perkuliahan |
-| `jam_mulai` | Jam mulai |
-| `jam_selesai` | Jam selesai |
-| `ruangan` | Nama/nomor ruangan |
+| Kolom         | Keterangan         |
+| ------------- | ------------------ |
+| `kode_mk`     | Kode mata kuliah   |
+| `kode_kelas`  | Kode kelas         |
+| `hari`        | Hari perkuliahan   |
+| `jam_mulai`   | Jam mulai          |
+| `jam_selesai` | Jam selesai        |
+| `ruangan`     | Nama/nomor ruangan |
 
 Contoh:
 
-| kode_mk | kode_kelas | hari | jam_mulai | jam_selesai | ruangan |
-|---|---|---|---|---|---|
-| TK101 | A | Senin | 08:00 | 10:30 | Lab Komputer 1 |
-| TK102 | A | Rabu | 10:00 | 12:30 | Ruang 203 |
+| kode_mk | kode_kelas | hari  | jam_mulai | jam_selesai | ruangan        |
+| ------- | ---------- | ----- | --------- | ----------- | -------------- |
+| TK101   | A          | Senin | 08:00     | 10:30       | Lab Komputer 1 |
+| TK102   | A          | Rabu  | 10:00     | 12:30       | Ruang 203      |
 
 ---
 
@@ -546,11 +546,11 @@ Chat tersedia berdasarkan kelas/mata kuliah.
 
 Hak akses jadwal:
 
-| Role | Lihat | Tambah | Edit | Hapus | Import |
-|---|---:|---:|---:|---:|---:|
-| Admin | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Dosen | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Mahasiswa | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Role      | Lihat | Tambah | Edit | Hapus | Import |
+| --------- | ----: | -----: | ---: | ----: | -----: |
+| Admin     |    ✅ |     ✅ |   ✅ |    ✅ |     ✅ |
+| Dosen     |    ✅ |     ❌ |   ❌ |    ❌ |     ❌ |
+| Mahasiswa |    ✅ |     ❌ |   ❌ |    ❌ |     ❌ |
 
 ---
 
@@ -707,7 +707,9 @@ Sebelum deployment production:
 8. Pastikan akses file upload dilindungi sesuai kebutuhan aplikasi.
 
 ---
+
 # update file dari github ke cloud
+
 saat mau masuk ke aplikasi di hostinger:
 
 ```bash
@@ -719,17 +721,23 @@ lalu ambil file terbaru dari github:
 ```bash
 git pull origin
 ```
+
 # ambil file tertentu saja dari github
 
 misal mau ambil routesnya saja:
+
 ```bash
 git fetch origin
 ```
+
 lalu ketikkan:
+
 ```bash
 git restore --source=origin/main -- routes/web.php
 ```
+
 atau ambil MataKuliahController saja:
+
 ```bash
 git restore --source=origin/main -- app/Http/Controllers/MatakuliahController.php
 ```
@@ -742,7 +750,29 @@ git commit -m "update README"
 git push origin main
 ```
 
+# Cek controller dan view via URL
+
+misal URL seperti ini:
+
+```bash
+http://127.0.0.1:8000/lecturer/pengajaran/2?pertemuan=1
+```
+
+maka di terminal ketikkan:
+
+```bash
+php artisan route:list --path=lecturer/pengajaran
+```
+
+maka akan muncul di terminal, seperti berikut ini:
+
+```bash
+GET|HEAD   lecturer/pengajaran/{id} .......................................................................................................... pengajaran.show › PengajaranController@show
+```
+
+artinya nama routenya: pengajaran.show
+terdapat di controller PengajaranController, di method show
+
 # License
 
 Project dikembangkan untuk kebutuhan Learning Management System / sistem akademik.
-

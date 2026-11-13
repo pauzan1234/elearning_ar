@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourseChatController;
 use App\Http\Controllers\JadwalMatakuliahController;
+use App\Http\Controllers\Lecturer\AbsensiManualController;
 use App\Http\Controllers\Lecturer\AkademikController as LecturerAkademikController;
 use App\Http\Controllers\Student\AkademikController as StudentAkademikController;
 use App\Models\PengajaranMahasiswa;
@@ -225,6 +226,12 @@ Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->group(function
         ->name('lecturer.absensi.update-status');
     Route::get('/pengajaran/{pengajaranDosen}/absensi/rekap', [AbsensiController::class, 'rekapSemua'])->name('lecturer.absensi.rekapSemua');
     Route::get('/pengajaran/{pengajaranDosen}/absensi/rekap/export', [AbsensiController::class, 'exportRekap'])->name('lecturer.absensi.rekapSemua.export');
+
+    Route::get('/pengajaran/{kelas}/absensi-manual', [AbsensiManualController::class, 'create'])
+        ->name('lecturer.absensi.manual.create');
+
+    Route::post('/pengajaran/{kelas}/absensi-manual', [AbsensiManualController::class, 'store'])
+        ->name('lecturer.absensi.manual.store');
 
     // Quiz
     Route::prefix('quiz')->name('lecturer.quiz.')->group(function () {

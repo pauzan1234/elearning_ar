@@ -14,6 +14,7 @@ class TugasJawaban extends Model
         'tugas_id',
         'mahasiswa_id',
         'waktu_submit',
+        'catatan_siswa',   // BARU
         'skor',
         'catatan_koreksi',
         'dikoreksi_oleh',

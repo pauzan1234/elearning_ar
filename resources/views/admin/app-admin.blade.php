@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- logo unwir -->
-    <link rel="icon" type="image/png" href="{{ asset('image/logo_black.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('image/LMS AR-GEO-PNG-NO BACKGROUND.png') }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

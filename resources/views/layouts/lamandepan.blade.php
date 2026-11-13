@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- logo unwir -->
-  <link rel="icon" type="image/png" href="{{ asset('image/logoUnwir.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('image/LMS AR-GEO-PNG-NO BACKGROUND.png') }}">
   <title>{{ config('app.name', 'LMS-AR Geospace') }}</title>
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -327,7 +327,7 @@
     <div class="max-w-xl">
       <span class="font-mono text-xs uppercase tracking-wider text-ink/40">Mengapa LMS-AR Dikembangkan?</span>
       <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight mt-3">
-        Dirancang untuk menghadirkan pembelajaran geometri yang interaktif melalui integrasi LMS dan Augmented Reality (AR), 
+        Dirancang untuk menghadirkan pembelajaran geometri yang interaktif melalui integrasi LMS dan Augmented Reality (AR),
       </h2>
       <p>sehingga siswa dapat mengeksplorasi objek 3D, mengembangkan kemampuan spasial, dan membangun resiliensi dalam menyelesaikan tantangan matematika.</p>
     </div>

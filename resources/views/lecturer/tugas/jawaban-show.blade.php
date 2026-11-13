@@ -58,6 +58,14 @@ Koreksi Jawaban
             </div>
         </div>
 
+        {{-- Catatan Siswa --}}
+        @if ($jawaban->catatan_siswa)
+        <div class="mt-6 rounded-2xl border border-line bg-white p-6 shadow-sm">
+            <h2 class="font-display text-base font-semibold text-ink">Catatan Siswa</h2>
+            <p class="mt-3 whitespace-pre-line text-sm text-ink/80">{{ $jawaban->catatan_siswa }}</p>
+        </div>
+        @endif
+
         {{-- File Jawaban --}}
         <div class="mt-6 rounded-2xl border border-line bg-white p-6 shadow-sm">
             <h2 class="font-display text-base font-semibold text-ink">File Jawaban</h2>
@@ -87,7 +95,9 @@ Koreksi Jawaban
             </div>
             @endif
             @else
-            <p class="mt-2 text-sm text-ink/50">Siswa belum mengupload file.</p>
+            <p class="mt-2 text-sm text-ink/50">
+                {{ $jawaban->catatan_siswa ? 'Siswa tidak melampirkan file (hanya catatan).' : 'Siswa belum mengupload file.' }}
+            </p>
             @endif
         </div>
 

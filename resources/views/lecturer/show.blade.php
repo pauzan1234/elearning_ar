@@ -708,7 +708,10 @@ $pParam = ['pertemuan' => $pertemuan->id];
                         class="rounded-lg border border-line px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-paper">
                         Rekap Semua
                     </a>
-
+                    <a href="{{ route('lecturer.absensi.manual.create', ['kelas' => $pengajaran->id, 'pertemuan' => $pertemuan->id]) }}"
+                        class="rounded-lg border border-ink px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-paper">
+                        + Absensi Manual
+                    </a>
                     <button type="button" @click="$dispatch('open-modal-absensi')"
                         class="rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primaryDark">
                         + Buka Absensi
