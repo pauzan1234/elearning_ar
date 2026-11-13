@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <title>Dashboard — E-Learning UNWIR</title> -->
     <!-- logo unwir -->
-    <link rel="icon" type="image/png" href="{{ asset('image/LMSBACKGROUND.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('image/LMSBACKGROUND.png') }}?v=2">
     <title>{{ config('app.name', 'Laravel') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="//unpkg.com/alpinejs" defer></script>

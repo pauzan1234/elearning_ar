@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- logo unwir -->
-  <link rel="icon" type="image/png" href="{{ asset('image/LMSBACKGROUND.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('image/LMSBACKGROUND.png') }}?v=2">
   <title>{{ config('app.name', 'LMS-AR Geospace') }}</title>
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -80,7 +80,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2.5">
         <span class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center overflow-hidden">
-          <img src="{{ asset('image/logo.png') }}"
+          <img src="{{ asset('image/LMSBACKGROUND.png') }}?v=2"
             alt="Logo"
             class="w-full h-full object-contain">
         </span>

@@ -1,7 +1,7 @@
 <!-- Brand -->
 <div class="h-20 flex items-center gap-2.5 px-6 border-b border-white/10 shrink-0">
     <span class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center overflow-hidden">
-        <img src="{{ asset('image/LMSBACKGROUND.png') }}"
+        <img src="{{ asset('image/LMSBACKGROUND.png') }}?v=2"
             alt="Logo"
             class="w-full h-full object-contain">
     </span>
